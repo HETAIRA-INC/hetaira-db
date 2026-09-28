@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBER.EROS // AUDIO ARCHIVE</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070408;
+      --card-bg: rgba(18, 10, 19, 0.88);
+      --card-border: rgba(255, 0, 85, 0.28);
+      --neon-pink: #ff007f;
+      --crimson-lust: #ff003c;
+      --blush-glow: #ff4d8d;
+      --cyber-cyan: #00f0ff;
+      --gold-tier: #fcee0a;
+      --text-main: #f8fafc;
+      --text-muted: #b89ca9;
+      --font-display: 'Orbitron', monospace, sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Ambient cyber grid */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 0, 85, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 0, 85, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 10%, rgba(255, 0, 85, 0.16) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: var(--blush-glow);
+      text-transform: uppercase;
+      background: rgba(255, 0, 85, 0.08);
+      border: 1px solid rgba(255, 0, 85, 0.35);
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+    }
+
+    .heartbeat-icon {
+      width: 10px;
+      height: 10px;
+      background-color: var(--crimson-lust);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--crimson-lust);
+      animation: heartbeat 1.2s infinite;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255, 0, 127, 0.6);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 span { color: var(--neon-pink); }
+    .subtitle { font-size: 1.15rem; color: var(--text-muted); }
+
+    /* Cyber Filter / Search HUD */
+    .filter-bar {
+      background: rgba(18, 10, 19, 0.9);
+      border: 1px solid rgba(255, 0, 85, 0.3);
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 3rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+      box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    }
+
+    .search-input-wrap {
+      flex: 1 1 280px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 0, 85, 0.4);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+    }
+
+    .filter-dropdowns {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .cyber-select {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 0, 85, 0.4);
+      color: var(--blush-glow);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .count-indicator {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--cyber-cyan);
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 2rem;
+    }
+
+    .cyber-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+      transition: all 0.35s ease;
+      overflow: hidden;
+    }
+
+    .cyber-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--neon-pink);
+      box-shadow: 0 12px 35px -8px rgba(255, 0, 85, 0.45);
+    }
+
+    .card-cover-wrapper {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background-color: #120914;
+      overflow: hidden;
+    }
+
+    .card-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .cyber-card:hover .card-cover {
+      transform: scale(1.05);
+    }
+
+    .floating-badges {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .badge-tier {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      letter-spacing: 1px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid var(--gold-tier);
+      color: var(--gold-tier);
+      text-transform: uppercase;
+    }
+
+    .badge-tier.free {
+      border-color: var(--cyber-cyan);
+      color: var(--cyber-cyan);
+    }
+
+    .badge-audience {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      background: rgba(255, 0, 85, 0.85);
+      color: #fff;
+    }
+
+    .card-body {
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-id { color: var(--blush-glow); font-weight: 700; }
+    .card-tag { color: var(--cyber-cyan); letter-spacing: 1px; }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: #fff;
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+
+    .card-credits {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+    .card-credits span { color: var(--blush-glow); }
+
+    .card-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      margin-bottom: 1.2rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex-grow: 1;
+    }
+
+    /* Tag & Trigger Collections */
+    .pill-group {
+      margin-bottom: 0.75rem;
+    }
+
+    .group-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .pills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tag-pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--cyber-cyan);
+    }
+
+    .trigger-pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      background: rgba(255, 0, 85, 0.08);
+      border: 1px solid rgba(255, 0, 85, 0.3);
+      color: var(--blush-glow);
+    }
+
+    .cyber-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.85rem;
+      margin-top: 1rem;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #fff;
+      background: rgba(255, 0, 85, 0.1);
+      border: 1px solid var(--neon-pink);
+      clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+      transition: all 0.3s ease;
+    }
+
+    .cyber-btn:hover {
+      background: linear-gradient(90deg, var(--crimson-lust), var(--neon-pink));
+      box-shadow: 0 0 20px var(--neon-pink);
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15%, 45% { transform: scale(1.3); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="status-badge">
+        <span class="heartbeat-icon"></span>
+        AUDIO ARCHIVE // NEURAL PROTOCOLS ONLINE
+      </div>
+      <h1>Cyber<span>.Eros</span></h1>
+      <p class="subtitle">Sensory telemetry, tactile audio, and intimate frequency files</p>
+    </header>
+
+    <!-- Interactive Filter & Search HUD -->
+    <div class="filter-bar">
+      <div class="search-input-wrap">
+        <input type="text" id="searchInput" class="search-input" placeholder="SEARCH TITLE, TRIGGER, TAG, OR ARTIST...">
+      </div>
+      <div class="filter-dropdowns">
+        <select id="audienceFilter" class="cyber-select">
+          <option value="ALL">AUDIENCE: ALL</option>
+          <option value="F4M">F4M</option>
+          <option value="M4F">M4F</option>
+          <option value="FF4M">FF4M</option>
+          <option value="F4F">F4F</option>
+          <option value="M4M">M4M</option>
+        </select>
+
+        <select id="tierFilter" class="cyber-select">
+          <option value="ALL">TIER: ALL</option>
+          <option value="FREE">FREE</option>
+          <option value="PAID">PAID</option>
+        </select>
+      </div>
+      <div class="count-indicator" id="resultsCount">// SYNCED: 0 RECORDS</div>
+    </div>
+
+    <!-- Cards Grid -->
+    <main class="cards-grid" id="cardsGrid">
+      <div style="grid-column: 1/-1; text-align: center; color: var(--blush-glow);">INITIALIZING ARCHIVE...</div>
+    </main>
+  </div>
+
+  <script>
+    let archiveData = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('data.json');
+        archiveData = await res.json();
+        
+        // Setup Filter Event Listeners
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('audienceFilter').addEventListener('change', applyFilters);
+        document.getElementById('tierFilter').addEventListener('change', applyFilters);
+
+        renderCards(archiveData);
+      } catch (err) {
+        console.error(err);
+        document.getElementById('cardsGrid').innerHTML = `<div style="grid-column:1/-1; color:var(--crimson-lust); text-align:center;">FAILED TO READ DATA.JSON</div>`;
+      }
+    });
+
+    function applyFilters() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const audience = document.getElementById('audienceFilter').value;
+      const tier = document.getElementById('tierFilter').value;
+
+      const filtered = archiveData.filter(item => {
+        // Match Search Query across multiple attributes
+        const tagsStr = (item.tags || []).join(' ').toLowerCase();
+        const triggersStr = (item.triggers || []).join(' ').toLowerCase();
+        const matchSearch = !search || 
+          item.title.toLowerCase().includes(search) ||
+          item.artist.toLowerCase().includes(search) ||
+          item.author.toLowerCase().includes(search) ||
+          tagsStr.includes(search) ||
+          triggersStr.includes(search);
+
+        // Match Audience
+        const matchAudience = audience === 'ALL' || item.audience.toUpperCase() === audience;
+
+        // Match Tier
+        const isFree = (item.tier || '').toUpperCase().includes('FREE');
+        const matchTier = tier === 'ALL' || 
+          (tier === 'FREE' && isFree) || 
+          (tier === 'PAID' && !isFree);
+
+        return matchSearch && matchAudience && matchTier;
+      });
+
+      renderCards(filtered);
+    }
+
+    function renderCards(items) {
+      const grid = document.getElementById('cardsGrid');
+      const count = document.getElementById('resultsCount');
+      grid.innerHTML = '';
+      count.textContent = `// SYNCED: ${items.length} RECORDS`;
+
+      if (items.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; color:var(--text-muted); text-align:center; padding: 3rem;">NO MATCHING PROTOCOLS FOUND</div>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const isFree = (item.tier || '').toUpperCase().includes('FREE');
+        const triggers = Array.isArray(item.triggers) ? item.triggers : [];
+        const tags = Array.isArray(item.tags) ? item.tags : [];
+        const coverImg = item.cover || 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80';
+
+        const card = document.createElement('article');
+        card.className = 'cyber-card';
+
+        card.innerHTML = `
+          <div class="card-cover-wrapper">
+            <img src="${coverImg}" alt="${item.title}" class="card-cover" onerror="this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'">
+            <div class="floating-badges">
+              <span class="badge-tier ${isFree ? 'free' : ''}">${item.tier}</span>
+              <span class="badge-audience">${item.audience}</span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="card-id">${item.id}</span>
+              <span class="card-tag">${item.tag}</span>
+            </div>
+            
+            <h2 class="card-title">${item.title}</h2>
+            <div class="card-credits">By <span>${item.author}</span> // Voice: <span>${item.artist}</span></div>
+            <p class="card-desc">${item.description}</p>
+
+            ${tags.length ? `
+              <div class="pill-group">
+                <div class="group-label">GENRE & THEMES:</div>
+                <div class="pills-container">
+                  ${tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}
+                </div>
+              </div>` : ''}
+
+            ${triggers.length ? `
+              <div class="pill-group">
+                <div class="group-label">TRIGGERS:</div>
+                <div class="pills-container">
+                  ${triggers.map(tr => `<span class="trigger-pill">${tr}</span>`).join('')}
+                </div>
+              </div>` : ''}
+
+            <a href="detail.html?id=${item.uuid}" class="cyber-btn">
+              View &rarr;
+            </a>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
