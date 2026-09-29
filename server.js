@@ -1,66 +1,133 @@
-const http = require('http');
+const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
-const DATA_PATH = path.join(__dirname, 'data.json');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-const MIME_TYPES = {
-  '.html': 'text/html',
-  '.css': 'text/css',
-  '.js': 'text/javascript',
-  '.json': 'application/json',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.mp3': 'audio/mpeg',
-  '.wav': 'audio/wav',
-};
+app.use(express.json({ limit: '150mb' }));
+app.use(express.urlencoded({ extended: true, limit: '150mb' }));
 
-const server = http.createServer((req, res) => {
-  // API Endpoint: Save JSON directly to disk
-  if (req.method === 'POST' && req.url === '/api/save') {
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', () => {
-      try {
-        const parsed = JSON.parse(body);
-        fs.writeFileSync(DATA_PATH, JSON.stringify(parsed, null, 2), 'utf8');
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ status: 'success', message: 'data.json written to disk.' }));
-        console.log('[ADMIN] data.json successfully updated.');
-      } catch (err) {
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ status: 'error', message: err.message }));
-      }
-    });
-    return;
-  }
-
-  // Static file serving
-  let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url.split('?')[0]);
-  const ext = path.extname(filePath);
-  const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-
-  fs.readFile(filePath, (err, content) => {
-    if (err) {
-      if (err.code === 'ENOENT') {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('404 Not Found');
-      } else {
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end(`Server Error: ${err.code}`);
-      }
-    } else {
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content, 'utf-8');
-    }
-  });
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
 });
 
-server.listen(PORT, () => {
-  console.log(`\n===========================================`);
-  console.log(` CYBER.EROS DEV SERVER ONLINE`);
-  console.log(` Main Archive: http://localhost:${PORT}/index.html`);
-  console.log(` Admin Console: http://localhost:${PORT}/admin.html`);
-  console.log(`===========================================\n`);
+const coversDir = path.join(__dirname, 'covers');
+const audioDir = path.join(__dirname, 'audio');
+const dataFile = path.join(__dirname, 'data.json');
+
+fs.mkdirSync(coversDir, { recursive: true });
+fs.mkdirSync(audioDir, { recursive: true });
+
+if (!fs.existsSync(dataFile)) {
+  fs.writeFileSync(dataFile, '[]', 'utf-8');
+}
+
+app.use(express.static(__dirname));
+
+// Helper to determine extension from Content-Type header or fallback
+function getExtensionFromMime(mime, fallback) {
+  if (!mime) return fallback;
+  const lower = mime.toLowerCase();
+  if (lower.includes('image/jpeg')) return 'jpg';
+  if (lower.includes('image/png')) return 'png';
+  if (lower.includes('image/webp')) return 'webp';
+  if (lower.includes('image/gif')) return 'gif';
+  if (lower.includes('audio/mpeg') || lower.includes('audio/mp3')) return 'mp3';
+  if (lower.includes('audio/wav') || lower.includes('audio/x-wav')) return 'wav';
+  if (lower.includes('audio/ogg')) return 'ogg';
+  if (lower.includes('audio/mp4') || lower.includes('audio/m4a')) return 'm4a';
+  return fallback;
+}
+
+// 1. INGEST FROM REMOTE WEB URL
+app.post('/api/fetch-url', async (req, res) => {
+  const { url, type, uuid, extension } = req.body;
+
+  if (!url || !type || !uuid) {
+    return res.status(400).json({ error: 'Missing parameters (url, type, or uuid required)' });
+  }
+
+  const folder = type === 'cover' ? 'covers' : 'audio';
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+        'Accept': '*/*'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Remote host HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const contentType = response.headers.get('content-type');
+    let ext = extension ? extension.replace(/^\./, '') : null;
+
+    if (!ext || ext.length > 5) {
+      ext = getExtensionFromMime(contentType, type === 'cover' ? 'jpg' : 'mp3');
+    }
+
+    const fileName = `${uuid}.${ext}`;
+    const targetPath = path.join(__dirname, folder, fileName);
+
+    const arrayBuffer = await response.arrayBuffer();
+    await fs.promises.writeFile(targetPath, Buffer.from(arrayBuffer));
+
+    console.log(`[INGEST SUCCESS] ${url} -> ${folder}/${fileName}`);
+    res.json({ success: true, path: `${folder}/${fileName}` });
+  } catch (err) {
+    console.error(`[FETCH FAILED for ${url}]:`, err.message);
+    res.status(500).json({ error: 'Failed to download remote file', details: err.message });
+  }
+});
+
+// 2. DIRECT LOCAL FILE UPLOAD (Base64)
+app.post('/api/upload', async (req, res) => {
+  const { type, uuid, extension, data } = req.body;
+
+  if (!type || !uuid || !data) {
+    return res.status(400).json({ error: 'Missing parameters (type, uuid, data)' });
+  }
+
+  const folder = type === 'cover' ? 'covers' : 'audio';
+  const cleanExt = (extension || (type === 'cover' ? 'png' : 'mp3')).replace(/^\./, '');
+  const fileName = `${uuid}.${cleanExt}`;
+  const targetPath = path.join(__dirname, folder, fileName);
+
+  try {
+    const base64Content = data.includes(';base64,') ? data.split(';base64,').pop() : data;
+    await fs.promises.writeFile(targetPath, Buffer.from(base64Content, 'base64'));
+
+    console.log(`[FILE UPLOAD] Saved -> ${folder}/${fileName}`);
+    res.json({ success: true, path: `${folder}/${fileName}` });
+  } catch (err) {
+    console.error('[UPLOAD ERROR]', err.message);
+    res.status(500).json({ error: 'Failed to save uploaded file', details: err.message });
+  }
+});
+
+// 3. COMMIT UPDATES TO DATA.JSON
+app.post('/api/save', async (req, res) => {
+  try {
+    await fs.promises.writeFile(dataFile, JSON.stringify(req.body, null, 2), 'utf-8');
+    console.log(`[COMMIT] data.json updated (${req.body.length} records)`);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[SAVE ERROR]', err.message);
+    res.status(500).json({ error: 'Failed to write data.json', details: err.message });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`\n======================================================`);
+  console.log(`  CYBER.EROS ROOT ADMIN SERVER ACTIVE`);
+  console.log(`  Open Console: http://localhost:${PORT}/server.html`);
+  console.log(`  Storage: ./covers/ and ./audio/`);
+  console.log(`======================================================\n`);
 });
