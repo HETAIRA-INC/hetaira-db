@@ -435,18 +435,23 @@
 
       const nextSlice = filteredList.slice(displayedCount, displayedCount + PAGE_SIZE);
       const fragment = document.createDocumentFragment();
+      const FALLBACK_ART = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNDAiIGhlaWdodD0iMjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTQwODE2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZpbGw9IiNmZjAwN2YiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTIiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlsgTk8gQVJUIEFWQUlMQUJMRSBdPC90ZXh0Pjwvc3ZnPg==';
 
       nextSlice.forEach(item => {
         const isFree = (item.tier || '').toUpperCase().includes('FREE');
         const tags = Array.isArray(item.tags) ? item.tags.slice(0, 3) : [];
-        const coverSrc = window.resolveAssetUrl(item.cover || '');
-        const fallbackSrc = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="340" height="200"><rect width="100%" height="100%" fill="%23140816"/><text x="50%" y="50%" fill="%23ff007f" font-family="monospace" font-size="12" dominant-baseline="middle" text-anchor="middle">[ NO ART AVAILABLE ]</text></svg>';
+        const rawCover = item.cover ? window.resolveAssetUrl(item.cover) : '';
+        const initialSrc = rawCover || FALLBACK_ART;
 
         const card = document.createElement('article');
         card.className = 'cyber-card';
         card.innerHTML = `
           <div class="card-cover-wrapper">
-            <img src="${coverSrc || fallbackSrc}" alt="${item.title}" class="card-cover" loading="lazy" onerror="this.src='${fallbackSrc}'">
+            <img src="${initialSrc}" 
+                 alt="${item.title || 'Cover'}" 
+                 class="card-cover" 
+                 loading="lazy" 
+                 onerror="this.onerror=null; this.src='${FALLBACK_ART}';">
             <div class="floating-badges">
               <span class="badge-tier ${isFree ? 'free' : ''}">${item.tier || 'FREE'}</span>
               <span class="badge-audience">${item.audience || 'F4M'}</span>

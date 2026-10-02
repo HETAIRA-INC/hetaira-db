@@ -1,0 +1,31 @@
+{
+  "uuid": "f9207c7a-63c6-4425-a2fd-52fcfe4af55c",
+  "status": "ACTIVE",
+  "id": "EROS-3148",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "click, click, click all day ",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2025-06-06",
+  "tone": [],
+  "cover": "covers/f9207c7a-63c6-4425-a2fd-52fcfe4af55c.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 18:44:57",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/click-click-click-all-day/"
+    },
+    {
+      "date": "2026-09-29 18:50:52",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

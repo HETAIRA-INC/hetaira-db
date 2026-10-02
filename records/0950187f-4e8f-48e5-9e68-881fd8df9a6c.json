@@ -1,0 +1,31 @@
+{
+  "uuid": "0950187f-4e8f-48e5-9e68-881fd8df9a6c",
+  "status": "ACTIVE",
+  "id": "EROS-4461",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Feet of a Goddess",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2026-03-19",
+  "tone": [],
+  "cover": "covers/0950187f-4e8f-48e5-9e68-881fd8df9a6c.webp",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 17:01:30",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/feet-of-a-goddess/"
+    },
+    {
+      "date": "2026-09-29 18:49:16",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

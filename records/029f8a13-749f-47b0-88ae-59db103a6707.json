@@ -1,0 +1,31 @@
+{
+  "uuid": "029f8a13-749f-47b0-88ae-59db103a6707",
+  "status": "ACTIVE",
+  "id": "EROS-4445",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Choose Your Fate",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2026-03-12",
+  "tone": [],
+  "cover": "covers/029f8a13-749f-47b0-88ae-59db103a6707.webp",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 17:01:31",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/choose-your-fate/"
+    },
+    {
+      "date": "2026-09-29 18:49:16",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

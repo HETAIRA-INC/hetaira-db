@@ -1,0 +1,31 @@
+{
+  "uuid": "41ee39ca-1530-4ded-b65b-babf06b19394",
+  "status": "ACTIVE",
+  "id": "EROS-3490",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Mission 2114",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2025-06-12",
+  "tone": [],
+  "cover": "covers/41ee39ca-1530-4ded-b65b-babf06b19394.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 17:04:31",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/mission-2114/"
+    },
+    {
+      "date": "2026-09-29 18:50:50",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

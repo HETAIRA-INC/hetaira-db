@@ -1,0 +1,31 @@
+{
+  "uuid": "4bebc0fc-5542-4f66-8fb0-ee34d97c74ee",
+  "status": "ACTIVE",
+  "id": "EROS-3466",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Fluffy Pancakes",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2024-06-06",
+  "tone": [],
+  "cover": "covers/4bebc0fc-5542-4f66-8fb0-ee34d97c74ee.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 18:45:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/fluffy-pancakes/"
+    },
+    {
+      "date": "2026-09-29 19:15:10",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

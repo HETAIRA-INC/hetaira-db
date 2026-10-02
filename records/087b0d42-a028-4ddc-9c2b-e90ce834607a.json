@@ -1,0 +1,31 @@
+{
+  "uuid": "087b0d42-a028-4ddc-9c2b-e90ce834607a",
+  "status": "ACTIVE",
+  "id": "EROS-3284",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Hotel Nichole: The VIP Lounge",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2025-06-06",
+  "tone": [],
+  "cover": "covers/087b0d42-a028-4ddc-9c2b-e90ce834607a.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 18:44:53",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/hotel-nichole-the-vip-lounge/"
+    },
+    {
+      "date": "2026-09-29 18:50:52",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

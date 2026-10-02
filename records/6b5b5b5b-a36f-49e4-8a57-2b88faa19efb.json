@@ -1,0 +1,31 @@
+{
+  "uuid": "6b5b5b5b-a36f-49e4-8a57-2b88faa19efb",
+  "status": "ACTIVE",
+  "id": "EROS-2832",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "The Farm",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2025-06-06",
+  "tone": [],
+  "cover": "covers/6b5b5b5b-a36f-49e4-8a57-2b88faa19efb.png",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 17:04:42",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/the-farm/"
+    },
+    {
+      "date": "2026-09-29 18:50:52",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

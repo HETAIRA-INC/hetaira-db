@@ -1,0 +1,31 @@
+{
+  "uuid": "83e30bd9-0a2a-4d9d-8e92-0742bf3e2d6c",
+  "status": "ACTIVE",
+  "id": "EROS-5424",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Lessons in the Library 2",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2026-09-26",
+  "tone": [],
+  "cover": "covers/83e30bd9-0a2a-4d9d-8e92-0742bf3e2d6c.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 17:00:42",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/lessons-in-the-library-2/"
+    },
+    {
+      "date": "2026-09-29 18:49:16",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

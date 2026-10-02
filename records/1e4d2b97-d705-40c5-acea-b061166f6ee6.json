@@ -1,0 +1,31 @@
+{
+  "uuid": "1e4d2b97-d705-40c5-acea-b061166f6ee6",
+  "status": "ACTIVE",
+  "id": "EROS-3179",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Caught by the Camp Counselor",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2025-06-06",
+  "tone": [],
+  "cover": "covers/1e4d2b97-d705-40c5-acea-b061166f6ee6.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 18:44:55",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/caught-by-the-camp-counselor/"
+    },
+    {
+      "date": "2026-09-29 18:50:52",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

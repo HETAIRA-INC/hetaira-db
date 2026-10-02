@@ -1,0 +1,31 @@
+{
+  "uuid": "2a94dfb5-7321-44a1-b586-d6ca971627a8",
+  "status": "ACTIVE",
+  "id": "EROS-3341",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "The Big Day",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2023-06-06",
+  "tone": [],
+  "cover": "covers/2a94dfb5-7321-44a1-b586-d6ca971627a8.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 18:45:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/the-big-day/"
+    },
+    {
+      "date": "2026-09-29 19:26:06",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

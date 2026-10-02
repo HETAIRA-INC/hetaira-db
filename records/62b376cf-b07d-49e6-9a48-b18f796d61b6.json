@@ -1,0 +1,31 @@
+{
+  "uuid": "62b376cf-b07d-49e6-9a48-b18f796d61b6",
+  "status": "ACTIVE",
+  "id": "EROS-3543",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "PUMPCHELLA: SUMMER REMIX",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2025-06-23",
+  "tone": [],
+  "cover": "covers/62b376cf-b07d-49e6-9a48-b18f796d61b6.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 17:04:08",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/pumpchella-summer-remix/"
+    },
+    {
+      "date": "2026-09-29 18:50:43",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

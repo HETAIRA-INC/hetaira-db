@@ -1,0 +1,31 @@
+{
+  "uuid": "c5c5cb35-e3c8-47f6-8f86-69d544077ff0",
+  "status": "ACTIVE",
+  "id": "EROS-3298",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Puppy Pillow Play",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2025-06-06",
+  "tone": [],
+  "cover": "covers/c5c5cb35-e3c8-47f6-8f86-69d544077ff0.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 18:44:50",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/puppy-pillow-play/"
+    },
+    {
+      "date": "2026-09-29 18:50:52",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

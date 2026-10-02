@@ -1,0 +1,31 @@
+{
+  "uuid": "e61fb95a-0137-47d8-bd4a-81a484fa45c3",
+  "status": "ACTIVE",
+  "id": "EROS-3305",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "The Awakening",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2023-06-06",
+  "tone": [],
+  "cover": "covers/e61fb95a-0137-47d8-bd4a-81a484fa45c3.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 18:45:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/the-awakening/"
+    },
+    {
+      "date": "2026-09-29 19:26:07",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

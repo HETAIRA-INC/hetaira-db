@@ -1,0 +1,31 @@
+{
+  "uuid": "5c11f5a9-edf5-4d94-b0f3-b6994044f80b",
+  "status": "ACTIVE",
+  "id": "EROS-3759",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "The Yoga Teacher",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2025-08-29",
+  "tone": [],
+  "cover": "covers/5c11f5a9-edf5-4d94-b0f3-b6994044f80b.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 17:01:53",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/the-yoga-teacher/"
+    },
+    {
+      "date": "2026-09-29 18:49:16",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

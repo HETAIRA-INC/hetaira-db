@@ -1,0 +1,31 @@
+{
+  "uuid": "f232d256-c437-4def-a227-a14cab3899fc",
+  "status": "ACTIVE",
+  "id": "EROS-4147",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Fog Season",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2026-01-12",
+  "tone": [],
+  "cover": "covers/f232d256-c437-4def-a227-a14cab3899fc.webp",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 17:01:40",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/fog-season/"
+    },
+    {
+      "date": "2026-09-29 18:49:16",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

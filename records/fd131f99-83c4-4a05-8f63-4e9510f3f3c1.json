@@ -1,0 +1,31 @@
+{
+  "uuid": "fd131f99-83c4-4a05-8f63-4e9510f3f3c1",
+  "status": "ACTIVE",
+  "id": "EROS-3356",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Sitter 4: Checkmate",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2024-06-06",
+  "tone": [],
+  "cover": "covers/fd131f99-83c4-4a05-8f63-4e9510f3f3c1.jpg",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 18:45:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/sitter-4-checkmate/"
+    },
+    {
+      "date": "2026-09-29 19:15:12",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "uuid": "b24291b7-d4c8-4b6e-9be3-2087f2adaba3",
+  "status": "ACTIVE",
+  "id": "EROS-3623",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "I COMFORT YOU BY MY WARM FIRE",
+    "AND HOLD YOU IN MY ARMS…"
+  ],
+  "title": "Lost Puppy (F4A)",
+  "description": "I found you alone, shivering in the rain. Just like a lost little puppy. You mindlessly follow me as my footsteps guide you home.",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "ANY",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2025-07-11",
+  "tone": [],
+  "cover": "covers/b24291b7-d4c8-4b6e-9be3-2087f2adaba3.jpg",
+  "file": "audio/b24291b7-d4c8-4b6e-9be3-2087f2adaba3.mp3",
+  "changelog": [
+    {
+      "date": "2026-09-29 17:02:00",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/lost-puppy-f4a/"
+    },
+    {
+      "date": "2026-09-29 18:49:16",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}

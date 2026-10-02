@@ -1,0 +1,31 @@
+{
+  "uuid": "1030d158-582c-4c3c-b4ec-07d45a08fed5",
+  "status": "ACTIVE",
+  "id": "EROS-2511",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Pure Indulgence",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2022-04-14",
+  "tone": [],
+  "cover": "covers/1030d158-582c-4c3c-b4ec-07d45a08fed5.png",
+  "file": "",
+  "changelog": [
+    {
+      "date": "2026-09-29 18:45:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://goddessnichole.com/pure-indulgence/"
+    },
+    {
+      "date": "2026-09-29 19:27:00",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ]
+}
