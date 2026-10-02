@@ -797,6 +797,11 @@
               <label>Protocol Synopsis / Sensory Description</label>
               <textarea id="description" placeholder="Sensory file description..."></textarea>
             </div>
+            
+            <div class="form-group form-full">
+              <label>Protocol Synopsis / Sensory Ref Link</label>
+              <input type="text" id="url" placeholder="https://.......">
+            </div>
 
             <div class="form-group form-full">
               <label>VARIANT AUDIT LOG</label>
@@ -980,6 +985,7 @@
       document.getElementById('cover').value = rec.cover || '';
       document.getElementById('file').value = rec.file || '';
       document.getElementById('description').value = rec.description || '';
+      document.getElementById('url').value = rec.url || '';
 
       currentChangeLog = Array.isArray(rec.changelog) ? [...rec.changelog] : [];
       renderChangeLog();
@@ -1083,9 +1089,12 @@
       const newUuid = crypto.randomUUID();
       document.getElementById('uuid').value = newUuid;
       document.getElementById('status').value = 'ACTIVE';
-      document.getElementById('id').value = `EROS-0${records.length + 1}`;
-      document.getElementById('variant').value = 'ORIGINAL';
+      document.getElementById('id').value = `EROS-GN-0${records.length + 1}`;
+      document.getElementById('variant').value = 'NA';
       document.getElementById('releaseDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('artist').value = 'Goddess Nichole';
+      document.getElementById('author').value = 'Goddess Nichole';
+
       
       currentChangeLog = [{
         date: new Date().toISOString().replace('T', ' ').substring(0, 19),
@@ -1331,6 +1340,7 @@
         tone: parseArray(document.getElementById('tone').value),
         cover: document.getElementById('cover').value.trim(),
         file: document.getElementById('file').value.trim(),
+        url: document.getElementById('url').value.trim(),
         changelog: currentChangeLog
       };
 
@@ -1627,6 +1637,7 @@
             tone: [],
             cover: coverPath,
             file: filePath,
+            url: itemUrl,
             changelog: [{
               date: new Date().toISOString().replace('T', ' ').substring(0, 19),
               variant: 'ORIGINAL',
