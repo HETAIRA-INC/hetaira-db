@@ -18,10 +18,13 @@ app.use((req, res, next) => {
 
 const coversDir = path.join(__dirname, 'covers');
 const audioDir = path.join(__dirname, 'audio');
+const recordsDir = path.join(__dirname, 'records');
 const dataFile = path.join(__dirname, 'data.json');
+const summaryFile = path.join(__dirname, 'summary.json');
 
 fs.mkdirSync(coversDir, { recursive: true });
 fs.mkdirSync(audioDir, { recursive: true });
+fs.mkdirSync(recordsDir, { recursive: true });
 
 if (!fs.existsSync(dataFile)) {
   fs.writeFileSync(dataFile, '[]', 'utf-8');
@@ -29,14 +32,12 @@ if (!fs.existsSync(dataFile)) {
 
 app.use(express.static(__dirname));
 
-// Helper to determine extension from Content-Type header or fallback
 function getExtensionFromMime(mime, fallback) {
   if (!mime) return fallback;
   const lower = mime.toLowerCase();
   if (lower.includes('image/jpeg')) return 'jpg';
   if (lower.includes('image/png')) return 'png';
   if (lower.includes('image/webp')) return 'webp';
-  if (lower.includes('image/gif')) return 'gif';
   if (lower.includes('audio/mpeg') || lower.includes('audio/mp3')) return 'mp3';
   if (lower.includes('audio/wav') || lower.includes('audio/x-wav')) return 'wav';
   if (lower.includes('audio/ogg')) return 'ogg';
@@ -44,10 +45,38 @@ function getExtensionFromMime(mime, fallback) {
   return fallback;
 }
 
-// 1. INGEST FROM REMOTE WEB URL
+// Write summary.json and individual record files for static GitHub Pages speed
+async function generateStaticOptimizations(records) {
+  const summaries = records.map(r => ({
+    uuid: r.uuid,
+    id: r.id,
+    title: r.title,
+    author: r.author,
+    artist: r.artist,
+    tag: r.tag,
+    tags: r.tags || [],
+    tier: r.tier,
+    audience: r.audience,
+    cover: r.cover,
+    status: r.status || 'ACTIVE'
+  }));
+
+  await fs.promises.writeFile(summaryFile, JSON.stringify(summaries), 'utf-8');
+
+  for (const record of records) {
+    if (record.uuid) {
+      await fs.promises.writeFile(
+        path.join(recordsDir, `${record.uuid}.json`),
+        JSON.stringify(record, null, 2),
+        'utf-8'
+      );
+    }
+  }
+}
+
+// 1. INGEST FROM REMOTE URL
 app.post('/api/fetch-url', async (req, res) => {
   const { url, type, uuid, extension } = req.body;
-
   if (!url || !type || !uuid) {
     return res.status(400).json({ error: 'Missing parameters (url, type, or uuid required)' });
   }
@@ -57,18 +86,15 @@ app.post('/api/fetch-url', async (req, res) => {
   try {
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
         'Accept': '*/*'
       }
     });
 
-    if (!response.ok) {
-      throw new Error(`Remote host HTTP ${response.status}: ${response.statusText}`);
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
     const contentType = response.headers.get('content-type');
     let ext = extension ? extension.replace(/^\./, '') : null;
-
     if (!ext || ext.length > 5) {
       ext = getExtensionFromMime(contentType, type === 'cover' ? 'jpg' : 'mp3');
     }
@@ -79,44 +105,21 @@ app.post('/api/fetch-url', async (req, res) => {
     const arrayBuffer = await response.arrayBuffer();
     await fs.promises.writeFile(targetPath, Buffer.from(arrayBuffer));
 
-    console.log(`[INGEST SUCCESS] ${url} -> ${folder}/${fileName}`);
+    console.log(`[INGEST] ${url} -> ${folder}/${fileName}`);
     res.json({ success: true, path: `${folder}/${fileName}` });
   } catch (err) {
-    console.error(`[FETCH FAILED for ${url}]:`, err.message);
+    console.error(`[FETCH FAILED]:`, err.message);
     res.status(500).json({ error: 'Failed to download remote file', details: err.message });
   }
 });
 
-// 2. DIRECT LOCAL FILE UPLOAD (Base64)
-app.post('/api/upload', async (req, res) => {
-  const { type, uuid, extension, data } = req.body;
-
-  if (!type || !uuid || !data) {
-    return res.status(400).json({ error: 'Missing parameters (type, uuid, data)' });
-  }
-
-  const folder = type === 'cover' ? 'covers' : 'audio';
-  const cleanExt = (extension || (type === 'cover' ? 'png' : 'mp3')).replace(/^\./, '');
-  const fileName = `${uuid}.${cleanExt}`;
-  const targetPath = path.join(__dirname, folder, fileName);
-
-  try {
-    const base64Content = data.includes(';base64,') ? data.split(';base64,').pop() : data;
-    await fs.promises.writeFile(targetPath, Buffer.from(base64Content, 'base64'));
-
-    console.log(`[FILE UPLOAD] Saved -> ${folder}/${fileName}`);
-    res.json({ success: true, path: `${folder}/${fileName}` });
-  } catch (err) {
-    console.error('[UPLOAD ERROR]', err.message);
-    res.status(500).json({ error: 'Failed to save uploaded file', details: err.message });
-  }
-});
-
-// 3. COMMIT UPDATES TO DATA.JSON
+// 2. COMMIT DATA + BUILD OPTIMIZATIONS
 app.post('/api/save', async (req, res) => {
   try {
-    await fs.promises.writeFile(dataFile, JSON.stringify(req.body, null, 2), 'utf-8');
-    console.log(`[COMMIT] data.json updated (${req.body.length} records)`);
+    const records = req.body;
+    await fs.promises.writeFile(dataFile, JSON.stringify(records, null, 2), 'utf-8');
+    await generateStaticOptimizations(records);
+    console.log(`[COMMIT] data.json, summary.json & per-item records updated (${records.length} records)`);
     res.json({ success: true });
   } catch (err) {
     console.error('[SAVE ERROR]', err.message);
@@ -126,8 +129,7 @@ app.post('/api/save', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`\n======================================================`);
-  console.log(`  CYBER.EROS ROOT ADMIN SERVER ACTIVE`);
-  console.log(`  Open Console: http://localhost:${PORT}/server.html`);
-  console.log(`  Storage: ./covers/ and ./audio/`);
+  console.log(`  CYBER.EROS SERVER RUNNING on http://localhost:${PORT}`);
+  console.log(`  Summary Builder & Record Splitter: ACTIVE`);
   console.log(`======================================================\n`);
 });

@@ -279,6 +279,7 @@
       color: #fff;
     }
   </style>
+  <script src="config.js"></script>
 </head>
 <body>
 
@@ -306,9 +307,20 @@
       }
 
       try {
-        const res = await fetch('data.json');
-        const items = await res.json();
-        const item = items.find(i => i.uuid === targetId || i.id === targetId);
+        let item = null;
+
+        // 1. Try single item record if pre-split (e.g. records/uuid.json)
+        try {
+          const singleRes = await fetch(`records/${targetId}.json`);
+          if (singleRes.ok) item = await singleRes.json();
+        } catch (e) {}
+
+        // 2. Fallback to master data.json
+        if (!item) {
+          const res = await fetch('data.json');
+          const items = await res.json();
+          item = items.find(i => i.uuid === targetId || i.id === targetId);
+        }
 
         if (!item) {
           container.innerHTML = `
@@ -321,7 +333,13 @@
         const tags = Array.isArray(item.tags) ? item.tags : [];
         const triggers = Array.isArray(item.triggers) ? item.triggers : [];
         const tones = Array.isArray(item.tone) ? item.tone.join(', ') : (item.tone || 'NONE');
-        const coverImg = item.cover || "${item.cover || ''}";
+
+        // Resolve external URLs via config.js
+        const coverImg = window.resolveAssetUrl(item.cover || '');
+        const audioFile = window.resolveAssetUrl(item.file || '');
+
+        // Render with resolved URLs
+        // (audioSource src will now automatically use your CDN or external repo)
 
         container.innerHTML = `
           <a href="index.html" class="back-btn">&larr; TERMINATE LINK // RETURN TO ARCHIVE</a>
