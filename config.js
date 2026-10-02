@@ -3,7 +3,7 @@ window.APP_CONFIG = {
   // Set to '' for same-domain local assets, or point to your external repo / CDN:
   // e.g., 'https://raw.githubusercontent.com/your-user/audio-assets-repo/main/'
   // e.g., 'https://media.yourdomain.com/'
-  ASSET_BASE_URL: '',
+  ASSET_BASE_URL: 'https://hetaira-inc.github.io/hetaira-c1/',
 
   // Items loaded per page on the main directory grid
   PAGE_SIZE: 12,
