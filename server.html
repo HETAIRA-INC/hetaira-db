@@ -1568,21 +1568,12 @@
       const newUuid = crypto.randomUUID();
       document.getElementById('uuid').value = newUuid;
       document.getElementById('status').value = 'ACTIVE';
-<<<<<<< HEAD
       document.getElementById('id').value = generateNextProtocolId();
       document.getElementById('variant').value = 'ORIGINAL';
       document.getElementById('releaseDate').value = new Date().toISOString().split('T')[0];
       document.getElementById('artist').value = 'Goddess Nichole';
       document.getElementById('author').value = 'Goddess Nichole';
       document.getElementById('tag').value = 'HYPNOSIS & AUDIO';
-=======
-      document.getElementById('id').value = `EROS-GN-0${records.length + 1}`;
-      document.getElementById('variant').value = 'NA';
-      document.getElementById('releaseDate').value = new Date().toISOString().split('T')[0];
-      document.getElementById('artist').value = 'Goddess Nichole';
-      document.getElementById('author').value = 'Goddess Nichole';
-
->>>>>>> 8822e0c945b0aa2fa44759b1e66ab4df3f1527ea
       
       currentSubTags = [];
       renderSubTagChips();

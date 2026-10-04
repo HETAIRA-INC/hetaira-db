@@ -130,7 +130,6 @@ app.post('/api/save', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`\n======================================================`);
   console.log(`  CYBER.EROS SERVER RUNNING on http://localhost:${PORT}`);
-  console.log(`  CYBER.EROS SERVER CONTENT MODIFY on http://localhost:${PORT}/server.html`);
   console.log(`  Summary Builder & Record Splitter: ACTIVE`);
   console.log(`======================================================\n`);
 });
