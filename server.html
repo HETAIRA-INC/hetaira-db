@@ -403,6 +403,137 @@
       color: #000;
     }
 
+    /* QUICK PILLS (CREATORS & CATEGORIES) */
+    .quick-pill-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+      max-height: 58px;
+      overflow-y: auto;
+      padding-bottom: 2px;
+    }
+
+    .quick-pill {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 2px 7px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .quick-pill:hover, .quick-pill.active {
+      border-color: var(--cyber-cyan);
+      color: #fff;
+      background: rgba(0, 240, 255, 0.15);
+      box-shadow: 0 0 6px rgba(0, 240, 255, 0.2);
+    }
+
+    /* INTERACTIVE TAG CHIPS & VAULT */
+    .tag-chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 42px;
+      padding: 8px 10px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 0, 85, 0.3);
+      border-radius: 2px;
+      align-items: center;
+    }
+
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid var(--cyber-cyan);
+      color: var(--cyber-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+
+    .tag-chip-remove {
+      cursor: pointer;
+      color: var(--crimson-lust);
+      font-weight: bold;
+      font-size: 0.82rem;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+    .tag-chip-remove:hover { color: #fff; }
+
+    .tag-bank-drawer {
+      margin-top: 8px;
+      background: rgba(10, 5, 12, 0.95);
+      border: 1px solid var(--cyber-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 220px;
+    }
+
+    .tag-bank-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--cyber-cyan);
+      gap: 8px;
+    }
+
+    .tag-bank-filter {
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      width: 180px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      color: #fff;
+    }
+
+    .tag-bank-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .bank-tag-pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.15s;
+    }
+
+    .bank-tag-pill:hover {
+      border-color: var(--neon-pink);
+      color: #fff;
+    }
+
+    .bank-tag-pill.selected {
+      background: rgba(0, 240, 255, 0.2);
+      border-color: var(--cyber-cyan);
+      color: var(--cyber-cyan);
+      font-weight: bold;
+    }
+
     .media-card {
       background: rgba(0, 0, 0, 0.35);
       border: 1px dashed rgba(255, 0, 85, 0.4);
@@ -658,24 +789,12 @@
               <input type="text" id="title" required placeholder="e.g. Synaptic Overdrive Induction">
             </div>
 
+            <!-- MAIN TAG / CATEGORY WITH PRESETS -->
             <div class="form-group">
-              <label>Main Tag</label>
-              <input type="text" id="tag" required placeholder="e.g. NEURAL HYPNOSIS">
-            </div>
-
-            <div class="form-group">
-              <label>Sub-Tags (Comma Separated)</label>
-              <input type="text" id="tags" placeholder="BINAURAL, DEEP TRANCE, SCI-FI">
-            </div>
-
-            <div class="form-group">
-              <label>Triggers (Comma Separated)</label>
-              <input type="text" id="triggers" placeholder="SLEEP, CLICK, BREATHING">
-            </div>
-
-            <div class="form-group">
-              <label>Tones (Comma Separated)</label>
-              <input type="text" id="tone" placeholder="DOMINANT, BRATTY, SULTRY">
+              <label>Main Tag <span class="field-hint">Select existing or type new</span></label>
+              <input type="text" id="tag" list="mainTagPresets" required placeholder="e.g. NEURAL HYPNOSIS" oninput="highlightActiveQuickPills()">
+              <datalist id="mainTagPresets"></datalist>
+              <div class="quick-pill-container" id="quickMainTags"></div>
             </div>
 
             <div class="form-group">
@@ -688,10 +807,52 @@
               </select>
             </div>
 
+            <!-- SUB-TAGS: INTERACTIVE CHIPS & REUSABLE LIBRARY -->
+            <div class="form-group form-full">
+              <label>
+                <span>Sub-Tags</span>
+                <span class="field-hint">Pick existing from library or type to add new</span>
+              </label>
+
+              <!-- Active Tag Chips -->
+              <div id="activeTagsContainer" class="tag-chips-wrap"></div>
+              
+              <div class="input-addon-group" style="margin-top: 4px;">
+                <input type="text" id="newSubTagInput" list="availableTagsDatalist" placeholder="Select existing or type new tag..." onkeydown="handleSubTagKeydown(event)">
+                <button type="button" class="btn-addon btn-green" onclick="addCurrentSubTagInput()">+ ADD TAG</button>
+                <button type="button" class="btn-addon btn-cyan" onclick="toggleTagBank()">&#128065; BROWSE LIBRARY (<span id="totalTagsCount">0</span>)</button>
+              </div>
+              <datalist id="availableTagsDatalist"></datalist>
+
+              <!-- Master Tag Library Drawer -->
+              <div id="tagBankContainer" class="tag-bank-drawer" style="display:none;">
+                <div class="tag-bank-header">
+                  <span>MASTER TAG VAULT (CLICK TO TOGGLE):</span>
+                  <input type="text" id="tagBankSearch" class="tag-bank-filter" placeholder="Filter library..." oninput="filterTagBank()">
+                </div>
+                <div id="tagBankList" class="tag-bank-pills"></div>
+              </div>
+            </div>
+
+            <!-- TRIGGERS (WITH DATALIST AUTOCOMPLETE) -->
+            <div class="form-group">
+              <label>Triggers (Comma Separated) <span class="field-hint">Autocomplete ready</span></label>
+              <input type="text" id="triggers" list="triggerPresets" placeholder="SLEEP, CLICK, BREATHING">
+              <datalist id="triggerPresets"></datalist>
+            </div>
+
+            <!-- TONES (WITH DATALIST AUTOCOMPLETE) -->
+            <div class="form-group">
+              <label>Tones (Comma Separated) <span class="field-hint">Autocomplete ready</span></label>
+              <input type="text" id="tone" list="tonePresets" placeholder="DOMINANT, BRATTY, SULTRY">
+              <datalist id="tonePresets"></datalist>
+            </div>
+
             <div class="form-group">
               <label>Audience Target</label>
               <select id="audience">
                 <option value="F4M">F4M</option>
+                <option value="F4A">F4A</option>
                 <option value="M4F">M4F</option>
                 <option value="FF4M">FF4M</option>
                 <option value="FFMF4M">FFMF4M</option>
@@ -702,18 +863,24 @@
             </div>
 
             <div class="form-group">
-              <label>Author / Producer</label>
-              <input type="text" id="author" placeholder="CipherEros">
-            </div>
-
-            <div class="form-group">
-              <label>Voice Artist</label>
-              <input type="text" id="artist" placeholder="Vesper V">
-            </div>
-
-            <div class="form-group form-full">
               <label>Release Date</label>
               <input type="date" id="releaseDate">
+            </div>
+
+            <!-- AUTHOR / PRODUCER WITH DATALIST & QUICK PILLS -->
+            <div class="form-group">
+              <label>Author / Producer <span class="field-hint">Select existing or type new</span></label>
+              <input type="text" id="author" list="authorPresets" placeholder="CipherEros" oninput="highlightActiveQuickPills()">
+              <datalist id="authorPresets"></datalist>
+              <div class="quick-pill-container" id="quickAuthors"></div>
+            </div>
+
+            <!-- VOICE ARTIST WITH DATALIST & QUICK PILLS -->
+            <div class="form-group">
+              <label>Voice Artist <span class="field-hint">Select existing or type new</span></label>
+              <input type="text" id="artist" list="artistPresets" placeholder="Vesper V" oninput="highlightActiveQuickPills()">
+              <datalist id="artistPresets"></datalist>
+              <div class="quick-pill-container" id="quickArtists"></div>
             </div>
 
             <!-- MEDIA 1: COVER ART -->
@@ -796,6 +963,11 @@
             <div class="form-group form-full">
               <label>Protocol Synopsis / Sensory Description</label>
               <textarea id="description" placeholder="Sensory file description..."></textarea>
+            </div>
+            
+            <div class="form-group form-full">
+              <label>Protocol Synopsis / Sensory Ref Link</label>
+              <input type="text" id="url" placeholder="https://.......">
             </div>
 
             <div class="form-group form-full">
@@ -889,12 +1061,24 @@
     let records = [];
     let currentSelectedIndex = -1;
     let currentChangeLog = [];
+    let currentSubTags = [];
+
+    // Master Taxonomy Registries
+    let masterTaxonomy = {
+      subTags: new Set(),
+      mainTags: new Set(),
+      authors: new Set(),
+      artists: new Set(),
+      triggers: new Set(),
+      tones: new Set()
+    };
 
     document.addEventListener('DOMContentLoaded', async () => {
       try {
         const res = await fetch(`${API_BASE}/data.json`);
         records = await res.json();
         normalizeRecords();
+        rebuildMasterTaxonomy();
         renderRecordList();
         if (records.length > 0) {
           selectRecord(0);
@@ -914,9 +1098,303 @@
         if (!Array.isArray(r.changelog)) {
           r.changelog = r.changelog ? [{ date: r.releaseDate || new Date().toISOString(), note: String(r.changelog), variant: r.variant }] : [];
         }
+        if (typeof r.tags === 'string') {
+          r.tags = r.tags.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+        } else if (!Array.isArray(r.tags)) {
+          r.tags = [];
+        }
       });
     }
 
+    /* ========================================================
+       MASTER TAXONOMY & REGISTRY (TAGS, ARTISTS, AUTHORS)
+    ======================================================== */
+    function rebuildMasterTaxonomy() {
+      masterTaxonomy.subTags.clear();
+      masterTaxonomy.mainTags.clear();
+      masterTaxonomy.authors.clear();
+      masterTaxonomy.artists.clear();
+      masterTaxonomy.triggers.clear();
+      masterTaxonomy.tones.clear();
+
+      records.forEach(r => {
+        if (r.tag && r.tag.trim()) masterTaxonomy.mainTags.add(r.tag.trim().toUpperCase());
+        if (r.author && r.author.trim()) masterTaxonomy.authors.add(r.author.trim());
+        if (r.artist && r.artist.trim()) masterTaxonomy.artists.add(r.artist.trim());
+
+        if (Array.isArray(r.tags)) {
+          r.tags.forEach(t => { if (t && t.trim()) masterTaxonomy.subTags.add(t.trim().toUpperCase()); });
+        }
+        if (Array.isArray(r.triggers)) {
+          r.triggers.forEach(t => { if (t && t.trim()) masterTaxonomy.triggers.add(t.trim().toUpperCase()); });
+        }
+        if (Array.isArray(r.tone)) {
+          r.tone.forEach(t => { if (t && t.trim()) masterTaxonomy.tones.add(t.trim().toUpperCase()); });
+        }
+      });
+
+      renderDatalists();
+      renderQuickPills();
+      renderTagBank();
+      document.getElementById('totalTagsCount').textContent = masterTaxonomy.subTags.size;
+    }
+
+    function renderDatalists() {
+      populateDatalist('mainTagPresets', masterTaxonomy.mainTags);
+      populateDatalist('availableTagsDatalist', masterTaxonomy.subTags);
+      populateDatalist('authorPresets', masterTaxonomy.authors);
+      populateDatalist('artistPresets', masterTaxonomy.artists);
+      populateDatalist('triggerPresets', masterTaxonomy.triggers);
+      populateDatalist('tonePresets', masterTaxonomy.tones);
+    }
+
+    function populateDatalist(elementId, setCollection) {
+      const dl = document.getElementById(elementId);
+      if (!dl) return;
+      dl.innerHTML = '';
+      Array.from(setCollection).sort().forEach(val => {
+        const opt = document.createElement('option');
+        opt.value = val;
+        dl.appendChild(opt);
+      });
+    }
+
+    function renderQuickPills() {
+      // Main Tags
+      const mainTagBox = document.getElementById('quickMainTags');
+      mainTagBox.innerHTML = '';
+      Array.from(masterTaxonomy.mainTags).sort().forEach(val => {
+        const pill = document.createElement('button');
+        pill.type = 'button';
+        pill.className = 'quick-pill';
+        pill.textContent = val;
+        pill.onclick = () => {
+          document.getElementById('tag').value = val;
+          highlightActiveQuickPills();
+        };
+        mainTagBox.appendChild(pill);
+      });
+
+      // Authors
+      const authorBox = document.getElementById('quickAuthors');
+      authorBox.innerHTML = '';
+      Array.from(masterTaxonomy.authors).sort().forEach(val => {
+        const pill = document.createElement('button');
+        pill.type = 'button';
+        pill.className = 'quick-pill';
+        pill.textContent = val;
+        pill.onclick = () => {
+          document.getElementById('author').value = val;
+          highlightActiveQuickPills();
+        };
+        authorBox.appendChild(pill);
+      });
+
+      // Artists
+      const artistBox = document.getElementById('quickArtists');
+      artistBox.innerHTML = '';
+      Array.from(masterTaxonomy.artists).sort().forEach(val => {
+        const pill = document.createElement('button');
+        pill.type = 'button';
+        pill.className = 'quick-pill';
+        pill.textContent = val;
+        pill.onclick = () => {
+          document.getElementById('artist').value = val;
+          highlightActiveQuickPills();
+        };
+        artistBox.appendChild(pill);
+      });
+
+      highlightActiveQuickPills();
+    }
+
+    function highlightActiveQuickPills() {
+      const curMain = (document.getElementById('tag').value || '').trim().toUpperCase();
+      const curAuthor = (document.getElementById('author').value || '').trim();
+      const curArtist = (document.getElementById('artist').value || '').trim();
+
+      document.querySelectorAll('#quickMainTags .quick-pill').forEach(p => {
+        p.classList.toggle('active', p.textContent.toUpperCase() === curMain);
+      });
+      document.querySelectorAll('#quickAuthors .quick-pill').forEach(p => {
+        p.classList.toggle('active', p.textContent === curAuthor);
+      });
+      document.querySelectorAll('#quickArtists .quick-pill').forEach(p => {
+        p.classList.toggle('active', p.textContent === curArtist);
+      });
+    }
+
+    /* ========================================================
+       INTERACTIVE SUB-TAG MANAGER & VAULT UI
+    ======================================================== */
+    function renderSubTagChips() {
+      const container = document.getElementById('activeTagsContainer');
+      container.innerHTML = '';
+
+      if (currentSubTags.length === 0) {
+        container.innerHTML = '<span style="color:var(--text-muted); font-size:0.72rem; font-family:var(--font-mono);">No sub-tags assigned. Choose from vault or add new above.</span>';
+        return;
+      }
+
+      currentSubTags.forEach(tag => {
+        const chip = document.createElement('span');
+        chip.className = 'tag-chip';
+        chip.innerHTML = `
+          <span>${escapeHtml(tag)}</span>
+          <span class="tag-chip-remove" title="Remove Tag" onclick="removeSubTag('${escapeHtml(tag)}')">&times;</span>
+        `;
+        container.appendChild(chip);
+      });
+    }
+
+    function addCurrentSubTagInput() {
+      const input = document.getElementById('newSubTagInput');
+      const val = input.value.trim().toUpperCase();
+      if (!val) return;
+
+      if (!currentSubTags.includes(val)) {
+        currentSubTags.push(val);
+        renderSubTagChips();
+      }
+
+      // Register into global pool immediately
+      if (!masterTaxonomy.subTags.has(val)) {
+        masterTaxonomy.subTags.add(val);
+        rebuildMasterTaxonomy();
+      }
+
+      renderTagBank();
+      input.value = '';
+      input.focus();
+    }
+
+    function handleSubTagKeydown(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addCurrentSubTagInput();
+      }
+    }
+
+    function removeSubTag(tag) {
+      currentSubTags = currentSubTags.filter(t => t !== tag);
+      renderSubTagChips();
+      renderTagBank();
+    }
+
+    function toggleTagBank() {
+      const drawer = document.getElementById('tagBankContainer');
+      drawer.style.display = drawer.style.display === 'none' ? 'flex' : 'none';
+      if (drawer.style.display === 'flex') {
+        document.getElementById('tagBankSearch').focus();
+      }
+    }
+
+    function renderTagBank() {
+      const list = document.getElementById('tagBankList');
+      if (!list) return;
+      const filter = (document.getElementById('tagBankSearch')?.value || '').toLowerCase().trim();
+      list.innerHTML = '';
+
+      const sortedTags = Array.from(masterTaxonomy.subTags).sort();
+      sortedTags.forEach(tag => {
+        if (filter && !tag.toLowerCase().includes(filter)) return;
+
+        const isSelected = currentSubTags.includes(tag);
+        const pill = document.createElement('button');
+        pill.type = 'button';
+        pill.className = `bank-tag-pill ${isSelected ? 'selected' : ''}`;
+        pill.textContent = isSelected ? `✓ ${tag}` : `+ ${tag}`;
+        pill.onclick = () => {
+          if (currentSubTags.includes(tag)) {
+            removeSubTag(tag);
+          } else {
+            currentSubTags.push(tag);
+            renderSubTagChips();
+            renderTagBank();
+          }
+        };
+        list.appendChild(pill);
+      });
+    }
+
+    function filterTagBank() {
+      renderTagBank();
+    }
+
+    /* ========================================================
+       PROTOCOL ID & PREFIX SEQUENCE GENERATOR
+    ======================================================== */
+    function detectProtocolPrefix() {
+      if (!records || records.length === 0) return 'EROS-GN-';
+      let gnCount = 0;
+      let erosCount = 0;
+      records.forEach(r => {
+        if (!r.id) return;
+        const id = r.id.toUpperCase();
+        if (id.startsWith('EROS-GN-')) gnCount++;
+        else if (id.startsWith('EROS-')) erosCount++;
+      });
+      if (gnCount >= erosCount && gnCount > 0) return 'EROS-GN-';
+      if (erosCount > 0) return 'EROS-';
+      return 'EROS-GN-';
+    }
+
+    function generateNextProtocolId(extraUsedIds = null) {
+      const prefix = detectProtocolPrefix();
+      let maxNum = 0;
+      const existingIds = new Set(records.map(r => (r.id || '').toUpperCase().trim()));
+
+      if (extraUsedIds) {
+        extraUsedIds.forEach(id => existingIds.add(id.toUpperCase().trim()));
+      }
+
+      // Check all existing record IDs for the highest numeric value (regardless of variants)
+      records.forEach(r => {
+        if (!r.id) return;
+        const match = r.id.match(/(\d+)$/);
+        if (match) {
+          const num = parseInt(match[1], 10);
+          if (!isNaN(num) && num > maxNum) {
+            maxNum = num;
+          }
+        }
+      });
+
+      if (extraUsedIds) {
+        extraUsedIds.forEach(id => {
+          const match = id.match(/(\d+)$/);
+          if (match) {
+            const num = parseInt(match[1], 10);
+            if (!isNaN(num) && num > maxNum) {
+              maxNum = num;
+            }
+          }
+        });
+      }
+
+      if (maxNum === 0) {
+        maxNum = existingIds.size;
+      }
+
+      let nextNum = maxNum + 1;
+      let candidate = `${prefix}${nextNum < 10 ? '0' + nextNum : nextNum}`;
+
+      // Guarantee candidate doesn't collide with custom IDs
+      while (existingIds.has(candidate.toUpperCase())) {
+        nextNum++;
+        candidate = `${prefix}${nextNum < 10 ? '0' + nextNum : nextNum}`;
+      }
+
+      if (extraUsedIds) {
+        extraUsedIds.add(candidate);
+      }
+
+      return candidate;
+    }
+
+    /* ========================================================
+       PROTOCOL RECORD NAVIGATION & FORM OPERATIONS
+    ======================================================== */
     function renderRecordList() {
       const list = document.getElementById('recordList');
       const query = document.getElementById('recordFilter').value.toLowerCase().trim();
@@ -930,7 +1408,7 @@
       });
 
       records.forEach((rec, idx) => {
-        const searchCorpus = `${rec.title} ${rec.id} ${rec.tag} ${(rec.tags||[]).join(' ')} ${rec.variant || ''}`.toLowerCase();
+        const searchCorpus = `${rec.title} ${rec.id} ${rec.tag} ${(rec.tags||[]).join(' ')} ${rec.artist||''} ${rec.author||''} ${rec.variant || ''}`.toLowerCase();
         if (query && !searchCorpus.includes(query)) return;
 
         const hasSiblings = idFrequency[(rec.id || '').toUpperCase().trim()] > 1;
@@ -969,7 +1447,12 @@
       document.getElementById('variant').value = rec.variant || 'ORIGINAL';
       document.getElementById('title').value = rec.title || '';
       document.getElementById('tag').value = rec.tag || '';
-      document.getElementById('tags').value = Array.isArray(rec.tags) ? rec.tags.join(', ') : (rec.tags || '');
+      
+      // Load interactive sub-tags
+      currentSubTags = Array.isArray(rec.tags) ? [...rec.tags] : [];
+      renderSubTagChips();
+      renderTagBank();
+
       document.getElementById('triggers').value = Array.isArray(rec.triggers) ? rec.triggers.join(', ') : (rec.triggers || '');
       document.getElementById('tone').value = Array.isArray(rec.tone) ? rec.tone.join(', ') : (rec.tone || '');
       document.getElementById('tier').value = rec.tier || 'FREE';
@@ -980,6 +1463,7 @@
       document.getElementById('cover').value = rec.cover || '';
       document.getElementById('file').value = rec.file || '';
       document.getElementById('description').value = rec.description || '';
+      document.getElementById('url').value = rec.url || '';
 
       currentChangeLog = Array.isArray(rec.changelog) ? [...rec.changelog] : [];
       renderChangeLog();
@@ -987,6 +1471,7 @@
       updateVariantBadge();
       updateCoverPreview();
       updateAudioPreview();
+      highlightActiveQuickPills();
       renderVariantNavBar(rec.id);
 
       renderRecordList();
@@ -1083,10 +1568,17 @@
       const newUuid = crypto.randomUUID();
       document.getElementById('uuid').value = newUuid;
       document.getElementById('status').value = 'ACTIVE';
-      document.getElementById('id').value = `EROS-0${records.length + 1}`;
+      document.getElementById('id').value = generateNextProtocolId();
       document.getElementById('variant').value = 'ORIGINAL';
       document.getElementById('releaseDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('artist').value = 'Goddess Nichole';
+      document.getElementById('author').value = 'Goddess Nichole';
+      document.getElementById('tag').value = 'HYPNOSIS & AUDIO';
       
+      currentSubTags = [];
+      renderSubTagChips();
+      renderTagBank();
+
       currentChangeLog = [{
         date: new Date().toISOString().replace('T', ' ').substring(0, 19),
         variant: 'ORIGINAL',
@@ -1098,6 +1590,7 @@
       updateCoverPreview();
       updateAudioPreview();
       updateVariantBadge();
+      highlightActiveQuickPills();
       renderVariantNavBar('');
       renderRecordList();
       showStatus('Initialized blank protocol');
@@ -1124,6 +1617,10 @@
       document.getElementById('variant').value = variantName;
       document.getElementById('title').value = `${baseRec.title || 'Untitled'} (${variantName})`;
       
+      currentSubTags = Array.isArray(baseRec.tags) ? [...baseRec.tags] : [];
+      renderSubTagChips();
+      renderTagBank();
+
       syncCoverPath();
       syncAudioPath();
       updateCoverPreview();
@@ -1302,7 +1799,7 @@
     async function saveRecord(e) {
       e.preventDefault();
 
-      const parseArray = (str) => str.split(',').map(s => s.trim()).filter(Boolean);
+      const parseArray = (str) => str.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
       const currentVariant = document.getElementById('variant').value.trim().toUpperCase() || 'ORIGINAL';
 
       if (currentChangeLog.length === 0) {
@@ -1318,8 +1815,8 @@
         status: document.getElementById('status').value,
         id: document.getElementById('id').value.trim(),
         variant: currentVariant,
-        tag: document.getElementById('tag').value.trim(),
-        tags: parseArray(document.getElementById('tags').value),
+        tag: document.getElementById('tag').value.trim().toUpperCase(),
+        tags: currentSubTags,
         title: document.getElementById('title').value.trim(),
         description: document.getElementById('description').value,
         triggers: parseArray(document.getElementById('triggers').value),
@@ -1331,6 +1828,7 @@
         tone: parseArray(document.getElementById('tone').value),
         cover: document.getElementById('cover').value.trim(),
         file: document.getElementById('file').value.trim(),
+        url: document.getElementById('url').value.trim(),
         changelog: currentChangeLog
       };
 
@@ -1341,6 +1839,7 @@
         currentSelectedIndex = records.length - 1;
       }
 
+      rebuildMasterTaxonomy();
       renderRecordList();
       renderVariantNavBar(recordObj.id);
       await commitToServer();
@@ -1352,6 +1851,8 @@
       if (!confirm(`Are you sure you want to delete ${rec.id} [${rec.variant || 'ORIGINAL'}]?`)) return;
 
       records.splice(currentSelectedIndex, 1);
+      rebuildMasterTaxonomy();
+
       if (records.length > 0) {
         selectRecord(0);
       } else {
@@ -1404,7 +1905,7 @@
     }
 
     /* ========================================================
-       BATCH INGESTION PIPELINE IMPLEMENTATION (WITH DEDUPLICATION)
+       BATCH INGESTION PIPELINE IMPLEMENTATION
     ======================================================== */
     function openImportModal() {
       document.getElementById('importModal').style.display = 'flex';
@@ -1480,9 +1981,9 @@
 
       const shouldDownload = document.getElementById('batchDownloadMedia').checked;
       const forceRedownload = document.getElementById('batchForceRedownload').checked;
-      const duplicatePolicy = document.getElementById('batchDuplicatePolicy').value; // 'UPDATE', 'SKIP', 'DUPLICATE'
+      const duplicatePolicy = document.getElementById('batchDuplicatePolicy').value;
       const defaultArtist = document.getElementById('batchDefaultArtist').value.trim() || 'Goddess Nichole';
-      const defaultTag = document.getElementById('batchDefaultTag').value.trim() || 'HYPNOSIS & AUDIO';
+      const defaultTag = document.getElementById('batchDefaultTag').value.trim().toUpperCase() || 'HYPNOSIS & AUDIO';
       
       const btn = document.getElementById('btnRunBatch');
       btn.disabled = true;
@@ -1491,19 +1992,21 @@
       let addedCount = 0;
       let updatedCount = 0;
       let skippedCount = 0;
+      const batchUsedIds = new Set();
 
       for (let i = 0; i < parsed.length; i++) {
         const item = parsed[i];
         const rawId = item.id ? String(item.id).trim() : null;
-        const protocolId = rawId ? `EROS-${rawId}` : `EROS-${records.length + 1}`;
+        const protocolId = rawId ? `EROS-${rawId}` : generateNextProtocolId(batchUsedIds);
         const itemTitle = item.title || `Protocol ${protocolId}`;
+        const itemUrl = item.url || item.post_url || '';
 
         // Find match in current records
         let existingIndex = -1;
         if (duplicatePolicy !== 'DUPLICATE') {
           existingIndex = records.findIndex(r => {
             const matchId = (r.id || '').toUpperCase() === protocolId.toUpperCase() || (r.id || '') === rawId;
-            const matchPostUrl = item.post_url && r.changelog && r.changelog.some(c => c.note && c.note.includes(item.post_url));
+            const matchPostUrl = itemUrl && r.changelog && r.changelog.some(c => c.note && c.note.includes(itemUrl));
             const matchTitle = (r.title || '').trim().toLowerCase() === itemTitle.trim().toLowerCase();
             return matchId || matchPostUrl || matchTitle;
           });
@@ -1564,7 +2067,7 @@
 
         // Determine Audience
         let audience = 'F4M';
-        const scanText = `${item.title} ${item.tags || ''} ${item.description || ''} ${item.post_url || ''}`.toUpperCase();
+        const scanText = `${item.title} ${item.tags || ''} ${item.description || ''} ${itemUrl}`.toUpperCase();
         if (scanText.includes('F4M')) audience = 'F4M';
         else if (scanText.includes('M4F')) audience = 'M4F';
         else if (scanText.includes('F4F')) audience = 'F4F';
@@ -1585,12 +2088,11 @@
 
         // Tags
         let tagsArray = isUpdating && records[existingIndex].tags?.length ? records[existingIndex].tags : [];
-        if (item.tags && item.tags.includes(',')) {
-          tagsArray = item.tags.split(',').map(s => s.trim().toUpperCase());
+        if (item.tags && typeof item.tags === 'string' && item.tags.includes(',')) {
+          tagsArray = item.tags.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
         }
 
         if (isUpdating) {
-          // Update existing record in-place
           const existing = records[existingIndex];
           existing.title = itemTitle;
           existing.releaseDate = releaseDate || existing.releaseDate;
@@ -1608,7 +2110,6 @@
 
           updatedCount++;
         } else {
-          // Insert new record
           const newRecord = {
             uuid: targetUuid,
             status: 'ACTIVE',
@@ -1627,10 +2128,11 @@
             tone: [],
             cover: coverPath,
             file: filePath,
+            url: itemUrl,
             changelog: [{
               date: new Date().toISOString().replace('T', ' ').substring(0, 19),
               variant: 'ORIGINAL',
-              note: `Imported from ${item.post_url || 'External Source'}`
+              note: `Imported from ${itemUrl || 'External Source'}`
             }]
           };
 
@@ -1640,6 +2142,7 @@
       }
 
       logBatch(`[SAVING] Writing data to data.json...`, 'var(--cyber-cyan)');
+      rebuildMasterTaxonomy();
       await commitToServer();
 
       renderRecordList();

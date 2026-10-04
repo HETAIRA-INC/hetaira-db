@@ -1,35 +1,42 @@
 {
   "uuid": "289a8c3e-f1ad-40c7-8265-011edd261a7a",
   "status": "ACTIVE",
-  "id": "EROS-3110",
-  "variant": "ORIGINAL",
+  "id": "EROS-GN-081",
+  "variant": "F4A",
   "tag": "HYPNOSIS & AUDIO",
   "tags": [
-    "I’LL TAKE ALL YOUR STRESS AWAY",
-    "AND MAKE YOU MINE AS YOUR OWNER AND MASTER. I’LL TEACH YOU INSTANT OBEDIENCE TO MY UNIQUE CLICKER COMMAND TRIGGERS",
-    "THAT I CREATED JUST FOR YOU. MINDLESS OBEDIENCE HAS NEVER FELT SO GOOD."
+    "F4A",
+    "SENSUAL",
+    "FEMDOM",
+    "PUPPY PLAY",
+    "JOI",
+    "HYPNOSIS",
+    "POSITIVE REINFORCEMENT",
+    "INTIMATE",
+    "GOOD PUPPY",
+    "MOAN FOR ME",
+    "CUM COUNTDOWN",
+    "YES MASTER"
   ],
   "title": "Puppy Obedience Training for Good Puppies (F4A)",
-  "description": "This is a relaxing and sensual domination hypnosis session that will put you into the correct headspace to allow you to let go of everything else, and become a happy, mindless, obedient puppy for me.",
-  "triggers": [],
+  "description": "This is a relaxing and sensual domination hypnosis session that will put you into the correct headspace to allow you to let go of everything else, and become a happy, mindless, obedient puppy for me.\nI’ll take all your stress away, and make you mine as your owner and Master. I’ll teach you instant obedience to my unique clicker command triggers, that I created just for you. Mindless obedience has never felt so good.\n",
+  "triggers": [
+    "BEEP"
+  ],
   "tier": "FREE",
-  "audience": "ANY",
+  "audience": "F4M",
   "author": "Goddess Nichole",
   "artist": "Goddess Nichole",
-  "releaseDate": "2025-01-06",
+  "releaseDate": "2026-10-02",
   "tone": [],
-  "cover": "covers/289a8c3e-f1ad-40c7-8265-011edd261a7a.jpg",
+  "cover": "covers/289a8c3e-f1ad-40c7-8265-011edd261a7a.png",
   "file": "audio/289a8c3e-f1ad-40c7-8265-011edd261a7a.mp3",
+  "url": "https://goddessnichole.com/puppy-obedience-training-for-good-puppies-f4a/",
   "changelog": [
     {
-      "date": "2026-09-29 18:45:29",
+      "date": "2026-10-02 20:36:02",
       "variant": "ORIGINAL",
-      "note": "Imported from https://goddessnichole.com/puppy-obedience-training-for-good-puppies-f4a/"
-    },
-    {
-      "date": "2026-09-29 19:05:09",
-      "variant": "ORIGINAL",
-      "note": "Re-synchronized via batch importer"
+      "note": "Protocol created"
     }
   ]
 }
