@@ -1,43 +1,43 @@
 {
   "uuid": "8599f72d-21c8-47ad-8795-cf2c1604af99",
   "status": "ACTIVE",
-  "id": "EROS-3130",
+  "id": "EROS-GN-058",
   "variant": "ORIGINAL",
   "tag": "HYPNOSIS & AUDIO",
   "tags": [
     "HYPNOSIS",
-    "SENSUAL FEMDOM",
+    "SENSUAL",
+    "FEMDOM",
+    "CONDITIONING",
+    "DUMB & DOCILE",
+    "GO DUMB",
     "INTELLIGENCE DROP",
     "INTRODUCTION TO NICHOLE",
-    "CONDITIONING",
-    "DUMB AND DOCILE",
     "OBEY ME",
     "LOVE ME",
-    "YES NICHOLE",
     "INDUCTION",
-    "WAKENER"
+    "WAKENER",
+    "YES NICHOLE"
   ],
-  "title": "Say Yes Nichole ",
-  "description": "An introductory session to my intimate hypnosis. All you will want to do is say Yes Nichole.",
-  "triggers": [],
+  "title": "Say Yes Nichole",
+  "description": "An introductory session to my intimate hypnosis\n. All you will want to do is say Yes Nichole. ",
+  "triggers": [
+    "DROP"
+  ],
   "tier": "FREE",
   "audience": "F4M",
   "author": "Goddess Nichole",
   "artist": "Goddess Nichole",
-  "releaseDate": "2025-06-06",
+  "releaseDate": "2026-10-02",
   "tone": [],
-  "cover": "covers/8599f72d-21c8-47ad-8795-cf2c1604af99.jpg",
+  "cover": "covers/8599f72d-21c8-47ad-8795-cf2c1604af99.png",
   "file": "audio/8599f72d-21c8-47ad-8795-cf2c1604af99.mp3",
+  "url": "https://goddessnichole.com/say-yes-nichole/",
   "changelog": [
     {
-      "date": "2026-09-29 18:45:29",
+      "date": "2026-10-02 18:05:54",
       "variant": "ORIGINAL",
-      "note": "Imported from https://goddessnichole.com/say-yes-nichole/"
-    },
-    {
-      "date": "2026-09-29 18:51:12",
-      "variant": "ORIGINAL",
-      "note": "Re-synchronized via batch importer"
+      "note": "Protocol created"
     }
   ]
 }

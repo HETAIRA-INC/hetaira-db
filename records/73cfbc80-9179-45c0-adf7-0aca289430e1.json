@@ -1,31 +1,45 @@
 {
   "uuid": "73cfbc80-9179-45c0-adf7-0aca289430e1",
   "status": "ACTIVE",
-  "id": "EROS-3235",
+  "id": "EROS-GN-061",
   "variant": "ORIGINAL",
   "tag": "HYPNOSIS & AUDIO",
-  "tags": [],
-  "title": "NRX 500mg RAPID RELEASE FORMULA",
-  "description": "",
-  "triggers": [],
+  "tags": [
+    "F4M",
+    "MESMERIZING",
+    "PREJAC",
+    "TRAINING",
+    "FEMDOM",
+    "SEDUCTION",
+    "INDUCTION",
+    "REPROGRAMMING",
+    "SLUT",
+    "LOSER",
+    "TIMED COMMAND",
+    "COMMAND",
+    "CUM COMMAND",
+    "TIMED",
+    "NRX"
+  ],
+  "title": "NicholeRx: Rapid Release - NRX 500mg",
+  "description": "Try NicholeRx Rapid Release Formula ",
+  "triggers": [
+    "CLENCH"
+  ],
   "tier": "FREE",
   "audience": "F4M",
   "author": "Goddess Nichole",
   "artist": "Goddess Nichole",
-  "releaseDate": "2025-06-06",
+  "releaseDate": "2026-10-02",
   "tone": [],
   "cover": "covers/73cfbc80-9179-45c0-adf7-0aca289430e1.png",
-  "file": "",
+  "file": "audio/73cfbc80-9179-45c0-adf7-0aca289430e1.mp3",
+  "url": "https://goddessnichole.com/nrx-500mg-rapid-release-formula/",
   "changelog": [
     {
-      "date": "2026-09-29 18:44:54",
+      "date": "2026-10-02 18:22:45",
       "variant": "ORIGINAL",
-      "note": "Imported from https://goddessnichole.com/nrx-500mg-rapid-release-formula/"
-    },
-    {
-      "date": "2026-09-29 18:50:52",
-      "variant": "ORIGINAL",
-      "note": "Re-synchronized via batch importer"
+      "note": "Protocol created"
     }
   ]
 }

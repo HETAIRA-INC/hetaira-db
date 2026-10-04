@@ -435,7 +435,9 @@
 
       const nextSlice = filteredList.slice(displayedCount, displayedCount + PAGE_SIZE);
       const fragment = document.createDocumentFragment();
-      const FALLBACK_ART = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNDAiIGhlaWdodD0iMjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTQwODE2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZpbGw9IiNmZjAwN2YiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTIiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlsgTk8gQVJUIEFWQUlMQUJMRSBdPC90ZXh0Pjwvc3ZnPg==';
+      const resolveFn = window.resolveAssetUrl || (url => url);
+      const FALLBACK_ART = resolveFn('covers/fallback_cover.png');
+
 
       nextSlice.forEach(item => {
         const isFree = (item.tier || '').toUpperCase().includes('FREE');

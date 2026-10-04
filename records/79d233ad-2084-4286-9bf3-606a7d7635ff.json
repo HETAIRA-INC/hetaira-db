@@ -1,44 +1,40 @@
 {
   "uuid": "79d233ad-2084-4286-9bf3-606a7d7635ff",
   "status": "ACTIVE",
-  "id": "EROS-2781",
-  "variant": "ORIGINAL",
+  "id": "EROS-GN-042",
+  "variant": "NA",
   "tag": "HYPNOSIS & AUDIO",
   "tags": [
-    "TAGS: F4M",
-    "MESMERIZING",
     "BRAINWASHING",
-    "SNAPS",
-    "SNAP TRIGGERS",
-    "PLEASURE TRIGGERS",
-    "KISSES",
-    "KISSIES",
+    "F4M",
+    "MESMERIZING",
+    "KISSING",
     "BRATTY",
-    "ADDICTED TO NICHOLE",
+    "PLEASURE TRIGGERS",
+    "KISSIES",
     "YES NICHOLE",
-    "22 MINUTES"
+    "ADDICTED TO NICHOLE",
+    "NRX"
   ],
   "title": "NicholeRx: Quick Hits",
   "description": "It’s simple: you’re addicted to me because of how fucking good it feels.",
-  "triggers": [],
+  "triggers": [
+    "SNAPS"
+  ],
   "tier": "FREE",
   "audience": "F4M",
   "author": "Goddess Nichole",
   "artist": "Goddess Nichole",
-  "releaseDate": "2025-05-28",
+  "releaseDate": "2026-10-02",
   "tone": [],
   "cover": "covers/79d233ad-2084-4286-9bf3-606a7d7635ff.png",
   "file": "audio/79d233ad-2084-4286-9bf3-606a7d7635ff.mp3",
+  "url": "https://goddessnichole.com/nicholerx-quick-hits/",
   "changelog": [
     {
-      "date": "2026-09-29 18:45:29",
+      "date": "2026-10-02 16:53:33",
       "variant": "ORIGINAL",
-      "note": "Imported from https://goddessnichole.com/nicholerx-quick-hits/"
-    },
-    {
-      "date": "2026-09-29 18:59:35",
-      "variant": "ORIGINAL",
-      "note": "Re-synchronized via batch importer"
+      "note": "Protocol created"
     }
   ]
 }

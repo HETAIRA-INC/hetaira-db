@@ -1,31 +1,38 @@
 {
   "uuid": "efa6e6d7-9f2c-4686-99b0-a6244823f65f",
   "status": "ACTIVE",
-  "id": "EROS-3168",
-  "variant": "ORIGINAL",
-  "tag": "HYPNOSIS & AUDIO",
-  "tags": [],
+  "id": "EROS-GN-030",
+  "variant": "NA",
+  "tag": "EROTIC HYPNOSIS",
+  "tags": [
+    "F4M",
+    "MESMERIZING",
+    "BRAINWASHING",
+    "CONDITIONING",
+    "TRAINING",
+    "YES NICHOLE",
+    "PUSSY WORSHIP",
+    "NRX"
+  ],
   "title": "NicholeRx: Addicted",
-  "description": "",
-  "triggers": [],
-  "tier": "FREE",
+  "description": "The MD is back.",
+  "triggers": [
+    "YES NICHOLE"
+  ],
+  "tier": "PAID LEVEL 2",
   "audience": "F4M",
   "author": "Goddess Nichole",
   "artist": "Goddess Nichole",
-  "releaseDate": "2025-06-06",
+  "releaseDate": "2026-10-02",
   "tone": [],
-  "cover": "covers/efa6e6d7-9f2c-4686-99b0-a6244823f65f.jpg",
-  "file": "",
+  "cover": "covers/efa6e6d7-9f2c-4686-99b0-a6244823f65f.png",
+  "file": "audio/efa6e6d7-9f2c-4686-99b0-a6244823f65f.mp3",
+  "url": "https://goddessnichole.com/nicholerx-addicted/",
   "changelog": [
     {
-      "date": "2026-09-29 18:44:55",
+      "date": "2026-10-02 15:42:09",
       "variant": "ORIGINAL",
-      "note": "Imported from https://goddessnichole.com/nicholerx-addicted/"
-    },
-    {
-      "date": "2026-09-29 18:50:52",
-      "variant": "ORIGINAL",
-      "note": "Re-synchronized via batch importer"
+      "note": "Protocol created"
     }
   ]
 }
