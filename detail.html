@@ -705,10 +705,10 @@
 
       // Safe URL resolution & robust fallback image chain
       const resolveFn = window.resolveAssetUrl || (url => url);
-      const FALLBACK_ART = resolveFn('covers/fallback_cover.png');
-      const rawCover = (item.cover && String(item.cover).trim()) ? resolveFn(item.cover) : null;
+      const FALLBACK_ART = resolveFn('covers/fallback_cover.png', 'cover');
+      const rawCover = (item.cover && String(item.cover).trim()) ? resolveFn(item.cover, 'cover') : null;
       const initialCover = rawCover || FALLBACK_ART;
-      const audioFile = (item.file && String(item.file).trim()) ? resolveFn(item.file) : '';
+      const audioFile = (item.file && String(item.file).trim()) ? resolveFn(item.file , 'audio') : '';
 
       // Variants HTML
       let variantsHtml = '';
@@ -1024,6 +1024,37 @@
         if (visualizerInterval) clearInterval(visualizerInterval);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
+      // Handle unavailable audio
+      audio.addEventListener('error', () => {
+        console.warn('Audio unavailable:', audio.src);
+
+        // Disable player controls
+        [
+          playBtn,
+          seekSlider,
+          speedBtn,
+          loopBtn,
+          muteBtn,
+          volumeSlider,
+          skipBackBtn,
+          skipFwdBtn
+        ].forEach(btn => {
+          if (btn) btn.disabled = true;
+        });
+
+        // Update UI
+        if (playBtn) playBtn.textContent = 'FEED NOT FOUND';
+
+        // Reset time display
+        if (currentTime) currentTime.textContent = '00:00';
+        if (durationTime) durationTime.textContent = '00:00';
+
+        // Disable seeking
+        if (seekSlider) seekSlider.value = 0;
+
+        // Stop visualizer
+        stopVisualizer();
+      });
     }
   </script>
 </body>

@@ -436,13 +436,13 @@
       const nextSlice = filteredList.slice(displayedCount, displayedCount + PAGE_SIZE);
       const fragment = document.createDocumentFragment();
       const resolveFn = window.resolveAssetUrl || (url => url);
-      const FALLBACK_ART = resolveFn('covers/fallback_cover.png');
+      const FALLBACK_ART = resolveFn('covers/fallback_cover.png', 'cover');
 
 
       nextSlice.forEach(item => {
         const isFree = (item.tier || '').toUpperCase().includes('FREE');
         const tags = Array.isArray(item.tags) ? item.tags.slice(0, 3) : [];
-        const rawCover = item.cover ? window.resolveAssetUrl(item.cover) : '';
+        const rawCover = item.cover ? window.resolveAssetUrl(item.cover, 'cover') : '';
         const initialSrc = rawCover || FALLBACK_ART;
 
         const card = document.createElement('article');
