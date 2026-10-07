@@ -628,10 +628,16 @@
     async function fetchMasterArchive() {
       if (cachedMasterList) return cachedMasterList;
       
-      const candidates = ['summary.json', 'data.json'];
+      const resolveDb = window.resolveDbUrl || (url => url);
+      const candidates = [
+        window.APP_CONFIG?.SUMMARY_JSON || 'summary.json',
+        window.APP_CONFIG?.FALLBACK_DATA_JSON || 'data.json'
+      ];
+
       for (const endpoint of candidates) {
         try {
-          const res = await fetch(endpoint);
+          const url = resolveDb(endpoint);
+          const res = await fetch(url, { cache: 'no-cache' });
           if (res.ok) {
             cachedMasterList = await res.json();
             return cachedMasterList;
@@ -658,12 +664,16 @@
 
       try {
         let item = null;
+        const resolveDb = window.resolveDbUrl || (url => url);
 
+        // 1. Try to fetch dedicated record JSON from repo-data if available
         try {
-          const singleRes = await fetch(`records/${targetId}.json`);
+          const singleUrl = resolveDb(`records/${targetId}.json`);
+          const singleRes = await fetch(singleUrl, { cache: 'no-cache' });
           if (singleRes.ok) item = await singleRes.json();
         } catch (e) {}
 
+        // 2. Fallback to searching summary or data.json from repo-data
         const masterList = await fetchMasterArchive();
 
         if (!item && masterList.length) {
@@ -882,7 +892,6 @@
       initCyberAudio();
     }
 
-    // Handles image load errors gracefully with multi-stage fallback
     window.handleCoverError = function(imgElement, fileFallback, svgFallback) {
       if (!imgElement.dataset.fallbackAttempted) {
         imgElement.dataset.fallbackAttempted = "1";
@@ -893,7 +902,6 @@
       }
     };
 
-    // Fast switch variant function without full page reloads
     window.switchVariant = function(targetUuid) {
       const url = new URL(window.location);
       url.searchParams.set('id', targetUuid);
@@ -918,7 +926,6 @@
 
       if (!audio) return;
 
-      // Speed control cycle
       const speeds = [1.0, 1.25, 1.5, 2.0, 0.75];
       let speedIdx = 0;
 
@@ -928,13 +935,11 @@
         speedBtn.textContent = `${speeds[speedIdx]}x`;
       });
 
-      // Loop toggle
       loopBtn.addEventListener('click', () => {
         audio.loop = !audio.loop;
         loopBtn.classList.toggle('active', audio.loop);
       });
 
-      // Skip buttons
       skipBackBtn.addEventListener('click', () => {
         audio.currentTime = Math.max(0, audio.currentTime - 10);
       });
@@ -943,7 +948,6 @@
         audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10);
       });
 
-      // Volume & Mute
       volumeSlider.addEventListener('input', (e) => {
         audio.volume = e.target.value;
         audio.muted = false;
@@ -955,7 +959,6 @@
         muteBtn.textContent = audio.muted ? 'MUTED' : 'VOL';
       });
 
-      // Play / Pause
       playBtn.addEventListener('click', () => {
         if (audio.paused) {
           audio.play().then(() => {
@@ -1024,11 +1027,10 @@
         if (visualizerInterval) clearInterval(visualizerInterval);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
-      // Handle unavailable audio
+
       audio.addEventListener('error', () => {
         console.warn('Audio unavailable:', audio.src);
 
-        // Disable player controls
         [
           playBtn,
           seekSlider,
@@ -1042,17 +1044,11 @@
           if (btn) btn.disabled = true;
         });
 
-        // Update UI
         if (playBtn) playBtn.textContent = 'FEED NOT FOUND';
-
-        // Reset time display
         if (currentTime) currentTime.textContent = '00:00';
         if (durationTime) durationTime.textContent = '00:00';
-
-        // Disable seeking
         if (seekSlider) seekSlider.value = 0;
 
-        // Stop visualizer
         stopVisualizer();
       });
     }
