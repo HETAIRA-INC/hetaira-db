@@ -357,6 +357,9 @@
   </div>
 
   <script>
+  console.log("👀 Curious, aren't we?\n🌀 Once you're hypnotized, there's no snapping back! 😵\n*SNAP*\n");
+  console.log("If you want to help me improve this library you can go here: https://docs.google.com/spreadsheets/d/1Rjna5Z7m_To7CYBQjItCk1os1DwcupwoTOn9CGrB0u8/edit");
+
     let masterList = [];
     let filteredList = [];
     let displayedCount = 0;
@@ -364,10 +367,19 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        // Try to fetch lightweight summary index first, fallback to data.json
-        let res = await fetch(window.APP_CONFIG.SUMMARY_JSON);
-        if (!res.ok) res = await fetch(window.APP_CONFIG.FALLBACK_DATA_JSON);
+        const summaryUrl = window.resolveDbUrl(window.APP_CONFIG.SUMMARY_JSON);
+        const fallbackUrl = window.resolveDbUrl(window.APP_CONFIG.FALLBACK_DATA_JSON);
+
+        // Fetch lightweight summary index first, fallback to data.json
+        let res = await fetch(summaryUrl, { cache: 'no-cache' });
+        if (!res.ok) {
+          res = await fetch(fallbackUrl, { cache: 'no-cache' });
+        }
         
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
         masterList = await res.json();
         
         document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 200));
@@ -377,13 +389,14 @@
         applyFilters();
         setupInfiniteScroll();
       } catch (err) {
-        console.error(err);
+        console.error('Failed to load catalog:', err);
         document.getElementById('cardsGrid').innerHTML = `
           <div style="grid-column:1/-1; color:var(--crimson-lust); text-align:center; padding:3rem;">
             CRITICAL TELEMETRY READ ERROR: Unable to load records catalog.
           </div>`;
       }
     });
+
 
     function debounce(fn, ms) {
       let timeout;

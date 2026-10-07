@@ -5,8 +5,9 @@ window.APP_CONFIG = {
   // e.g., 'https://media.yourdomain.com/'
   //ASSET_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-c1/refs/heads/main/',
   COVER_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-c1/refs/heads/main/',
+  DB_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-data/refs/heads/main/7ce7929c-7574-4a8e-8405-5422ff1f16dc/',
   AUDIO_BASE_URL: 'https://media.githubusercontent.com/media/HETAIRA-INC/hetaira-c1/refs/heads/main/',
-  DB_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-data/refs/heads/main/',
+  //use this when multi artist is implemented. AUDIO_BASE_URL: 'https://media.githubusercontent.com/media/HETAIRA-INC/hetaira-c1/refs/heads/main/7ce7929c-7574-4a8e-8405-5422ff1f16dc/',
 
   // Items loaded per page on the main directory grid
   PAGE_SIZE: 12,
@@ -26,4 +27,16 @@ window.resolveAssetUrl = function(path, type = 'cover') {
   const base = type === 'audio' ? window.APP_CONFIG.AUDIO_BASE_URL : window.APP_CONFIG.COVER_BASE_URL;
   const cleanPath = path.replace(/^\/+/, '');
   return base ? `${base.replace(/\/+$/, '')}/${cleanPath}` : cleanPath;
+};
+
+// Helper function to resolve Database/JSON URLs with cache busting
+window.resolveDbUrl = function(filename) {
+  if (!filename) return '';
+  if (filename.startsWith('http://') || filename.startsWith('https://')) {
+    return filename;
+  }
+  const base = (window.APP_CONFIG.DB_BASE_URL || '').replace(/\/+$/, '');
+  const cleanFilename = filename.replace(/^\/+/, '');
+  // Append timestamp query parameter to bypass GitHub's 5-minute raw cache
+  return `${base}/${cleanFilename}?_t=${Date.now()}`;
 };
