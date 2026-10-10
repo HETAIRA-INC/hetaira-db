@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIGGERS // NEURAL CONDITIONING PROTOCOLS // HETAIRA.EROS</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script src="config.js"></script>
+  <script src="common.js"></script>
+
+  <style>
+    :root {
+      --bg: #050206;
+      --card-bg: rgba(15, 8, 17, 0.85);
+      --card-border: rgba(255, 0, 110, 0.22);
+      --card-hover-border: #ff007f;
+      --neon-pink: #ff007f;
+      --crimson-lust: #ff003c;
+      --blush-glow: #ff4d8d;
+      --cyber-cyan: #00f0ff;
+      --cyber-cyan-glow: rgba(0, 240, 255, 0.35);
+      --gold-tier: #fcee0a;
+      --text-main: #f8fafc;
+      --text-muted: #a38896;
+      --font-display: 'Orbitron', monospace, sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Cyber Grid & Glow */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(255, 0, 110, 0.12) 0%, transparent 60%),
+        linear-gradient(to right, rgba(255, 0, 127, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 0, 127, 0.035) 1px, transparent 1px);
+      background-size: 100% 100%, 42px 42px, 42px 42px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Top Navigation Bar */
+    .cyber-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 3, 9, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 0, 127, 0.25);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .nav-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand-logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      text-decoration: none;
+      color: #fff;
+      text-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo span {
+      color: var(--neon-pink);
+      text-shadow: 0 0 20px var(--neon-pink);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text-muted);
+      position: relative;
+      padding: 6px 2px;
+      transition: color 0.25s ease, text-shadow 0.25s ease;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      text-shadow: 0 0 10px var(--neon-pink);
+    }
+
+    .nav-link.active {
+      color: var(--neon-pink);
+      font-weight: 700;
+      text-shadow: 0 0 12px rgba(255, 0, 127, 0.7);
+    }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--neon-pink);
+      box-shadow: 0 0 8px var(--neon-pink);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+    }
+
+    /* Header */
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255, 0, 127, 0.5);
+    }
+
+    .page-subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--cyber-cyan);
+      letter-spacing: 1.5px;
+      margin-top: 0.3rem;
+    }
+
+    /* Trigger Matrix Selector Pill Bar */
+    .trigger-selector-panel {
+      background: rgba(16, 9, 18, 0.9);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .trigger-selector-panel::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-pink), var(--cyber-cyan), transparent);
+    }
+
+    .selector-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .matrix-title {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      letter-spacing: 1.5px;
+      color: var(--blush-glow);
+    }
+
+    .trigger-filter-input {
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 0, 127, 0.35);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 0.55rem 1rem;
+      outline: none;
+      width: 260px;
+      clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+      transition: all 0.2s ease;
+    }
+
+    .trigger-filter-input:focus {
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 15px rgba(255, 0, 127, 0.35);
+    }
+
+    .triggers-matrix-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 180px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .triggers-matrix-grid::-webkit-scrollbar { width: 4px; }
+    .triggers-matrix-grid::-webkit-scrollbar-thumb { background: var(--neon-pink); }
+    .triggers-matrix-grid::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.5); }
+
+    .matrix-pill {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      padding: 6px 12px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 0, 127, 0.25);
+      color: #e5d7df;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .matrix-pill:hover {
+      border-color: var(--cyber-cyan);
+      color: var(--cyber-cyan);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .matrix-pill.active {
+      background: var(--neon-pink);
+      border-color: #fff;
+      color: #000;
+      font-weight: 700;
+      box-shadow: 0 0 18px rgba(255, 0, 127, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .pill-count {
+      font-size: 0.65rem;
+      opacity: 0.8;
+      background: rgba(0,0,0,0.3);
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+
+    /* Trigger Deep Dive Dossier Panel */
+    .dossier-panel {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--neon-pink);
+      box-shadow: 0 0 35px rgba(255, 0, 110, 0.15), inset 0 0 20px rgba(255, 0, 110, 0.05);
+      padding: 2rem 2.2rem;
+      margin-bottom: 3.5rem;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      position: relative;
+    }
+
+    .dossier-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      border-bottom: 1px solid rgba(255, 0, 127, 0.25);
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .dossier-main-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(255, 0, 127, 0.8);
+      line-height: 1.1;
+    }
+
+    .dossier-classification {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--cyber-cyan);
+      margin-top: 0.4rem;
+      letter-spacing: 1px;
+    }
+
+    /* Diagnostics Gauges / Telemetry */
+    .telemetry-strip {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .gauge-block {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      padding: 0.6rem 1rem;
+      border-radius: 2px;
+      min-width: 110px;
+    }
+
+    .gauge-label {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .gauge-value {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--cyber-cyan);
+      text-shadow: 0 0 8px var(--cyber-cyan-glow);
+    }
+
+    .gauge-value.danger {
+      color: var(--crimson-lust);
+      text-shadow: 0 0 8px rgba(255, 0, 60, 0.6);
+    }
+
+    /* Dossier Body */
+    .dossier-desc {
+      font-size: 1.15rem;
+      color: #eae1e8;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      max-width: 1000px;
+    }
+
+    .dossier-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .meta-subpanel {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 0, 127, 0.18);
+      padding: 1.2rem 1.4rem;
+      border-radius: 2px;
+    }
+
+    .meta-subpanel h4 {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
+      color: var(--blush-glow);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .associated-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .assoc-pill {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 4px 9px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .assoc-artist {
+      background: rgba(255, 0, 127, 0.08);
+      border: 1px solid rgba(255, 0, 127, 0.35);
+      color: var(--neon-pink);
+    }
+
+    .assoc-artist:hover {
+      background: var(--neon-pink);
+      color: #000;
+      box-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+    }
+
+    .assoc-tag {
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--cyber-cyan);
+    }
+
+    .assoc-tag:hover {
+      background: var(--cyber-cyan);
+      color: #000;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    /* Section Subhead for Files */
+    .files-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(255, 0, 127, 0.25);
+    }
+
+    .files-heading {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: 1.5px;
+      color: #fff;
+    }
+
+    .files-count {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--cyber-cyan);
+      letter-spacing: 1px;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 2rem;
+    }
+
+    /* Interactive Hyperlink Card (from index) */
+    .cyber-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+      transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                  border-color 0.35s ease, 
+                  box-shadow 0.35s ease;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .cyber-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--card-hover-border);
+      box-shadow: 0 14px 34px -10px rgba(255, 0, 110, 0.45), 0 0 20px rgba(255, 0, 110, 0.2);
+    }
+
+    .card-cover-wrapper {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background-color: #0d0610;
+      overflow: hidden;
+    }
+
+    .card-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+      filter: brightness(0.92) contrast(1.05);
+    }
+
+    .cyber-card:hover .card-cover {
+      transform: scale(1.07);
+    }
+
+    .scanline-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        rgba(18, 10, 20, 0) 50%, 
+        rgba(0, 0, 0, 0.45) 50%
+      );
+      background-size: 100% 4px;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .floating-badges {
+      position: absolute;
+      top: 12px; left: 12px; right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .badge-tier {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--gold-tier);
+      color: var(--gold-tier);
+    }
+
+    .badge-tier.free {
+      border-color: var(--cyber-cyan);
+      color: var(--cyber-cyan);
+    }
+
+    .audio-eq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 3px 6px;
+      border: 1px solid rgba(255, 0, 127, 0.3);
+      border-radius: 2px;
+    }
+
+    .eq-bar {
+      width: 3px;
+      height: 4px;
+      background-color: var(--neon-pink);
+      border-radius: 1px;
+    }
+
+    .cyber-card:hover .eq-bar:nth-child(1) { animation: eqPulse 0.6s infinite ease-in-out alternate; }
+    .cyber-card:hover .eq-bar:nth-child(2) { animation: eqPulse 0.4s infinite ease-in-out alternate 0.15s; }
+    .cyber-card:hover .eq-bar:nth-child(3) { animation: eqPulse 0.7s infinite ease-in-out alternate 0.3s; }
+    .cyber-card:hover .eq-bar:nth-child(4) { animation: eqPulse 0.5s infinite ease-in-out alternate 0.1s; }
+
+    .card-body {
+      padding: 1.25rem 1.25rem 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .card-id { color: var(--blush-glow); font-weight: 700; }
+    .card-tag { color: var(--cyber-cyan); font-family: var(--font-mono); }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.35rem;
+      line-height: 1.35;
+    }
+
+    .cyber-card:hover .card-title {
+      text-shadow: 0 0 12px rgba(255, 0, 127, 0.8);
+    }
+
+    .card-credits {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .card-credits span { color: var(--blush-glow); font-weight: 600; }
+
+    .pills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: auto;
+      padding-top: 0.5rem;
+    }
+
+    .tag-pill {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      color: var(--cyber-cyan);
+      border-radius: 2px;
+    }
+
+    .card-footer {
+      border-top: 1px solid rgba(255, 0, 110, 0.2);
+      background: rgba(10, 4, 11, 0.9);
+      padding: 0.85rem 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .footer-stat { display: flex; flex-direction: column; gap: 2px; }
+    .footer-stat:nth-child(2) {
+      text-align: center;
+      border-left: 1px solid rgba(255, 0, 110, 0.15);
+      border-right: 1px solid rgba(255, 0, 110, 0.15);
+    }
+    .footer-stat:last-child { text-align: right; }
+
+    .stat-label {
+      font-family: var(--font-display);
+      font-size: 0.58rem;
+      color: var(--text-muted);
+    }
+
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stat-value.audience-val { color: var(--neon-pink); }
+    .stat-value.duration-val { color: var(--cyber-cyan); }
+    .stat-value.date-val { color: var(--text-main); }
+
+    @keyframes eqPulse {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
+    @media (max-width: 820px) {
+      .nav-container { flex-direction: column; gap: 1rem; padding: 1rem; }
+      .nav-links { gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
+      .container { padding: 1.5rem 1rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .dossier-panel { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="cyber-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        HETAIRA<span>.EROS</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Files</a></li>
+        <li><a href="artists.html" class="nav-link">Artists</a></li>
+        <li><a href="tags.html" class="nav-link">Tags</a></li>
+        <li><a href="triggers.html" class="nav-link active">Triggers</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <header class="page-header">
+      <h1 class="page-title">TRIGGER RECEPTOR MATRIX</h1>
+      <p class="page-subtitle">// NEURAL ANCHORS, CONDITIONING PHRASES & SOMATIC STIMULI</p>
+    </header>
+
+    <!-- Trigger Selector Bar -->
+    <section class="trigger-selector-panel">
+      <div class="selector-top-row">
+        <span class="matrix-title">// AVAILABLE CONDITIONING TRIGGERS</span>
+        <input type="text" id="filterTriggersInput" class="trigger-filter-input" placeholder="SEARCH TRIGGER MATRIX..." autocomplete="off">
+      </div>
+      <div class="triggers-matrix-grid" id="triggerMatrixGrid">
+        <!-- Matrix Pills dynamically injected -->
+      </div>
+    </section>
+
+    <!-- Trigger Dossier Spotlight -->
+    <section class="dossier-panel" id="dossierPanel">
+      <div class="dossier-header">
+        <div>
+          <h2 class="dossier-main-title" id="dossierTitle">INITIALIZING...</h2>
+          <div class="dossier-classification" id="dossierCategory">// CATEGORY: UNCLASSIFIED // INTENSITY: NOMINAL</div>
+        </div>
+        <div class="telemetry-strip" id="telemetryStrip">
+          <div class="gauge-block">
+            <span class="gauge-label">SOMATIC CLASS</span>
+            <span class="gauge-value" id="valClass">ALPHA</span>
+          </div>
+          <div class="gauge-block">
+            <span class="gauge-label">TRANCE DEPTH</span>
+            <span class="gauge-value" id="valDepth">SOMNAMBULIC</span>
+          </div>
+          <div class="gauge-block">
+            <span class="gauge-label">INDEXED FILES</span>
+            <span class="gauge-value" id="valCount">0</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="dossier-desc" id="dossierDesc">
+        Awaiting neural telemetry synchronization. Select any conditioning trigger pill from the matrix above to decrypt its behavioral parameters, neurological anchor, and associated audio archives.
+      </p>
+
+      <div class="dossier-meta-grid">
+        <div class="meta-subpanel">
+          <h4>// CROSS-REFERENCED ARTISTS</h4>
+          <div class="associated-pills" id="associatedArtists"></div>
+        </div>
+        <div class="meta-subpanel">
+          <h4>// LINKED TAXONOMY TAGS</h4>
+          <div class="associated-pills" id="associatedTags"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Associated Audio Files Header & Grid -->
+    <div class="files-header">
+      <h3 class="files-heading">// ENCODED AUDIO PROTOCOLS</h3>
+      <div class="files-count" id="filesCountDisplay">SHOWING 0 MATCHES</div>
+    </div>
+    <main class="cards-grid" id="triggerCardsGrid"></main>
+  </div>
+
+  <script>
+    const { esc } = H;
+    // Knowledge Base dictionary for triggers with descriptions & telemetry ratings
+    const TRIGGER_KNOWLEDGE_BASE = {
+      "Freeze": {
+        desc: "An instantaneous somatic paralysis anchor. When triggered, the subject experiences immediate muscular limpness or rigid immobility, arresting thoughts and suspending physical motion until an release phrase is uttered.",
+        category: "CATALEPSY & IMMOBILITY",
+        depth: "DEEP SOMATIC",
+        intensity: "HIGH"
+      },
+      "Melt": {
+        desc: "A warm, liquefying sensory induction. Directs the nervous system to release tension, evoking warmth spreading through the spine, dissolving inhibitions and surrendering cognitive resistance.",
+        category: "SOMATIC RELAXATION",
+        depth: "THETA WAVE",
+        intensity: "GENTLE"
+      },
+      "Snap": {
+        desc: "Auditory sensory disruption anchor. The sharp acoustic impulse of finger snaps or vocal clicks bypasses the critical faculty, resetting thoughts and pulling consciousness directly into trance.",
+        category: "AUDITORY SHOCK INDUCTION",
+        depth: "HYPER-RAPID",
+        intensity: "PEAK"
+      },
+      "Sleep": {
+        desc: "The classical hypnotic command anchor. Signals the brainstem to simulate sleep-onset relaxation, heavily dropping the eyelids and initiating instant passive compliance.",
+        category: "CONSCIOUSNESS BYPASS",
+        depth: "SOMNAMBULIC",
+        intensity: "SEVERE"
+      },
+      "Drop": {
+        desc: "A kinetic falling sensation anchor. Simulates internal gravity drops, accelerating the listener down through multiple layers of awareness into quiet, blank mental clarity.",
+        category: "KINETIC DESCENT",
+        depth: "DELTA BOUNDARY",
+        intensity: "MODERATE"
+      },
+      "Arousal": {
+        desc: "Pleasure-pathway conditioning. Establishes a direct neural shortcut connecting acoustic tones or trigger words to spontaneous physiological orgasmic sensations without physical contact.",
+        category: "EROTOGENIC REWIRING",
+        depth: "LIMBIC FOCUS",
+        intensity: "INTENSE"
+      },
+      "Blank": {
+        desc: "Cognitive erasure anchor. Temporarily cleanses inner dialogue and mental chatter, substituting it with a smooth, euphoric mental silence that waits receptively for external instruction.",
+        category: "COGNITIVE QUIET",
+        depth: "THETA QUIETUDE",
+        intensity: "HIGH"
+      },
+      "Obedience": {
+        desc: "Ego-surrender conditioning loop. Associates feeling compliant, pleasing, and obedient with profound dopamine surges and sexual euphoria.",
+        category: "DYNAMIC REINFORCEMENT",
+        depth: "DIRECTIVE TRANCE",
+        intensity: "EXTREME"
+      }
+    };
+
+    // lower-case lookup so "FREEZE", "freeze" and "Freeze" all find the same entry
+    const KB = Object.fromEntries(Object.entries(TRIGGER_KNOWLEDGE_BASE).map(([k, v]) => [k.toLowerCase(), v]));
+
+    let cat = null;
+    let triggerList = [];            // [{slug,label,description,count}]
+    let currentSlug = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        cat = await H.loadCatalog();
+        triggerList = H.termCounts(cat, 'triggers').sort((a, b) => a.label.localeCompare(b.label));
+
+        document.getElementById('filterTriggersInput').addEventListener('input', e => renderTriggerMatrix(e.target.value.toLowerCase().trim()));
+        window.addEventListener('popstate', selectFromUrl);
+
+        if (!triggerList.length) {
+          renderTriggerMatrix();
+          document.getElementById('dossierTitle').textContent = '// NO TRIGGERS INDEXED';
+          document.getElementById('dossierDesc').textContent = 'No archive protocol has any trigger assigned yet.';
+          document.getElementById('triggerCardsGrid').innerHTML = '';
+          document.getElementById('filesCountDisplay').textContent = 'SHOWING 0 MATCHING ARCHIVE PROTOCOLS';
+          return;
+        }
+        renderTriggerMatrix();
+        selectFromUrl();
+      } catch (err) {
+        console.error('Telemetry link severed:', err);
+        document.getElementById('dossierPanel').innerHTML =
+          `<div style="color:var(--crimson-lust); font-family:var(--font-mono); text-align:center;">CRITICAL TELEMETRY READ ERROR: UNABLE TO LOAD TRIGGER ARCHIVES.</div>`;
+      }
+    });
+
+    // ?trigger=<slug|label>; falls back to the first trigger without adding a history entry
+    function selectFromUrl() {
+      const wanted = H.slugify(H.q('trigger'));
+      const target = triggerList.find(t => t.slug === wanted) || triggerList[0];
+      if (target) selectTrigger(target.slug, { push: false });
+    }
+
+    function renderTriggerMatrix(filter = '') {
+      const container = document.getElementById('triggerMatrixGrid');
+      container.innerHTML = '';
+      triggerList.forEach(t => {
+        if (filter && !t.label.toLowerCase().includes(filter)) return;
+        const pill = document.createElement('div');
+        pill.className = `matrix-pill ${currentSlug === t.slug ? 'active' : ''}`;
+        pill.dataset.slug = t.slug;
+        pill.innerHTML = `<span>${esc(t.label)}</span> <span class="pill-count">${t.count}</span>`;
+        pill.onclick = () => selectTrigger(t.slug, { push: true });
+        container.appendChild(pill);
+      });
+    }
+
+    function selectTrigger(slug, { push = true } = {}) {
+      const t = triggerList.find(x => x.slug === slug);
+      if (!t) return;
+      currentSlug = slug;
+
+      if (push) {
+        const url = new URL(window.location);
+        url.searchParams.set('trigger', slug);
+        window.history.pushState({}, '', url);
+      }
+
+      document.querySelectorAll('.matrix-pill').forEach(el => el.classList.toggle('active', el.dataset.slug === slug));
+
+      const matchedFiles = cat.items.filter(item => item._trigEntries.some(e => e.slug === slug));
+      const kb = KB[t.label.toLowerCase()] || {
+        desc: `Specialized conditioning phrase and neural anchor used across erotic trance archives to entrain receptive compliance and visceral pleasure.`,
+        category: 'CONDITIONING PROTOCOL',
+        depth: 'SOMNAMBULIC',
+        intensity: 'VARIABLE'
+      };
+
+      document.title = `HETAIRA.EROS // TRIGGER: ${t.label.toUpperCase()}`;
+      document.getElementById('dossierTitle').textContent = `// TRIGGER: ${t.label.toUpperCase()}`;
+      document.getElementById('dossierCategory').textContent = `// CATEGORY: ${kb.category} // INTENSITY: ${kb.intensity}`;
+      document.getElementById('dossierDesc').textContent = t.description || kb.desc;   // triggers.json wins
+      document.getElementById('valClass').textContent = kb.intensity;
+      document.getElementById('valDepth').textContent = kb.depth;
+      document.getElementById('valCount').textContent = matchedFiles.length;
+
+      // credited artists -> archive filtered by that artist
+      const artists = new Map();
+      matchedFiles.forEach(item => item._artists.forEach(a => artists.set(a.slug, a)));
+      document.getElementById('associatedArtists').innerHTML = [...artists.values()].map(a =>
+        `<a href="index.html?artist=${encodeURIComponent(a.slug)}" class="assoc-pill assoc-artist">&gt; ${esc(a.name)}</a>`
+      ).join('') || '<span style="color:var(--text-muted);font-size:0.8rem;">NO ATTRIBUTED ARTISTS</span>';
+
+      // tags used together with this trigger -> tag page
+      const tags = new Map();
+      matchedFiles.forEach(item => item._tagEntries.forEach(e => tags.set(e.slug, e)));
+      document.getElementById('associatedTags').innerHTML = [...tags.values()].slice(0, 16).map(e =>
+        `<a href="tag.html?tag=${encodeURIComponent(e.slug)}" class="assoc-pill assoc-tag">#${esc(e.label)}</a>`
+      ).join('') || '<span style="color:var(--text-muted);font-size:0.8rem;">NO ADDITIONAL TAGS</span>';
+
+      renderTriggerCards(matchedFiles);
+    }
+
+    function renderTriggerCards(files) {
+      const grid = document.getElementById('triggerCardsGrid');
+      document.getElementById('filesCountDisplay').textContent = `SHOWING ${files.length} MATCHING ARCHIVE PROTOCOLS`;
+      grid.innerHTML = '';
+
+      if (files.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem; font-family:var(--font-mono); color:var(--text-muted);">// NO SENSORY PROTOCOLS LINKED TO THIS SPECIFIC ANCHOR.</div>`;
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+      files.forEach(item => {
+        const card = document.createElement('a');
+        card.href = `detail.html?id=${encodeURIComponent(item.uuid)}`;
+        card.className = 'cyber-card';
+        card.setAttribute('aria-label', `View ${item.title || 'audio'}`);
+
+        card.innerHTML = `
+          <div class="card-cover-wrapper">
+            <img src="${esc(H.cover(item))}" alt="${esc(item.title || 'Cover')}" class="card-cover" loading="lazy">
+
+            <div class="scanline-overlay"></div>
+
+            <div class="floating-badges">
+              <span class="badge-tier ${item._free ? 'free' : ''}">${esc(item.tier || 'FREE')}</span>
+              <div class="audio-eq-bars" title="Audio Loaded">
+                <span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="card-id">${esc(item.id || 'EROS')}</span>
+              <span class="card-tag">${esc(item.tag || 'AUDIO')}</span>
+            </div>
+
+            <h2 class="card-title">${esc(item.title || 'Untitled Protocol')}</h2>
+            <div class="card-credits">By <span>${esc(item.author || item._artistNames.join(' × '))}</span></div>
+
+            ${item.tags.length ? `
+              <div class="pills-container">
+                ${item.tags.slice(0, 3).map(t => `<span class="tag-pill">${esc(t)}</span>`).join('')}
+              </div>` : ''}
+          </div>
+
+          <footer class="card-footer">
+            <div class="footer-stat">
+              <span class="stat-label">AUDIENCE</span>
+              <span class="stat-value audience-val">${esc(item.audience || 'ANY')}</span>
+            </div>
+            <div class="footer-stat">
+              <span class="stat-label">VARIANT</span>
+              <span class="stat-value duration-val">${esc(item.variant || 'ORIGINAL')}</span>
+            </div>
+            <div class="footer-stat">
+              <span class="stat-label">RELEASE</span>
+              <span class="stat-value date-val">${esc(item.releaseDate || 'ARCHIVED')}</span>
+            </div>
+          </footer>
+        `;
+        fragment.appendChild(card);
+      });
+      grid.appendChild(fragment);
+    }
+  </script>
+</body>
+</html>

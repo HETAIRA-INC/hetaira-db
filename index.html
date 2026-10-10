@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="config.js"></script>
+  <script src="common.js"></script>
 
   <style>
     :root {
@@ -316,9 +317,112 @@
       0%, 100% { transform: scale(1); }
       15%, 45% { transform: scale(1.3); }
     }
+    .cyber-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 3, 9, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 0, 127, 0.25);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .nav-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand-logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      text-decoration: none;
+      color: #fff;
+      text-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo span {
+      color: var(--neon-pink);
+      text-shadow: 0 0 20px var(--neon-pink);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text-muted);
+      position: relative;
+      padding: 6px 2px;
+      transition: color 0.25s ease, text-shadow 0.25s ease;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      text-shadow: 0 0 10px var(--neon-pink);
+    }
+
+    .nav-link.active {
+      color: var(--neon-pink);
+      font-weight: 700;
+      text-shadow: 0 0 12px rgba(255, 0, 127, 0.7);
+    }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--neon-pink);
+      box-shadow: 0 0 8px var(--neon-pink);
+    }
+
+
+    @media (max-width: 820px) {
+      .nav-container { flex-direction: column; gap: 1rem; padding: 1rem; }
+      .nav-links { gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
+    }
+
+    .active-chips { display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:1rem; }
+    .active-chip { font-family: var(--font-mono); font-size:.8rem; color:var(--cyber-cyan); border:1px solid var(--cyber-cyan); padding:4px 10px; cursor:pointer; background:rgba(0,240,255,.07); }
   </style>
 </head>
 <body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="cyber-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        HETAIRA<span>.EROS</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link active">Files</a></li>
+        <li><a href="artists.html" class="nav-link">Artists</a></li>
+        <li><a href="tags.html" class="nav-link">Tags</a></li>
+        <li><a href="triggers.html" class="nav-link">Triggers</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <div class="container">
     <!--<header>
@@ -334,13 +438,12 @@
         <input type="text" id="searchInput" class="search-input" placeholder="SEARCH PROTOCOLS, TAGS, CREATORS...">
       </div>
       <div class="filter-dropdowns">
+        <select id="artistFilter" class="cyber-select" aria-label="Artist">
+          <option value="ALL">ARTIST: ALL</option>
+        </select>
+
         <select id="audienceFilter" class="cyber-select">
           <option value="ALL">AUDIENCE: ALL</option>
-          <option value="F4M">F4M</option>
-          <option value="M4F">M4F</option>
-          <option value="F4F">F4F</option>
-          <option value="M4M">M4M</option>
-          <option value="ANY">ANY</option>
         </select>
 
         <select id="tierFilter" class="cyber-select">
@@ -352,6 +455,7 @@
       <div class="count-indicator" id="resultsCount">// LOADED: 0 RECORDS</div>
     </div>
 
+    <div class="active-chips" id="activeChips"></div>
     <main class="cards-grid" id="cardsGrid"></main>
     <div id="scrollTrigger">// SCROLL FOR MORE PROTOCOLS...</div>
   </div>
@@ -360,134 +464,130 @@
   console.log("👀 Curious, aren't we?\n🌀 Once you're hypnotized, there's no snapping back! 😵\n*SNAP*\n");
   console.log("If you want to help me improve this library you can go here: https://docs.google.com/spreadsheets/d/1Rjna5Z7m_To7CYBQjItCk1os1DwcupwoTOn9CGrB0u8/edit");
 
-    let masterList = [];
+    const { esc } = H;
+    const PAGE_SIZE = window.APP_CONFIG.PAGE_SIZE || 12;
+    let cat = null;
     let filteredList = [];
     let displayedCount = 0;
-    const PAGE_SIZE = window.APP_CONFIG?.PAGE_SIZE || 12;
+    let kick = () => {};
+    // filters that come from the URL (links from the Artists / Tags / Triggers pages)
+    const urlFilter = { tag: H.q('tag'), trigger: H.q('trigger') };
 
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        const summaryUrl = window.resolveDbUrl(window.APP_CONFIG.SUMMARY_JSON);
-        const fallbackUrl = window.resolveDbUrl(window.APP_CONFIG.FALLBACK_DATA_JSON);
+        cat = await H.loadCatalog();
 
-        // Fetch lightweight summary index first, fallback to data.json
-        let res = await fetch(summaryUrl, { cache: 'no-cache' });
-        if (!res.ok) {
-          res = await fetch(fallbackUrl, { cache: 'no-cache' });
-        }
-        
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
+        const artistSel = document.getElementById('artistFilter');
+        cat.artists.forEach(a => artistSel.add(new Option(a.name, a.slug)));
+        const audSel = document.getElementById('audienceFilter');
+        [...new Set(cat.items.map(i => (i.audience || '').toUpperCase()).filter(Boolean))].sort()
+          .forEach(a => audSel.add(new Option(a, a)));
 
-        masterList = await res.json();
-        
-        document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 200));
-        document.getElementById('audienceFilter').addEventListener('change', applyFilters);
-        document.getElementById('tierFilter').addEventListener('change', applyFilters);
+        // initial values from the URL (?q= or legacy ?search=, ?artist=, ?audience=, ?tier=)
+        document.getElementById('searchInput').value = H.q('q') || H.q('search');
+        const wantArtist = H.q('artist');
+        const hit = cat.artistBySlug.get(wantArtist) || cat.artistByUuid.get(wantArtist) || cat.artists.find(a => H.slugify(a.name) === H.slugify(wantArtist));
+        if (hit) artistSel.value = hit.slug;
+        if ([...audSel.options].some(o => o.value === H.q('audience').toUpperCase())) audSel.value = H.q('audience').toUpperCase();
+        if (['FREE', 'PAID'].includes(H.q('tier').toUpperCase())) document.getElementById('tierFilter').value = H.q('tier').toUpperCase();
 
+        document.getElementById('searchInput').addEventListener('input', H.debounce(applyFilters, 200));
+        ['artistFilter', 'audienceFilter', 'tierFilter'].forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
+
+        kick = H.infiniteScroll(document.getElementById('scrollTrigger'), appendNextBatch);
         applyFilters();
-        setupInfiniteScroll();
       } catch (err) {
         console.error('Failed to load catalog:', err);
-        document.getElementById('cardsGrid').innerHTML = `
-          <div style="grid-column:1/-1; color:var(--crimson-lust); text-align:center; padding:3rem;">
-            CRITICAL TELEMETRY READ ERROR: Unable to load records catalog.
-          </div>`;
+        document.getElementById('cardsGrid').innerHTML = H.errorBox('CRITICAL TELEMETRY READ ERROR: Unable to load records catalog.');
+        document.getElementById('scrollTrigger').textContent = '';
       }
     });
 
-
-    function debounce(fn, ms) {
-      let timeout;
-      return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => fn(...args), ms);
-      };
+    function renderChips() {
+      const box = document.getElementById('activeChips');
+      const chips = [];
+      for (const [kind, key, label] of [['tags', 'tag', '#'], ['triggers', 'trigger', '⚠ ']]) {
+        if (!urlFilter[key]) continue;
+        const e = H.findTerm(cat, kind, urlFilter[key]);
+        chips.push(`<span class="active-chip" data-key="${key}">${label}${esc(e ? e.label : urlFilter[key])} ✕</span>`);
+      }
+      box.innerHTML = chips.join('');
+      box.querySelectorAll('.active-chip').forEach(c => c.addEventListener('click', () => { urlFilter[c.dataset.key] = ''; applyFilters(); }));
     }
 
     function applyFilters() {
-      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const words = document.getElementById('searchInput').value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+      const artist = document.getElementById('artistFilter').value;
       const audience = document.getElementById('audienceFilter').value;
       const tier = document.getElementById('tierFilter').value;
+      const tagE = urlFilter.tag && H.findTerm(cat, 'tags', urlFilter.tag);
+      const trgE = urlFilter.trigger && H.findTerm(cat, 'triggers', urlFilter.trigger);
 
-      filteredList = masterList.filter(item => {
-        if (item.status && item.status !== 'ACTIVE') return false;
+      filteredList = cat.items.filter(item =>
+        words.every(w => item._q.includes(w)) &&
+        (artist === 'ALL' || item._artists.some(a => a.slug === artist)) &&
+        (audience === 'ALL' || (item.audience || '').toUpperCase() === audience) &&
+        (tier === 'ALL' || (tier === 'FREE') === item._free) &&
+        (!urlFilter.tag || (tagE && item._tagEntries.includes(tagE))) &&
+        (!urlFilter.trigger || (trgE && item._trigEntries.includes(trgE)))
+      );
 
-        const tagsStr = Array.isArray(item.tags) ? item.tags.join(' ').toLowerCase() : '';
-        const matchSearch = !search || 
-          (item.title && item.title.toLowerCase().includes(search)) ||
-          (item.artist && item.artist.toLowerCase().includes(search)) ||
-          (item.author && item.author.toLowerCase().includes(search)) ||
-          (item.id && item.id.toLowerCase().includes(search)) ||
-          tagsStr.includes(search);
+      // keep the URL shareable
+      const p = new URLSearchParams();
+      const put = (k, v, off) => v && v !== off && p.set(k, v);
+      put('q', document.getElementById('searchInput').value.trim());
+      put('artist', artist, 'ALL'); put('audience', audience, 'ALL'); put('tier', tier, 'ALL');
+      put('tag', urlFilter.tag); put('trigger', urlFilter.trigger);
+      history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : ''));
 
-        const matchAudience = audience === 'ALL' || (item.audience && item.audience.toUpperCase() === audience);
-        const isFree = (item.tier || '').toUpperCase().includes('FREE');
-        const matchTier = tier === 'ALL' || (tier === 'FREE' && isFree) || (tier === 'PAID' && !isFree);
-
-        return matchSearch && matchAudience && matchTier;
-      });
-
+      renderChips();
       document.getElementById('resultsCount').textContent = `// MATCHED: ${filteredList.length} PROTOCOLS`;
-      
-      // Reset Grid
       document.getElementById('cardsGrid').innerHTML = '';
       displayedCount = 0;
-      appendNextBatch();
+      if (!appendNextBatch()) document.getElementById('scrollTrigger').textContent = '// NO MATCHING PROTOCOLS';
+      kick();
     }
 
+    /** Renders one batch; returns true if anything was added. */
     function appendNextBatch() {
       const grid = document.getElementById('cardsGrid');
       const trigger = document.getElementById('scrollTrigger');
-
       if (displayedCount >= filteredList.length) {
         trigger.textContent = filteredList.length > 0 ? '// END OF ARCHIVE RECORDS' : '// NO MATCHING PROTOCOLS';
-        return;
+        return false;
       }
 
       const nextSlice = filteredList.slice(displayedCount, displayedCount + PAGE_SIZE);
       const fragment = document.createDocumentFragment();
-      const resolveFn = window.resolveAssetUrl || (url => url);
-      const FALLBACK_ART = resolveFn('covers/fallback_cover.png', 'cover');
-
 
       nextSlice.forEach(item => {
-        const isFree = (item.tier || '').toUpperCase().includes('FREE');
-        const tags = Array.isArray(item.tags) ? item.tags.slice(0, 3) : [];
-        const rawCover = item.cover ? window.resolveAssetUrl(item.cover, 'cover') : '';
-        const initialSrc = rawCover || FALLBACK_ART;
-
+        const tags = item.tags.slice(0, 3);
         const card = document.createElement('article');
         card.className = 'cyber-card';
         card.innerHTML = `
           <div class="card-cover-wrapper">
-            <img src="${initialSrc}" 
-                 alt="${item.title || 'Cover'}" 
-                 class="card-cover" 
-                 loading="lazy" 
-                 onerror="this.onerror=null; this.src='${FALLBACK_ART}';">
+            <img src="${esc(H.cover(item))}" alt="${esc(item.title || 'Cover')}" class="card-cover" loading="lazy">
             <div class="floating-badges">
-              <span class="badge-tier ${isFree ? 'free' : ''}">${item.tier || 'FREE'}</span>
-              <span class="badge-audience">${item.audience || 'F4M'}</span>
+              <span class="badge-tier ${item._free ? 'free' : ''}">${esc(item.tier || 'FREE')}</span>
+              <span class="badge-audience">${esc(item.audience || 'F4M')}</span>
             </div>
           </div>
 
           <div class="card-body">
             <div class="card-meta">
-              <span class="card-id">${item.id || 'EROS'}</span>
-              <span class="card-tag">${item.tag || 'AUDIO'}</span>
+              <span class="card-id">${esc(item.id || 'EROS')}</span>
+              <span class="card-tag">${esc(item.tag || 'AUDIO')}</span>
             </div>
-            
-            <h2 class="card-title">${item.title || 'Untitled'}</h2>
-            <div class="card-credits">By <span>${item.author || 'Anonymous'}</span></div>
+
+            <h2 class="card-title">${esc(item.title || 'Untitled')}</h2>
+            <div class="card-credits">By <span>${esc(item.author || item._artistNames.join(' × '))}</span></div>
 
             ${tags.length ? `
               <div class="pills-container">
-                ${tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}
+                ${tags.map(t => `<span class="tag-pill">${esc(t)}</span>`).join('')}
               </div>` : ''}
 
-            <a href="detail.html?id=${item.uuid || item.id}" class="cyber-btn">
+            <a href="detail.html?id=${encodeURIComponent(item.uuid)}" class="cyber-btn">
               ENGAGE FEED &rarr;
             </a>
           </div>
@@ -497,18 +597,8 @@
 
       grid.appendChild(fragment);
       displayedCount += nextSlice.length;
-
       trigger.textContent = displayedCount >= filteredList.length ? '// END OF ARCHIVE RECORDS' : '// SCROLL FOR MORE PROTOCOLS...';
-    }
-
-    function setupInfiniteScroll() {
-      const observer = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) {
-          appendNextBatch();
-        }
-      }, { rootMargin: '200px' });
-
-      observer.observe(document.getElementById('scrollTrigger'));
+      return true;
     }
   </script>
 </body>
