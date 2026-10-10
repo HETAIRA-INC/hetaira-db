@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="config.js"></script>
-  <script src="common.js"></script>
 
   <style>
     :root {
@@ -27,6 +26,19 @@
       --gold-tier: #fcee0a;
       --text-main: #f8fafc;
       --text-muted: #a38896;
+      --neon-violet: #bd00ff;
+      --neon-violet-glow: rgba(189, 0, 255, 0.4);
+      --dark-violet-surface: #14071c; /* Alternative darker card/container layer */
+      --toxic-lime: #00ff66;         /* Clean, electric futuristic green */
+      --acid-yellow-green: #a6ff00;  /* High-energy hazard accent */
+      --matrix-green-glow: rgba(0, 255, 102, 0.25);
+      --hazard-orange: #ff5500;      /* Warning badges, overclock states */
+      --amber-pulse: #ff8c00;
+      --hyper-blue: #1f51ff;         /* Strong contrast against pink & yellow */
+      --ice-mint: #50fbe7;           /* Softer, chilled alternative to cyber-cyan */
+      --glow-pink-shadow: 0 0 20px rgba(255, 0, 127, 0.45);
+      --glow-cyan-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
+      --grid-line: rgba(255, 0, 127, 0.08); /* For cyber background grid overlays */
       --font-display: 'Orbitron', monospace, sans-serif;
       --font-body: 'Rajdhani', sans-serif;
       --font-mono: 'Share Tech Mono', monospace;
@@ -65,7 +77,7 @@
       z-index: 100;
       background: rgba(8, 3, 9, 0.85);
       backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(0, 240, 255, 0.25);
+      border-bottom: 1px solid rgba(255, 0, 127, 0.25);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     }
 
@@ -118,13 +130,13 @@
 
     .nav-link:hover {
       color: #fff;
-      text-shadow: 0 0 10px var(--cyber-cyan);
+      text-shadow: 0 0 10px var(--neon-pink);
     }
 
     .nav-link.active {
-      color: var(--cyber-cyan);
+      color: var(--neon-pink);
       font-weight: 700;
-      text-shadow: 0 0 12px rgba(0, 240, 255, 0.7);
+      text-shadow: 0 0 12px rgba(255, 0, 127, 0.7);
     }
 
     .nav-link.active::after {
@@ -134,8 +146,8 @@
       left: 0;
       width: 100%;
       height: 2px;
-      background: var(--cyber-cyan);
-      box-shadow: 0 0 8px var(--cyber-cyan);
+      background: var(--neon-pink);
+      box-shadow: 0 0 8px var(--neon-pink);
     }
 
     .container {
@@ -149,9 +161,8 @@
     /* Page Header */
     .page-header {
       margin-bottom: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      border-left: 3px solid var(--neon-pink);
+      padding-left: 1rem;
     }
 
     .page-title {
@@ -161,10 +172,7 @@
       letter-spacing: 2px;
       color: #fff;
       text-transform: uppercase;
-      text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      text-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
     }
 
     .page-title span {
@@ -175,8 +183,9 @@
     .page-subtitle {
       font-family: var(--font-mono);
       font-size: 0.85rem;
-      color: var(--text-muted);
+      color: var(--amber-trigger);
       letter-spacing: 1px;
+      margin-top: 4px;
     }
 
     /* Filter & Sort Bar */
@@ -482,7 +491,7 @@
   <div class="container">
     <header class="page-header">
       <h1 class="page-title">NEURAL <span>// TRIGGER MATRIX</span></h1>
-      <p class="page-subtitle">INDEX OF CONDITIONED AUDITORY ANCHORS, TRANCE HOOKS, AND PSYCHOACOUSTIC REINFORCERS</p>
+      <p class="page-subtitle">// INDEX OF CONDITIONED AUDITORY ANCHORS, TRANCE HOOKS, AND PSYCHOACOUSTIC REINFORCERS</p>
     </header>
 
     <!-- Filter & Sort Bar -->
@@ -507,67 +516,113 @@
   </div>
 
   <script>
-    const { esc } = H;
-    // Curated psychoacoustic trigger anchor definitions
-    const TRIGGER_DESCRIPTIONS = {
-      "snap": "Auditory finger-snap impulse designed to instantaneously collapse conscious thought loops into somatic obedience.",
-      "sleep": "Direct verbal command engineered for immediate ocular release, tension evacuation, and rapid theta-state entry.",
-      "drop": "Abrupt somatic release cue designed to dissolve physical tension and plunge subject awareness into deep trance depth.",
-      "freeze": "Motor inhibition stimulus triggering instantaneous cognitive pause and receptive suggestibility.",
-      "awaken": "Gradual biometric frequency realignment sequence resetting nervous system alert levels to baseline.",
-      "melting": "Somatosensory visualization inducing peripheral warmth, muscular liquefaction, and spatial boundary release.",
-      "good boy": "High-dopamine positive feedback anchor reinforcing submission, reward anticipation, and obedience conditioning.",
-      "good girl": "Direct validation stimulus targeting endorphin receptors to induce psychological compliance and deep pleasure.",
-      "count down": "Structured progressive fractionation routine methodically depressing conscious awareness step-by-step.",
-      "stare": "Ocular fixation protocol designed to fatigue visual cortex processing and induce narrow tunnel focus.",
-      "breathe": "Autonomic nervous system entrainment pacing respiratory rate with acoustic wave cycles.",
-      "sink": "Sensory weight anchoring protocol pulling consciousness downward into subconscious subroutines.",
-      "forget": "Temporary selective amnesia anchor loosening access to immediate thoughts, identity markers, or concerns.",
-      "obedient": "Identity reframing trigger activating automatic somatic compliance without conscious friction."
-    };
-
-    let allTriggers = [];
+    let masterTriggers = [];
     let filteredTriggers = [];
     let displayedCount = 0;
     const PAGE_SIZE = 24; // Multiples of 4 to keep clean grid rows
-    let kick = () => {};
 
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        const cat = await H.loadCatalog();
-        // only triggers that really occur on active files; descriptions: triggers.json first, built-in table second
-        allTriggers = H.termCounts(cat, 'triggers').map(t => ({
-          slug: t.slug,
-          name: t.label,
-          lowerName: t.label.toLowerCase(),
-          count: t.count,
-          description: t.description || TRIGGER_DESCRIPTIONS[t.label.toLowerCase()] ||
-            `Conditioned acoustic cue programmed to induce ${t.label.toLowerCase()} reactions, subconscious responsiveness, and focus compliance.`
-        }));
+        const triggerUrl = window.resolveDbUrl ? window.resolveDbUrl(window.APP_CONFIG?.TRIGGERS_JSON || 'triggers.json') : 'triggers.json';
 
-        document.getElementById('searchInput').addEventListener('input', H.debounce(applyFilters, 180));
+        const res = await fetch(triggerUrl, { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+        const catalog = await res.json();
+        masterTriggers = parseTriggersDataset(catalog);
+
+        document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 180));
         document.getElementById('sortSelect').addEventListener('change', applyFilters);
-        kick = H.infiniteScroll(document.getElementById('scrollTrigger'), appendNextBatch);
+
         applyFilters();
+        setupInfiniteScroll();
       } catch (err) {
         console.error('Failed to load triggers:', err);
-        document.getElementById('triggersGrid').innerHTML = H.errorBox('CRITICAL NEURAL PARSER ERROR: Unable to index sensory triggers.');
-        document.getElementById('scrollTrigger').textContent = '';
+        document.getElementById('triggersGrid').innerHTML = `
+          <div style="grid-column:1/-1; color:var(--crimson-lust); text-align:center; padding:3rem; font-family:var(--font-mono);">
+            CRITICAL NEURAL PARSER ERROR: Unable to index sensory triggers.
+          </div>`;
       }
     });
+    
+    // Parse records from  triggers.json
+    function parseTriggersDataset(records) {
+      if (!Array.isArray(records)) return [];
+      
+      return records
+        .map(item => {
+          const count = typeof item.recordCount === 'number' ? item.recordCount : 0;
+          return {
+            slug: item.slug || '',
+            name: item.label || '',
+            aliases: Array.isArray(item.aliases) ? item.aliases : [],
+            description: item.description || `Specialized vocal operator archived with ${count} erotic audio transmission${count !== 1 ? 's' : ''} in the Hetaira neural databank.`,
+            count: count
+          };
+        });
+    }
+
+    function debounce(fn, ms) {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), ms);
+      };
+    }
+
+    // Inspect items for triggers, or trigger-related tags
+    function processTriggers(catalog) {
+      const counts = {};
+
+      catalog.forEach(item => {
+        if (item.status && item.status !== 'ACTIVE') return;
+
+        if (Array.isArray(item.triggers)) {
+        item.forEach(rawTrigger => {
+          const clean = String(rawTrigger).replace(/^#/, '').trim();
+          if (clean) {
+            const lower = clean.toLowerCase();
+            counts[lower] = counts[lower] || { name: clean, count: 0 };
+            counts[lower].count += 1;
+          }
+        });
+      }
+      });
+
+      masterTriggers = Object.keys(counts).map(key => {
+        const item = counts[key];
+        const desc = TRIGGER_DESCRIPTIONS[key] || 
+          `Conditioned acoustic cue programmed to induce ${item.name.toLowerCase()} reactions, subconscious responsiveness, and focus compliance.`;
+        return {
+          name: item.name,
+          lowerName: key,
+          count: item.count,
+          description: desc
+        };
+      });
+    }
 
     function applyFilters() {
       const query = document.getElementById('searchInput').value.toLowerCase().trim();
       const sort = document.getElementById('sortSelect').value;
 
-      filteredTriggers = allTriggers.filter(t => !query || t.lowerName.includes(query) || t.description.toLowerCase().includes(query));
-      H.sortBy(filteredTriggers, sort, t => t.name, t => t.count);
+      filteredTriggers = masterTriggers.filter(t => {
+        return !query || t.lowerName.includes(query) || t.description.toLowerCase().includes(query);
+      });
+
+      filteredTriggers.sort((a, b) => {
+        if (sort === 'COUNT_DESC') return b.count - a.count;
+        if (sort === 'COUNT_ASC') return a.count - b.count;
+        if (sort === 'NAME_ASC') return a.name.localeCompare(b.name);
+        if (sort === 'NAME_DESC') return b.name.localeCompare(a.name);
+        return 0;
+      });
 
       document.getElementById('resultsCount').textContent = `// SYNCED: ${filteredTriggers.length} ANCHORS`;
+      
       document.getElementById('triggersGrid').innerHTML = '';
       displayedCount = 0;
-      if (!appendNextBatch()) document.getElementById('scrollTrigger').textContent = '// NO MATCHING ANCHORS LOCATED';
-      kick();
+      appendNextBatch();
     }
 
     function appendNextBatch() {
@@ -576,7 +631,7 @@
 
       if (displayedCount >= filteredTriggers.length) {
         trigger.textContent = filteredTriggers.length > 0 ? '// END OF TRIGGER MATRIX' : '// NO MATCHING ANCHORS LOCATED';
-        return false;
+        return;
       }
 
       const nextSlice = filteredTriggers.slice(displayedCount, displayedCount + PAGE_SIZE);
@@ -584,6 +639,9 @@
 
       nextSlice.forEach((item, idx) => {
         const card = document.createElement('a');
+        // Navigates back to files with search filter set
+        //card.href = `index.html?search=${encodeURIComponent(item.name)}`;
+        // Inside tags.html appendNextBatch():
         card.href = `trigger.html?trigger=${encodeURIComponent(item.slug)}`;
         card.className = 'trigger-card';
         card.setAttribute('aria-label', `Trigger: ${item.name}, found in ${item.count} protocols`);
@@ -599,9 +657,9 @@
               </span>
               <span class="trigger-count-badge">${item.count} ${item.count === 1 ? 'FILE' : 'FILES'}</span>
             </div>
-
-            <h2 class="trigger-card-name">⚡ ${esc(item.name)}</h2>
-            <p class="trigger-card-desc">${esc(item.description)}</p>
+            
+            <h2 class="trigger-card-name">⚡ ${item.name}</h2>
+            <p class="trigger-card-desc">${item.description}</p>
           </div>
 
           <div class="trigger-card-footer">
@@ -609,13 +667,24 @@
             <span class="trigger-type-label">NEURAL.ANCHOR</span>
           </div>
         `;
+
         fragment.appendChild(card);
       });
 
       grid.appendChild(fragment);
       displayedCount += nextSlice.length;
+
       trigger.textContent = displayedCount >= filteredTriggers.length ? '// END OF TRIGGER MATRIX' : '// SCROLL FOR MORE ANCHORS...';
-      return true;
+    }
+
+    function setupInfiniteScroll() {
+      const observer = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          appendNextBatch();
+        }
+      }, { rootMargin: '200px' });
+
+      observer.observe(document.getElementById('scrollTrigger'));
     }
   </script>
 </body>

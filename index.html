@@ -3,26 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HETAIRA.EROS // EROTIC AUDIO DB</title>
+  <title>HETAIRA.EROS // EROTIC AUDIO ARCHIVE</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="config.js"></script>
-  <script src="common.js"></script>
 
   <style>
     :root {
-      --bg: #070408;
-      --card-bg: rgba(18, 10, 19, 0.88);
-      --card-border: rgba(255, 0, 85, 0.28);
+      --bg: #050206;
+      --card-bg: rgba(15, 8, 17, 0.85);
+      --card-border: rgba(255, 0, 110, 0.22);
+      --card-hover-border: #ff007f;
       --neon-pink: #ff007f;
       --crimson-lust: #ff003c;
       --blush-glow: #ff4d8d;
       --cyber-cyan: #00f0ff;
+      --cyber-cyan-glow: rgba(0, 240, 255, 0.35);
       --gold-tier: #fcee0a;
       --text-main: #f8fafc;
-      --text-muted: #b89ca9;
+      --text-muted: #a38896;
+      --neon-violet: #bd00ff;
+      --neon-violet-glow: rgba(189, 0, 255, 0.4);
+      --dark-violet-surface: #14071c; /* Alternative darker card/container layer */
+      --toxic-lime: #00ff66;         /* Clean, electric futuristic green */
+      --acid-yellow-green: #a6ff00;  /* High-energy hazard accent */
+      --matrix-green-glow: rgba(0, 255, 102, 0.25);
+      --hazard-orange: #ff5500;      /* Warning badges, overclock states */
+      --amber-pulse: #ff8c00;
+      --hyper-blue: #1f51ff;         /* Strong contrast against pink & yellow */
+      --ice-mint: #50fbe7;           /* Softer, chilled alternative to cyber-cyan */
+      --glow-pink-shadow: 0 0 20px rgba(255, 0, 127, 0.45);
+      --glow-cyan-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
+      --grid-line: rgba(255, 0, 127, 0.08); /* For cyber background grid overlays */
       --font-display: 'Orbitron', monospace, sans-serif;
       --font-body: 'Rajdhani', sans-serif;
       --font-mono: 'Share Tech Mono', monospace;
@@ -36,287 +50,24 @@
       font-family: var(--font-body);
       min-height: 100vh;
       position: relative;
+      overflow-x: hidden;
     }
 
+    /* Ambient Cyber Grid & Glow */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       background-image: 
-        linear-gradient(to right, rgba(255, 0, 85, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 0, 85, 0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
+        radial-gradient(circle at 50% 0%, rgba(255, 0, 110, 0.12) 0%, transparent 60%),
+        linear-gradient(to right, rgba(255, 0, 127, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 0, 127, 0.035) 1px, transparent 1px);
+      background-size: 100% 100%, 42px 42px, 42px 42px;
       pointer-events: none;
       z-index: 0;
     }
 
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 3.5rem 1.5rem;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-display);
-      font-size: 0.75rem;
-      letter-spacing: 2px;
-      color: var(--blush-glow);
-      text-transform: uppercase;
-      background: rgba(255, 0, 85, 0.08);
-      border: 1px solid rgba(255, 0, 85, 0.35);
-      padding: 6px 18px;
-      border-radius: 20px;
-      margin-bottom: 1rem;
-    }
-
-    .heartbeat-icon {
-      width: 10px;
-      height: 10px;
-      background-color: var(--crimson-lust);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--crimson-lust);
-      animation: heartbeat 1.2s infinite;
-    }
-
-    h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2.2rem, 5vw, 3.6rem);
-      font-weight: 900;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #fff;
-      text-shadow: 0 0 20px rgba(255, 0, 127, 0.6);
-      margin-bottom: 0.5rem;
-    }
-
-    h1 span { color: var(--neon-pink); }
-
-    .filter-bar {
-      background: rgba(18, 10, 19, 0.9);
-      border: 1px solid rgba(255, 0, 85, 0.3);
-      padding: 1.2rem 1.5rem;
-      margin-bottom: 2.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-      justify-content: space-between;
-      clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
-      box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-    }
-
-    .search-input-wrap {
-      flex: 1 1 280px;
-    }
-
-    .search-input {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 0, 85, 0.4);
-      color: #fff;
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      padding: 0.75rem 1rem;
-      outline: none;
-    }
-
-    .search-input:focus {
-      border-color: var(--neon-pink);
-      box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
-    }
-
-    .filter-dropdowns {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .cyber-select {
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 0, 85, 0.4);
-      color: var(--blush-glow);
-      font-family: var(--font-display);
-      font-size: 0.75rem;
-      padding: 0.75rem 1rem;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .count-indicator {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--cyber-cyan);
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 1.8rem;
-    }
-
-    .cyber-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(14px);
-      border: 1px solid var(--card-border);
-      display: flex;
-      flex-direction: column;
-      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-      transition: transform 0.3s ease, border-color 0.3s ease;
-      overflow: hidden;
-    }
-
-    .cyber-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--neon-pink);
-      box-shadow: 0 10px 30px -8px rgba(255, 0, 85, 0.45);
-    }
-
-    .card-cover-wrapper {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      background-color: #120914;
-    }
-
-    .card-cover {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .floating-badges {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      right: 10px;
-      display: flex;
-      justify-content: space-between;
-      pointer-events: none;
-    }
-
-    .badge-tier {
-      font-family: var(--font-display);
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      background: rgba(0, 0, 0, 0.85);
-      border: 1px solid var(--gold-tier);
-      color: var(--gold-tier);
-    }
-
-    .badge-tier.free {
-      border-color: var(--cyber-cyan);
-      color: var(--cyber-cyan);
-    }
-
-    .badge-audience {
-      font-family: var(--font-display);
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      background: rgba(255, 0, 85, 0.85);
-      color: #fff;
-    }
-
-    .card-body {
-      padding: 1.3rem;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    .card-meta {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--font-display);
-      font-size: 0.72rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .card-id { color: var(--blush-glow); font-weight: 700; }
-    .card-tag { color: var(--cyber-cyan); }
-
-    .card-title {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      color: #fff;
-      margin-bottom: 0.4rem;
-      line-height: 1.3;
-    }
-
-    .card-credits {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 0.8rem;
-    }
-    .card-credits span { color: var(--blush-glow); }
-
-    .pills-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 1rem;
-    }
-
-    .tag-pill {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      padding: 2px 6px;
-      background: rgba(0, 240, 255, 0.08);
-      border: 1px solid rgba(0, 240, 255, 0.3);
-      color: var(--cyber-cyan);
-    }
-
-    .cyber-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: auto;
-      font-family: var(--font-display);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: #fff;
-      background: rgba(255, 0, 85, 0.1);
-      border: 1px solid var(--neon-pink);
-      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-      transition: all 0.2s ease;
-    }
-
-    .cyber-btn:hover {
-      background: linear-gradient(90deg, var(--crimson-lust), var(--neon-pink));
-      box-shadow: 0 0 15px var(--neon-pink);
-    }
-
-    #scrollTrigger {
-      width: 100%;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      color: var(--blush-glow);
-      margin-top: 2rem;
-    }
-
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      15%, 45% { transform: scale(1.3); }
-    }
+    /* Futuristic Top Navigation Bar */
     .cyber-navbar {
       position: sticky;
       top: 0;
@@ -396,14 +147,462 @@
       box-shadow: 0 0 8px var(--neon-pink);
     }
 
-
-    @media (max-width: 820px) {
-      .nav-container { flex-direction: column; gap: 1rem; padding: 1rem; }
-      .nav-links { gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
     }
 
-    .active-chips { display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:1rem; }
-    .active-chip { font-family: var(--font-mono); font-size:.8rem; color:var(--cyber-cyan); border:1px solid var(--cyber-cyan); padding:4px 10px; cursor:pointer; background:rgba(0,240,255,.07); }
+    /* Page Header */
+    .page-header {
+      margin-bottom: 2rem;
+      border-left: 3px solid var(--neon-pink);
+      padding-left: 1rem;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #fff;
+      text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+    }
+
+    .page-title span {
+      color: var(--neon-pink);
+      text-shadow: 0 0 15px var(--neon-pink);
+    }
+
+    .page-subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--neon-pink);
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* Futuristic Filter Panel */
+    .filter-bar {
+      background: rgba(16, 9, 18, 0.88);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      align-items: center;
+      justify-content: space-between;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 0 1px rgba(255, 0, 127, 0.4);
+      position: relative;
+    }
+
+    .filter-bar::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--crimson-lust), var(--neon-pink), transparent);
+    }
+
+    .search-input-wrap {
+      flex: 1 1 300px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 0, 127, 0.35);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      padding: 0.85rem 1.1rem;
+      outline: none;
+      transition: all 0.25s ease;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+    }
+
+    .search-input:focus {
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.35), inset 0 0 8px rgba(255, 0, 127, 0.2);
+    }
+
+    .filter-dropdowns {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .cyber-select {
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 0, 127, 0.35);
+      color: var(--blush-glow);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      padding: 0.85rem 1.1rem;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .cyber-select:hover, .cyber-select:focus {
+      border-color: var(--cyber-cyan);
+      color: var(--cyber-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+
+    .cyber-select option {
+      background: #0f0712;
+      color: #fff;
+    }
+
+    .count-indicator {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--cyber-cyan);
+      text-shadow: 0 0 10px var(--cyber-cyan-glow);
+      letter-spacing: 1px;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 2rem;
+    }
+
+    /* Clean Interactive Hyperlink Card */
+    .cyber-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+      transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                  border-color 0.35s ease, 
+                  box-shadow 0.35s ease;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .cyber-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--card-hover-border);
+      box-shadow: 0 14px 34px -10px rgba(255, 0, 110, 0.45), 0 0 20px rgba(255, 0, 110, 0.2);
+    }
+
+    /* Cover Wrapper & Image */
+    .card-cover-wrapper {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      background-color: #0d0610;
+      overflow: hidden;
+    }
+
+    .card-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.3s ease;
+      filter: brightness(0.92) contrast(1.05);
+    }
+
+    .cyber-card:hover .card-cover {
+      transform: scale(1.07);
+      filter: brightness(1.05) contrast(1.1);
+    }
+
+    /* Holographic Scanline Overlay */
+    .scanline-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        rgba(18, 10, 20, 0) 50%, 
+        rgba(0, 0, 0, 0.45) 50%
+      ), linear-gradient(
+        90deg, 
+        rgba(255,0,0,0.03), 
+        rgba(0,255,0,0.01), 
+        rgba(0,255,0,0.03)
+      );
+      background-size: 100% 4px, 6px 100%;
+      opacity: 0.6;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .cyber-card:hover .scanline-overlay {
+      opacity: 0.25;
+    }
+
+    /* Floating Badges on Cover */
+    .floating-badges {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .badge-tier {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--gold-tier);
+      color: var(--gold-tier);
+      box-shadow: 0 0 10px rgba(252, 238, 10, 0.2);
+    }
+
+    .badge-tier.free {
+      border-color: var(--cyber-cyan);
+      color: var(--cyber-cyan);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    }
+
+    /* Equalizer visualizer element */
+    .audio-eq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 3px 6px;
+      border: 1px solid rgba(255, 0, 127, 0.3);
+      border-radius: 2px;
+    }
+
+    .eq-bar {
+      width: 3px;
+      height: 4px;
+      background-color: var(--neon-pink);
+      border-radius: 1px;
+      transition: height 0.2s ease;
+    }
+
+    .cyber-card:hover .eq-bar:nth-child(1) { animation: eqPulse 0.6s infinite ease-in-out alternate; }
+    .cyber-card:hover .eq-bar:nth-child(2) { animation: eqPulse 0.4s infinite ease-in-out alternate 0.15s; }
+    .cyber-card:hover .eq-bar:nth-child(3) { animation: eqPulse 0.7s infinite ease-in-out alternate 0.3s; }
+    .cyber-card:hover .eq-bar:nth-child(4) { animation: eqPulse 0.5s infinite ease-in-out alternate 0.1s; }
+    
+    @keyframes eqPulse {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
+    /* Card Body */
+    .card-body {
+      padding: 1.25rem 1.25rem 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      margin-bottom: 0.55rem;
+      letter-spacing: 1px;
+    }
+
+    .card-id { 
+      color: var(--blush-glow); 
+      font-weight: 700; 
+    }
+
+    .card-tag { 
+      color: var(--cyber-cyan); 
+      font-family: var(--font-mono); 
+      opacity: 0.85; 
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.35rem;
+      line-height: 1.35;
+      letter-spacing: 0.5px;
+      transition: color 0.25s ease, text-shadow 0.25s ease;
+    }
+
+    .cyber-card:hover .card-title {
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(255, 0, 127, 0.8);
+    }
+
+    .card-credits {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-credits span { 
+      color: var(--blush-glow); 
+      font-weight: 600; 
+    }
+
+    /* Tag Pills */
+    .pills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: auto;
+      padding-top: 0.5rem;
+    }
+
+    .tag-pill {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      color: var(--cyber-cyan);
+      border-radius: 2px;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+    }
+
+    .cyber-card:hover .tag-pill {
+      border-color: rgba(0, 240, 255, 0.6);
+      box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+    }
+
+    /* Futuristic Card Footer */
+    .card-footer {
+      border-top: 1px solid rgba(255, 0, 110, 0.2);
+      background: rgba(10, 4, 11, 0.9);
+      padding: 0.85rem 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      align-items: center;
+      position: relative;
+    }
+
+    .card-footer::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 20%;
+      right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-pink), transparent);
+      opacity: 0.6;
+    }
+
+    .footer-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .footer-stat:nth-child(2) {
+      text-align: center;
+      border-left: 1px solid rgba(255, 0, 110, 0.15);
+      border-right: 1px solid rgba(255, 0, 110, 0.15);
+      padding: 0 4px;
+    }
+
+    .footer-stat:last-child {
+      text-align: right;
+    }
+
+    .stat-label {
+      font-family: var(--font-display);
+      font-size: 0.58rem;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #fff;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stat-value.audience-val {
+      color: var(--neon-pink);
+      text-shadow: 0 0 8px rgba(255, 0, 127, 0.3);
+    }
+
+    .stat-value.duration-val {
+      color: var(--cyber-cyan);
+      text-shadow: 0 0 8px var(--cyber-cyan-glow);
+    }
+
+    .stat-value.date-val {
+      color: var(--text-main);
+    }
+
+    /* Scroll Trigger */
+    #scrollTrigger {
+      width: 100%;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: var(--blush-glow);
+      margin-top: 3rem;
+      position: relative;
+    }
+
+    @keyframes eqPulse {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
+    @media (max-width: 820px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      .nav-links {
+        gap: 1.2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .container { padding: 1.5rem 1rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .filter-bar { padding: 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -425,180 +624,238 @@
   </nav>
 
   <div class="container">
-    <!--<header>
-      <div class="status-badge">
-        <span class="heartbeat-icon"></span>
-        STREAM ENGINE OPTIMIZED // CDN LINK ACTIVE
-      </div>
-      <h1>HETAIRA<span>.EROS</span></h1>
-    </header>-->
-
+    <header class="page-header">
+      <h1 class="page-title">NEURAL <span>// Protocol Registry</span></h1>
+      <p class="page-subtitle">// DIRECTORY OF VERIFIED VOICE OPERATIONS AND NEURAL ARCHITECTURES</p>
+    </header>
+    <!-- Filter Panel -->
     <div class="filter-bar">
       <div class="search-input-wrap">
-        <input type="text" id="searchInput" class="search-input" placeholder="SEARCH PROTOCOLS, TAGS, CREATORS...">
+        <input type="text" id="searchInput" class="search-input" placeholder="SEARCH PROTOCOLS, AUTHORS, ARTISTS, TAGS..." autocomplete="off">
       </div>
       <div class="filter-dropdowns">
-        <select id="artistFilter" class="cyber-select" aria-label="Artist">
-          <option value="ALL">ARTIST: ALL</option>
-        </select>
-
-        <select id="audienceFilter" class="cyber-select">
+        <select id="audienceFilter" class="cyber-select" aria-label="Filter by Audience">
           <option value="ALL">AUDIENCE: ALL</option>
+          <option value="F4M">F4M</option>
+          <option value="M4F">M4F</option>
+          <option value="F4F">F4F</option>
+          <option value="M4M">M4M</option>
+          <option value="ANY">ANY</option>
         </select>
 
-        <select id="tierFilter" class="cyber-select">
+        <select id="tierFilter" class="cyber-select" aria-label="Filter by Tier">
           <option value="ALL">TIER: ALL</option>
           <option value="FREE">FREE</option>
           <option value="PAID">PAID</option>
         </select>
       </div>
-      <div class="count-indicator" id="resultsCount">// LOADED: 0 RECORDS</div>
+      <div class="count-indicator" id="resultsCount">// LOADED: 0 PROTOCOLS</div>
     </div>
 
-    <div class="active-chips" id="activeChips"></div>
+    <!-- Main Grid -->
     <main class="cards-grid" id="cardsGrid"></main>
-    <div id="scrollTrigger">// SCROLL FOR MORE PROTOCOLS...</div>
+    <div id="scrollTrigger">// INITIALIZING QUANTUM DATA FEED...</div>
   </div>
 
   <script>
-  console.log("👀 Curious, aren't we?\n🌀 Once you're hypnotized, there's no snapping back! 😵\n*SNAP*\n");
-  console.log("If you want to help me improve this library you can go here: https://docs.google.com/spreadsheets/d/1Rjna5Z7m_To7CYBQjItCk1os1DwcupwoTOn9CGrB0u8/edit");
+    console.log("👀 Curious, aren't we?\n🌀 Once you're hypnotized, there's no snapping back! 😵\n*SNAP*\n");
+    console.log("If you want to help me improve this library you can go here: https://docs.google.com/spreadsheets/d/1Rjna5Z7m_To7CYBQjItCk1os1DwcupwoTOn9CGrB0u8/edit");
 
-    const { esc } = H;
-    const PAGE_SIZE = window.APP_CONFIG.PAGE_SIZE || 12;
-    let cat = null;
+    let masterList = [];
     let filteredList = [];
     let displayedCount = 0;
-    let kick = () => {};
-    // filters that come from the URL (links from the Artists / Tags / Triggers pages)
-    const urlFilter = { tag: H.q('tag'), trigger: H.q('trigger') };
+    const PAGE_SIZE = window.APP_CONFIG?.PAGE_SIZE || 12;
 
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        cat = await H.loadCatalog();
+        const summaryAllUrl = window.resolveDbUrl ? window.resolveDbUrl(window.APP_CONFIG?.SUMMARY_ALL_JSON || 'summary-all.json') : 'summary-all.json';
 
-        const artistSel = document.getElementById('artistFilter');
-        cat.artists.forEach(a => artistSel.add(new Option(a.name, a.slug)));
-        const audSel = document.getElementById('audienceFilter');
-        [...new Set(cat.items.map(i => (i.audience || '').toUpperCase()).filter(Boolean))].sort()
-          .forEach(a => audSel.add(new Option(a, a)));
+        let res = await fetch(summaryAllUrl, { cache: 'no-cache' });
+        if (!res.ok) {throw new Error(`HTTP error! status: ${res.status}`);}
 
-        // initial values from the URL (?q= or legacy ?search=, ?artist=, ?audience=, ?tier=)
-        document.getElementById('searchInput').value = H.q('q') || H.q('search');
-        const wantArtist = H.q('artist');
-        const hit = cat.artistBySlug.get(wantArtist) || cat.artistByUuid.get(wantArtist) || cat.artists.find(a => H.slugify(a.name) === H.slugify(wantArtist));
-        if (hit) artistSel.value = hit.slug;
-        if ([...audSel.options].some(o => o.value === H.q('audience').toUpperCase())) audSel.value = H.q('audience').toUpperCase();
-        if (['FREE', 'PAID'].includes(H.q('tier').toUpperCase())) document.getElementById('tierFilter').value = H.q('tier').toUpperCase();
+        masterList = await res.json();
+        
+        document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 200));
+        document.getElementById('audienceFilter').addEventListener('change', applyFilters);
+        document.getElementById('tierFilter').addEventListener('change', applyFilters);
 
-        document.getElementById('searchInput').addEventListener('input', H.debounce(applyFilters, 200));
-        ['artistFilter', 'audienceFilter', 'tierFilter'].forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
-
-        kick = H.infiniteScroll(document.getElementById('scrollTrigger'), appendNextBatch);
         applyFilters();
+        setupInfiniteScroll();
       } catch (err) {
         console.error('Failed to load catalog:', err);
-        document.getElementById('cardsGrid').innerHTML = H.errorBox('CRITICAL TELEMETRY READ ERROR: Unable to load records catalog.');
-        document.getElementById('scrollTrigger').textContent = '';
+        document.getElementById('cardsGrid').innerHTML = `
+          <div style="grid-column:1/-1; color:var(--crimson-lust); text-align:center; padding:3rem; font-family:var(--font-mono);">
+            CRITICAL TELEMETRY READ ERROR: Unable to load records catalog.
+          </div>`;
       }
     });
 
-    function renderChips() {
-      const box = document.getElementById('activeChips');
-      const chips = [];
-      for (const [kind, key, label] of [['tags', 'tag', '#'], ['triggers', 'trigger', '⚠ ']]) {
-        if (!urlFilter[key]) continue;
-        const e = H.findTerm(cat, kind, urlFilter[key]);
-        chips.push(`<span class="active-chip" data-key="${key}">${label}${esc(e ? e.label : urlFilter[key])} ✕</span>`);
-      }
-      box.innerHTML = chips.join('');
-      box.querySelectorAll('.active-chip').forEach(c => c.addEventListener('click', () => { urlFilter[c.dataset.key] = ''; applyFilters(); }));
+    function debounce(fn, ms) {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), ms);
+      };
     }
 
     function applyFilters() {
-      const words = document.getElementById('searchInput').value.toLowerCase().trim().split(/\s+/).filter(Boolean);
-      const artist = document.getElementById('artistFilter').value;
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
       const audience = document.getElementById('audienceFilter').value;
       const tier = document.getElementById('tierFilter').value;
-      const tagE = urlFilter.tag && H.findTerm(cat, 'tags', urlFilter.tag);
-      const trgE = urlFilter.trigger && H.findTerm(cat, 'triggers', urlFilter.trigger);
 
-      filteredList = cat.items.filter(item =>
-        words.every(w => item._q.includes(w)) &&
-        (artist === 'ALL' || item._artists.some(a => a.slug === artist)) &&
-        (audience === 'ALL' || (item.audience || '').toUpperCase() === audience) &&
-        (tier === 'ALL' || (tier === 'FREE') === item._free) &&
-        (!urlFilter.tag || (tagE && item._tagEntries.includes(tagE))) &&
-        (!urlFilter.trigger || (trgE && item._trigEntries.includes(trgE)))
-      );
+      filteredList = masterList.filter(item => {
+        if (item.status && item.status !== 'ACTIVE') return false;
 
-      // keep the URL shareable
-      const p = new URLSearchParams();
-      const put = (k, v, off) => v && v !== off && p.set(k, v);
-      put('q', document.getElementById('searchInput').value.trim());
-      put('artist', artist, 'ALL'); put('audience', audience, 'ALL'); put('tier', tier, 'ALL');
-      put('tag', urlFilter.tag); put('trigger', urlFilter.trigger);
-      history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : ''));
+        const tagsStr = Array.isArray(item.tags) ? item.tags.join(' ').toLowerCase() : '';
+        const matchSearch = !search || 
+          (item.title && item.title.toLowerCase().includes(search)) ||
+          (item.artist && item.artist.toLowerCase().includes(search)) ||
+          (item.author && item.author.toLowerCase().includes(search)) ||
+          (item.id && item.id.toLowerCase().includes(search)) ||
+          tagsStr.includes(search);
 
-      renderChips();
+        const matchAudience = audience === 'ALL' || (item.audience && item.audience.toUpperCase() === audience);
+        const isFree = (item.tier || '').toUpperCase().includes('FREE');
+        const matchTier = tier === 'ALL' || (tier === 'FREE' && isFree) || (tier === 'PAID' && !isFree);
+
+        return matchSearch && matchAudience && matchTier;
+      });
+
       document.getElementById('resultsCount').textContent = `// MATCHED: ${filteredList.length} PROTOCOLS`;
+      
+      // Reset Grid
       document.getElementById('cardsGrid').innerHTML = '';
       displayedCount = 0;
-      if (!appendNextBatch()) document.getElementById('scrollTrigger').textContent = '// NO MATCHING PROTOCOLS';
-      kick();
+      appendNextBatch();
     }
 
-    /** Renders one batch; returns true if anything was added. */
+    // Helper: Format duration safely
+    function formatLength(item) {
+      const val = item.duration || item.length || item.file_length || item.runtime;
+      if (!val) return '--:--';
+      
+      if (typeof val === 'number') {
+        const m = Math.floor(val / 60);
+        const s = Math.floor(val % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
+      }
+      return String(val);
+    }
+
+    // Helper: Format release date safely
+    function formatReleaseDate(item) {
+      const val = item.release_date || item.date || item.created_at || item.published;
+      if (!val) return 'ARCHIVED';
+      
+      try {
+        const d = new Date(val);
+        if (!isNaN(d.getTime())) {
+          return d.toISOString().split('T')[0];
+        }
+      } catch (e) {}
+      return String(val);
+    }
+
     function appendNextBatch() {
       const grid = document.getElementById('cardsGrid');
       const trigger = document.getElementById('scrollTrigger');
+
       if (displayedCount >= filteredList.length) {
-        trigger.textContent = filteredList.length > 0 ? '// END OF ARCHIVE RECORDS' : '// NO MATCHING PROTOCOLS';
-        return false;
+        trigger.textContent = filteredList.length > 0 ? '// END OF ARCHIVE RECORDS' : '// NO MATCHING PROTOCOLS FOUND';
+        return;
       }
 
       const nextSlice = filteredList.slice(displayedCount, displayedCount + PAGE_SIZE);
       const fragment = document.createDocumentFragment();
+      const resolveFn = window.resolveAssetUrl || (url => url);
 
       nextSlice.forEach(item => {
-        const tags = item.tags.slice(0, 3);
-        const card = document.createElement('article');
+        const artistId = item.artistUuid || item.artistId || '';
+        const fallbackArt = resolveFn(`${artistId}/covers/fallback_cover.png`, 'cover');
+
+        const isFree = (item.tier || '').toUpperCase().includes('FREE');
+        const tags = Array.isArray(item.tags) ? item.tags.slice(0, 3) : [];
+        const rawCover = item.cover ? resolveFn(`${artistId}/`+item.cover, 'cover') : '';
+        const initialSrc = rawCover || fallbackArt;
+        const targetId = encodeURIComponent(item.uuid || item.id || '');
+        const durationStr = formatLength(item);
+        const dateStr = formatReleaseDate(item);
+
+        // Entire Card is an Anchor Element
+        const card = document.createElement('a');
+        card.href = `detail.html?aid=${artistId}&id=${targetId}`;
         card.className = 'cyber-card';
+        card.setAttribute('aria-label', `Open ${item.title || 'audio'} details`);
+
         card.innerHTML = `
           <div class="card-cover-wrapper">
-            <img src="${esc(H.cover(item))}" alt="${esc(item.title || 'Cover')}" class="card-cover" loading="lazy">
+            <img src="${initialSrc}" 
+                 alt="${item.title || 'Cover'}" 
+                 class="card-cover" 
+                 loading="lazy" 
+                 onerror="this.onerror=null; this.src='${fallbackArt}';">
+            
+            <div class="scanline-overlay"></div>
+
             <div class="floating-badges">
-              <span class="badge-tier ${item._free ? 'free' : ''}">${esc(item.tier || 'FREE')}</span>
-              <span class="badge-audience">${esc(item.audience || 'F4M')}</span>
+              <span class="badge-tier ${isFree ? 'free' : ''}">${item.tier || 'FREE'}</span>
+              
+              <div class="audio-eq-bars" title="Audio Protocol Loaded">
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+              </div>
             </div>
           </div>
 
           <div class="card-body">
             <div class="card-meta">
-              <span class="card-id">${esc(item.id || 'EROS')}</span>
-              <span class="card-tag">${esc(item.tag || 'AUDIO')}</span>
+              <span class="card-id">${item.id || 'EROS'}</span>
+              <span class="card-tag">${item.tag || 'AUDIO'}</span>
             </div>
-
-            <h2 class="card-title">${esc(item.title || 'Untitled')}</h2>
-            <div class="card-credits">By <span>${esc(item.author || item._artistNames.join(' × '))}</span></div>
+            
+            <h2 class="card-title">${item.title || 'Untitled Protocol'}</h2>
+            <div class="card-credits">By <span>${item.author || item.artist || 'Anonymous'}</span></div>
 
             ${tags.length ? `
               <div class="pills-container">
-                ${tags.map(t => `<span class="tag-pill">${esc(t)}</span>`).join('')}
+                ${tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}
               </div>` : ''}
-
-            <a href="detail.html?id=${encodeURIComponent(item.uuid)}" class="cyber-btn">
-              ENGAGE FEED &rarr;
-            </a>
           </div>
+
+          <footer class="card-footer">
+            <div class="footer-stat">
+              <span class="stat-label">AUDIENCE</span>
+              <span class="stat-value audience-val">${item.audience || 'ANY'}</span>
+            </div>
+            <div class="footer-stat">
+              <span class="stat-label">LENGTH</span>
+              <span class="stat-value duration-val">${durationStr}</span>
+            </div>
+            <div class="footer-stat">
+              <span class="stat-label">RELEASE</span>
+              <span class="stat-value date-val">${dateStr}</span>
+            </div>
+          </footer>
         `;
         fragment.appendChild(card);
       });
 
       grid.appendChild(fragment);
       displayedCount += nextSlice.length;
+
       trigger.textContent = displayedCount >= filteredList.length ? '// END OF ARCHIVE RECORDS' : '// SCROLL FOR MORE PROTOCOLS...';
-      return true;
+    }
+
+    function setupInfiniteScroll() {
+      const observer = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          appendNextBatch();
+        }
+      }, { rootMargin: '250px' });
+
+      observer.observe(document.getElementById('scrollTrigger'));
     }
   </script>
 </body>

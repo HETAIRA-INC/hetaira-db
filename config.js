@@ -1,61 +1,45 @@
-// config.js — shared by every page (load it BEFORE common.js)
-(function () {
-  const cfg = {
-    // Cover art (hetaira-c1 repo). Record paths look like "<artist-uuid>/cover/<uuid>.jpg"
-    COVER_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-c1/refs/heads/main/',
-    // Audio (hetaira-c1 repo, stored with Git LFS). Record paths look like "<artist-uuid>/audio/<uuid>.mp3"
-    AUDIO_BASE_URL: 'https://media.githubusercontent.com/media/HETAIRA-INC/hetaira-c1/refs/heads/main/',
-    // JSON catalog (hetaira-data repo): artists.json, tags.json, triggers.json, summary-all.json, <artist-uuid>/records/<uuid>.json
-    DB_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-data/refs/heads/main/',
+// config.js
+window.APP_CONFIG = {
+  // Set to '' for same-domain local assets, or point to your external repo / CDN:
+  // e.g., 'https://raw.githubusercontent.com/your-user/audio-assets-repo/main/'
+  // e.g., 'https://media.yourdomain.com/'
+  //ASSET_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-c1/refs/heads/main/',
+  COVER_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-c1/refs/heads/main/',
+  DB_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-data/refs/heads/main/',
+  AUDIO_BASE_URL: 'https://media.githubusercontent.com/media/HETAIRA-INC/hetaira-c1/refs/heads/main/',
+  //use this when multi artist is implemented. AUDIO_BASE_URL: 'https://media.githubusercontent.com/media/HETAIRA-INC/hetaira-c1/refs/heads/main/7ce7929c-7574-4a8e-8405-5422ff1f16dc/',
 
-    // Items loaded per batch on the main directory grid
-    PAGE_SIZE: 12
-  };
+  // Items loaded per page on the main directory grid
+  PAGE_SIZE: 12,
 
-  // Local development overrides — honoured ONLY when the page itself is served from localhost,
-  // so a crafted link on the public site can never point visitors at someone else's data.
-  //   ?local=1   use the admin server (npm start in hetaira-data, http://localhost:3000)
-  //   ?local=0   go back to the production URLs above
-  //   ?db=URL  ?covers=URL  ?audio=URL   override a single base URL (value "reset" clears it)
-  if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
-    try {
-      const q = new URLSearchParams(location.search);
-      const KEYS = { db: 'DB_BASE_URL', covers: 'COVER_BASE_URL', audio: 'AUDIO_BASE_URL' };
-      const store = (k, v) => (v === null ? localStorage.removeItem('hetaira.' + k) : localStorage.setItem('hetaira.' + k, v));
-      if (q.get('local') === '1') {
-        store('DB_BASE_URL', 'http://localhost:3000/');
-        store('COVER_BASE_URL', 'http://localhost:3000/media/');
-        store('AUDIO_BASE_URL', 'http://localhost:3000/media/');
-      } else if (q.get('local') === '0') {
-        Object.values(KEYS).forEach(k => store(k, null));
-      }
-      for (const [param, key] of Object.entries(KEYS)) {
-        if (q.has(param)) store(key, q.get(param) === 'reset' ? null : q.get(param));
-        const saved = localStorage.getItem('hetaira.' + key);
-        if (saved) cfg[key] = saved;
-      }
-    } catch (e) { /* storage blocked: use defaults */ }
+  // Path to data sources
+  ARTISTS_JSON: 'artists.json',
+  TAGS_JSON: 'tags.json',
+  TRIGGERS_JSON: 'triggers.json',
+  SUMMARY_JSON: 'summary-all.json',
+  FALLBACK_DATA_JSON: 'data.json'
+};
+
+// Helper function to resolve media URLs
+window.resolveAssetUrl = function(path, type = 'cover') {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+    return path;
   }
+  //const base = window.APP_CONFIG.ASSET_BASE_URL.replace(/\/+$/, '');
+  const base = type === 'audio' ? window.APP_CONFIG.AUDIO_BASE_URL : window.APP_CONFIG.COVER_BASE_URL;
+  const cleanPath = path.replace(/^\/+/, '');
+  return base ? `${base.replace(/\/+$/, '')}/${cleanPath}` : cleanPath;
+};
 
-  window.APP_CONFIG = cfg;
-
-  const join = (base, path) => (base ? base.replace(/\/+$/, '') + '/' : '') + path.replace(/^\/+/, '');
-  const encodePath = p => p.split('/').map(s => encodeURIComponent(decodeSafe(s))).join('/');
-  function decodeSafe(s) { try { return decodeURIComponent(s); } catch (e) { return s; } }
-
-  /** Resolve a JSON path inside the data repo. */
-  window.resolveDbUrl = function (path) {
-    if (!path) return '';
-    if (/^https?:\/\//i.test(path)) return path;
-    return join(cfg.DB_BASE_URL, encodePath(path));
-  };
-
-  /** Resolve a record's cover/audio path to a full URL. Absolute http(s) URLs pass through untouched. */
-  window.resolveAssetUrl = function (path, type = 'cover') {
-    path = String(path || '').trim();
-    if (!path) return '';
-    if (/^https?:\/\//i.test(path) || /^data:image\//i.test(path)) return path;
-    if (/^[a-z][a-z0-9+.-]*:/i.test(path)) return '';           // javascript:, file:, ... never allowed
-    return join(type === 'audio' ? cfg.AUDIO_BASE_URL : cfg.COVER_BASE_URL, encodePath(path));
-  };
-})();
+// Helper function to resolve Database/JSON URLs with cache busting
+window.resolveDbUrl = function(filename) {
+  if (!filename) return '';
+  if (filename.startsWith('http://') || filename.startsWith('https://')) {
+    return filename;
+  }
+  const base = (window.APP_CONFIG.DB_BASE_URL || '').replace(/\/+$/, '');
+  const cleanFilename = filename.replace(/^\/+/, '');
+  // Append timestamp query parameter to bypass GitHub's 5-minute raw cache
+  return `${base}/${cleanFilename}?_t=${Date.now()}`;
+};
