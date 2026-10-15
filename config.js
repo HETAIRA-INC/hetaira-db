@@ -5,6 +5,7 @@ window.APP_CONFIG = {
   // e.g., 'https://media.yourdomain.com/'
   //ASSET_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-c1/refs/heads/main/',
   COVER_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-c1/refs/heads/main/',
+  VTT_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-c1/refs/heads/main/',
   DB_BASE_URL: 'https://raw.githubusercontent.com/HETAIRA-INC/hetaira-data/refs/heads/main/',
   AUDIO_BASE_URL: 'https://media.githubusercontent.com/media/HETAIRA-INC/hetaira-c1/refs/heads/main/',
   //use this when multi artist is implemented. AUDIO_BASE_URL: 'https://media.githubusercontent.com/media/HETAIRA-INC/hetaira-c1/refs/heads/main/7ce7929c-7574-4a8e-8405-5422ff1f16dc/',
