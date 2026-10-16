@@ -553,14 +553,14 @@
       try {
         const item = await fetchRecord(artist, uuid);
         const resolvedArtist = item?.artistUuid || artist;
-        trackTitleDisp.textContent = item?.title || "SAMARITAN PROTOCOL";
+        trackTitleDisp.textContent = item?.title || "VISUALIZER PROTOCOL";
 
         const audioBase = window.APP_CONFIG?.AUDIO_BASE_URL;
         const audioFile = item?.file || `${uuid}.mp3`;
         const audioUrl = resolveMediaUrl(audioBase, resolvedArtist, audioFile);
 
         const vttBase = window.APP_CONFIG?.VTT_BASE_URL || window.APP_CONFIG?.COVER_BASE_URL;
-        const vttFile = item?.vtt || (item?.file ? item.file.replace(/\.[^/.]+$/, '.vtt') : `${uuid}.vtt`);
+        const vttFile = item?.file || `${uuid}.vtt`;
         const vttUrl = resolveMediaUrl(vttBase, resolvedArtist, vttFile);
 
         let vttRes = await fetch(vttUrl);
