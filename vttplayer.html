@@ -549,45 +549,70 @@
       return baseUrl ? `${baseUrl}/${clean}` : clean;
     }
 
+    
     async function initializePlayer(artist, uuid) {
       try {
         const item = await fetchRecord(artist, uuid);
         const resolvedArtist = item?.artistUuid || artist;
-        trackTitleDisp.textContent = item?.title || "VISUALIZER PROTOCOL";
 
+        trackTitleDisp.textContent =
+          item?.title || "VISUALIZER PROTOCOL";
+
+        // Audio URL
         const audioBase = window.APP_CONFIG?.AUDIO_BASE_URL;
         const audioFile = item?.file || `${uuid}.mp3`;
-        const audioUrl = resolveMediaUrl(audioBase, resolvedArtist, audioFile);
+        const audioUrl = resolveMediaUrl(
+          audioBase,
+          resolvedArtist,
+          audioFile
+        );
 
-        const vttBase = window.APP_CONFIG?.VTT_BASE_URL || window.APP_CONFIG?.COVER_BASE_URL;
-        const vttFile = item?.vtt || (item?.file ? item.file.replace(/\.[^/.]+$/, '.vtt') : `${uuid}.vtt`);
-        const vttUrl = resolveMediaUrl(vttBase, resolvedArtist, vttFile);
+        // VTT URL: use the path provided by the JSON
+        const vttBase =
+          window.APP_CONFIG?.VTT_BASE_URL ||
+          window.APP_CONFIG?.COVER_BASE_URL;
 
-        let vttRes = await fetch(vttUrl);
-        if (!vttRes.ok) {
-          const fallbacks = [vttFile.replace(/\/audio\//, '/vtt/'), `${uuid}.vtt`];
-          for (const fb of fallbacks) {
-            if (fb !== vttFile) {
-              const fbRes = await fetch(resolveMediaUrl(vttBase, resolvedArtist, fb));
-              if (fbRes.ok) { vttRes = fbRes; break; }
+        const vttFile = item?.vtt;
+
+        if (!vttFile) {
+          transcript = [];
+          transitionWord("VTT ERROR");
+        } else {
+          try {
+            const vttUrl = resolveMediaUrl(
+              vttBase,
+              resolvedArtist,
+              vttFile
+            );
+
+            const response = await fetch(vttUrl);
+
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}`);
             }
+
+            const vttText = await response.text();
+            transcript = parseVttToTimedWords(vttText);
+
+            transitionWord(
+              transcript.length ? "STANDBY" : "NO CUES"
+            );
+          } catch (error) {
+            console.error("Error loading VTT:", error);
+            transcript = [];
+            transitionWord("VTT ERROR");
           }
         }
 
-        if (vttRes && vttRes.ok) {
-          const vttText = await vttRes.text();
-          transcript = parseVttToTimedWords(vttText);
-          transitionWord(transcript.length ? "STANDBY" : "NO CUES");
-        } else {
-          transitionWord("VTT ERROR");
-        }
-
+        // Initialize audio regardless of VTT success
         audio.src = audioUrl;
+
       } catch (error) {
         console.error("Error initializing player:", error);
         transitionWord("SYSTEM FAILURE");
       }
     }
+
 
     // ==========================================
     // VTT PARSING ENGINE
