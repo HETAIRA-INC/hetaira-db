@@ -560,7 +560,7 @@
         const audioUrl = resolveMediaUrl(audioBase, resolvedArtist, audioFile);
 
         const vttBase = window.APP_CONFIG?.VTT_BASE_URL || window.APP_CONFIG?.COVER_BASE_URL;
-        const vttFile = item?.file || `${uuid}.vtt`;
+        const vttFile = item?.vtt || (item?.file ? item.file.replace(/\.[^/.]+$/, '.vtt') : `${uuid}.vtt`);
         const vttUrl = resolveMediaUrl(vttBase, resolvedArtist, vttFile);
 
         let vttRes = await fetch(vttUrl);
