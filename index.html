@@ -761,7 +761,7 @@
       nextSlice.forEach(item => {
         const tags = item.tags.slice(0, 3);
         const card = document.createElement('a');
-        card.href = `detail.html?aid=${artistId}&id=${targetId}`;
+        card.href = `detail.html?aid=${esc(H.artistId)}&id=${esc(H.targetId)}`;
         card.className = 'cyber-card';
         card.innerHTML = `
           <div class="card-cover-wrapper">
