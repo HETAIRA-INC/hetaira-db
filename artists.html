@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="config.js"></script>
-  <script src="common.js"></script>
 
   <style>
     :root {
@@ -25,6 +24,19 @@
       --gold-tier: #fcee0a;
       --text-main: #f8fafc;
       --text-muted: #a38896;
+      --neon-violet: #bd00ff;
+      --neon-violet-glow: rgba(189, 0, 255, 0.4);
+      --dark-violet-surface: #14071c; /* Alternative darker card/container layer */
+      --toxic-lime: #00ff66;         /* Clean, electric futuristic green */
+      --acid-yellow-green: #a6ff00;  /* High-energy hazard accent */
+      --matrix-green-glow: rgba(0, 255, 102, 0.25);
+      --hazard-orange: #ff5500;      /* Warning badges, overclock states */
+      --amber-pulse: #ff8c00;
+      --hyper-blue: #1f51ff;         /* Strong contrast against pink & yellow */
+      --ice-mint: #50fbe7;           /* Softer, chilled alternative to cyber-cyan */
+      --glow-pink-shadow: 0 0 20px rgba(255, 0, 127, 0.45);
+      --glow-cyan-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
+      --grid-line: rgba(255, 0, 127, 0.08); /* For cyber background grid overlays */
       --font-display: 'Orbitron', monospace, sans-serif;
       --font-body: 'Rajdhani', sans-serif;
       --font-mono: 'Share Tech Mono', monospace;
@@ -155,15 +167,20 @@
       font-size: 1.8rem;
       font-weight: 900;
       letter-spacing: 2px;
-      text-transform: uppercase;
       color: #fff;
+      text-transform: uppercase;
       text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
     }
 
-    .page-sub {
+    .page-title span {
+      color: var(--neon-violet);
+      text-shadow: 0 0 15px var(--neon-violet-glow);
+    }
+
+    .page-subtitle {
       font-family: var(--font-mono);
       font-size: 0.85rem;
-      color: var(--blush-glow);
+      color: var(--neon-violet);
       letter-spacing: 1px;
       margin-top: 4px;
     }
@@ -190,7 +207,7 @@
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--neon-pink), var(--cyber-cyan), transparent);
+      background: linear-gradient(90deg, transparent, var(--neon-pink), var(--neon-violet), transparent);
     }
 
     .search-input-wrap {
@@ -261,7 +278,7 @@
       gap: 2rem;
     }
 
-    /* Artist Card Structure */
+    /* Clean Interactive Hyperlink Artist Card */
     .cyber-card {
       display: flex;
       flex-direction: column;
@@ -289,7 +306,7 @@
     .card-cover-wrapper {
       position: relative;
       width: 100%;
-      height: 240px;
+      height: 260px;
       background-color: #0d0610;
       overflow: hidden;
     }
@@ -401,6 +418,7 @@
     .card-meta {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-family: var(--font-display);
       font-size: 0.72rem;
       margin-bottom: 0.45rem;
@@ -416,6 +434,7 @@
       color: var(--cyber-cyan); 
       font-family: var(--font-mono); 
       opacity: 0.85; 
+      text-transform: uppercase;
     }
 
     .artist-name {
@@ -521,6 +540,9 @@
     .stat-value.secondary {
       color: var(--cyber-cyan);
       text-shadow: 0 0 8px var(--cyber-cyan-glow);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     /* Scroll Trigger */
@@ -582,14 +604,14 @@
 
   <div class="container">
     <header class="page-header">
-      <h1 class="page-title">Operator Registry</h1>
-      <p class="page-sub">// DIRECTORY OF CERTIFIED VOICE OPERATORS AND NEURAL ARCHITECTS</p>
+      <h1 class="page-title">NEURAL <span>// Operator Registry</span></h1>
+      <p class="page-subtitle">// DIRECTORY OF CERTIFIED VOICE OPERATORS AND NEURAL ARCHITECTS</p>
     </header>
 
     <!-- Filter Panel -->
     <div class="filter-bar">
       <div class="search-input-wrap">
-        <input type="text" id="searchInput" class="search-input" placeholder="SEARCH OPERATORS, STYLES, OR AUDIENCES..." autocomplete="off">
+        <input type="text" id="searchInput" class="search-input" placeholder="SEARCH OPERATORS, PREFIXES, ALIASES, OR STYLES..." autocomplete="off">
       </div>
       <div class="filter-dropdowns">
         <select id="sortFilter" class="cyber-select" aria-label="Sort Operators">
@@ -608,74 +630,115 @@
   </div>
 
   <script>
-    const { esc } = H;
-    const PAGE_SIZE = 12; // Divisible by 3 for clean rows
     let masterArtists = [];
     let filteredArtists = [];
     let displayedCount = 0;
-    let kick = () => {};
+    const PAGE_SIZE = 12; // Divisible by 3 for clean rows
 
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        const cat = await H.loadCatalog();
-        masterArtists = buildArtistsDataset(cat);
+        const artistsUrl = window.resolveDbUrl ? window.resolveDbUrl(window.APP_CONFIG?.ARTISTS_JSON || 'artists.json') : 'artists.json';
 
-        document.getElementById('searchInput').addEventListener('input', H.debounce(applyFilters, 200));
+        const res = await fetch(artistsUrl, { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+        const catalog = await res.json();
+        masterArtists = parseArtistsDataset(catalog);
+
+        document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 200));
         document.getElementById('sortFilter').addEventListener('change', applyFilters);
-        kick = H.infiniteScroll(document.getElementById('scrollTrigger'), appendNextBatch, '250px');
+
         applyFilters();
+        setupInfiniteScroll();
       } catch (err) {
         console.error('Failed to load artist registry:', err);
-        document.getElementById('artistsGrid').innerHTML = H.errorBox('CRITICAL TELEMETRY READ ERROR: Unable to load operator index.');
-        document.getElementById('scrollTrigger').textContent = '';
+        document.getElementById('artistsGrid').innerHTML = `
+          <div style="grid-column: 1 / -1; color: var(--crimson-lust); text-align: center; padding: 3rem; font-family: var(--font-mono);">
+            CRITICAL TELEMETRY READ ERROR: Unable to load operator index from artists.json.
+          </div>`;
       }
     });
 
-    // One entry per registered artist (artists.json); collaborations count for every credited artist.
-    function buildArtistsDataset(cat) {
-      return cat.artists
-        .filter(a => !a.status || a.status === 'ACTIVE')
-        .map(a => {
-          const files = cat.items.filter(r => r._artists.includes(a));
-          const tagCounts = new Map();
-          files.forEach(f => f.tags.forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1)));
-          const audCounts = new Map();
-          files.forEach(f => f.audience && audCounts.set(f.audience, (audCounts.get(f.audience) || 0) + 1));
-          const top = m => [...m.entries()].sort((x, y) => y[1] - x[1]).map(e => e[0]);
+    // Parse records from artists.json
+    function parseArtistsDataset(records) {
+      if (!Array.isArray(records)) return [];
+
+      const FALLBACK_ART = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#120715"/>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#33001f" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff007f"/>
+      <stop offset="100%" stop-color="#00f0ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#grid)"/>
+  <circle cx="200" cy="175" r="65" fill="none" stroke="url(#grad)" stroke-width="2" opacity="0.6"/>
+  <polygon points="200,135 235,195 165,195" fill="none" stroke="#ff007f" stroke-width="2"/>
+  <text x="200" y="275" text-anchor="middle" font-family="monospace" font-size="13" font-weight="700" fill="#ff4d8d">[ NO COVER ARTWORK ]</text>
+  <text x="200" y="300" text-anchor="middle" font-family="monospace" font-size="11" fill="#00f0ff">// SIGNAL_OFFLINE</text>
+</svg>
+`)}`;
+      return records
+        .filter(item => !item.status || item.status === 'ACTIVE')
+        .map(item => {
+          const count = typeof item.recordCount === 'number' ? item.recordCount : 0;
           return {
-            slug: a.slug,
-            name: a.name,
-            site: a.site || '',
-            count: files.length,
-            cover: (files.find(f => f.cover) || {}).cover || null,
-            tags: top(tagCounts),
-            audiences: top(audCounts),
-            aliases: a.aliases || [],
-            description: `Voice operator archived with ${files.length} erotic audio transmission${files.length === 1 ? '' : 's'} in the Hetaira neural databank.`
+            uuid: item.uuid || '',
+            slug: item.slug || '',
+            name: item.name || 'Anonymous',
+            aliases: Array.isArray(item.aliases) ? item.aliases : [],
+            idPrefix: item.idPrefix || 'EROS-OP-',
+            site: item.site || '',
+            defaultTag: item.defaultTag || 'NEURAL TRANSMISSION',
+            status: item.status || 'ACTIVE',
+            cover: item.cover ? `${item.uuid}/${item.cover}` : FALLBACK_ART,
+            description: item.description || `Specialized vocal operator archived with ${count} erotic audio transmission${count !== 1 ? 's' : ''} in the Hetaira neural databank.`,
+            count: count
           };
-        })
-        .filter(a => a.count > 0);
+        });
+    }
+
+    function debounce(fn, ms) {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), ms);
+      };
     }
 
     function applyFilters() {
       const query = document.getElementById('searchInput').value.toLowerCase().trim();
       const sort = document.getElementById('sortFilter').value;
 
-      filteredArtists = masterArtists.filter(a =>
-        !query ||
-        a.name.toLowerCase().includes(query) ||
-        a.aliases.some(x => x.toLowerCase().includes(query)) ||
-        a.tags.some(t => t.toLowerCase().includes(query)) ||
-        a.audiences.some(x => x.toLowerCase().includes(query)) ||
-        a.description.toLowerCase().includes(query));
+      filteredArtists = masterArtists.filter(artist => {
+        if (!query) return true;
+        const nameMatch = artist.name.toLowerCase().includes(query);
+        const prefixMatch = artist.idPrefix.toLowerCase().includes(query);
+        const tagMatch = artist.defaultTag.toLowerCase().includes(query);
+        const descMatch = artist.description.toLowerCase().includes(query);
+        const aliasesMatch = artist.aliases.some(alias => alias.toLowerCase().includes(query));
+        return nameMatch || prefixMatch || tagMatch || descMatch || aliasesMatch;
+      });
 
-      H.sortBy(filteredArtists, sort, a => a.name, a => a.count);
+      // Sorting
+      filteredArtists.sort((a, b) => {
+        if (sort === 'COUNT_DESC') return b.count - a.count;
+        if (sort === 'COUNT_ASC') return a.count - b.count;
+        if (sort === 'NAME_ASC') return a.name.localeCompare(b.name);
+        if (sort === 'NAME_DESC') return b.name.localeCompare(a.name);
+        return 0;
+      });
 
       document.getElementById('resultsCount').textContent = `// LOADED: ${filteredArtists.length} OPERATORS`;
+
+      // Reset
       document.getElementById('artistsGrid').innerHTML = '';
       displayedCount = 0;
-      if (!appendNextBatch()) document.getElementById('scrollTrigger').textContent = '// NO MATCHING OPERATORS FOUND';
-      kick();
+      appendNextBatch();
     }
 
     function appendNextBatch() {
@@ -684,31 +747,40 @@
 
       if (displayedCount >= filteredArtists.length) {
         trigger.textContent = filteredArtists.length > 0 ? '// END OF OPERATOR REGISTRY' : '// NO MATCHING OPERATORS FOUND';
-        return false;
+        return;
       }
 
       const nextSlice = filteredArtists.slice(displayedCount, displayedCount + PAGE_SIZE);
       const fragment = document.createDocumentFragment();
+      const resolveFn = window.resolveAssetUrl || (url => url);
+      const FALLBACK_ART = resolveFn('covers/fallback_cover.png', 'cover');
 
       nextSlice.forEach(artist => {
-        const topTags = artist.tags.slice(0, 3);
-        const audienceList = artist.audiences.slice(0, 2).join(' / ') || 'UNIVERSAL';
+        const coverSrc = artist.cover ? resolveFn(artist.cover, 'cover') : FALLBACK_ART;
+        const targetUrl = `artist.html?uuid=${encodeURIComponent(artist.uuid)}`;
+        const codePrefix = artist.idPrefix ? artist.idPrefix.replace(/-+$/, '') : `OP // ${artist.name.slice(0, 3).toUpperCase()}`;
 
-        // Artist card routes back to the archive pre-filtered by this artist
+        // Generate aliases / style pills
+        const pills = [...artist.aliases.slice(0, 3)].filter(Boolean);
+
         const card = document.createElement('a');
-        card.href = `index.html?artist=${encodeURIComponent(artist.slug)}`;
+        card.href = targetUrl;
         card.className = 'cyber-card';
         card.setAttribute('aria-label', `View protocols by ${artist.name}`);
 
         card.innerHTML = `
           <div class="card-cover-wrapper">
-            <img src="${esc(H.cover(artist))}" alt="${esc(artist.name)}" class="card-cover" loading="lazy">
-
+            <img src="${coverSrc}" 
+                 alt="${artist.name}" 
+                 class="card-cover" 
+                 loading="lazy" 
+                 onerror="this.onerror=null; this.src='${FALLBACK_ART}';">
+            
             <div class="scanline-overlay"></div>
 
             <div class="floating-badges">
               <span class="badge-count">FILES: <span>${artist.count}</span></span>
-
+              
               <div class="audio-eq-bars" title="Vocal Frequency Verified">
                 <span class="eq-bar"></span>
                 <span class="eq-bar"></span>
@@ -720,27 +792,27 @@
 
           <div class="card-body">
             <div class="card-meta">
-              <span class="card-id">OP // ${esc(artist.name.slice(0, 3).toUpperCase())}</span>
-              <span class="card-tag">CREATOR</span>
+              <span class="card-id">OP // ${codePrefix.slice(5, 7).toUpperCase()}</span>
+              <span class="card-tag">${artist.defaultTag}</span>
             </div>
+            
+            <h2 class="artist-name">${artist.name}</h2>
+            <p class="artist-desc">${artist.description}</p>
 
-            <h2 class="artist-name">${esc(artist.name)}</h2>
-            <p class="artist-desc">${esc(artist.description)}</p>
-
-            ${topTags.length ? `
+            ${pills.length ? `
               <div class="pills-container">
-                ${topTags.map(tag => `<span class="tag-pill">${esc(tag)}</span>`).join('')}
+                ${pills.map(tag => `<span class="tag-pill">${tag}</span>`).join('')}
               </div>` : ''}
           </div>
 
           <footer class="card-footer">
             <div class="footer-stat">
               <span class="stat-label">TOTAL ARCHIVED</span>
-              <span class="stat-value primary">${artist.count} TRANSMISSION${artist.count > 1 ? 'S' : ''}</span>
+              <span class="stat-value primary">${artist.count} TRANSMISSION${artist.count !== 1 ? 'S' : ''}</span>
             </div>
             <div class="footer-stat">
-              <span class="stat-label">DOMINANT FORMAT</span>
-              <span class="stat-value secondary">${esc(audienceList)}</span>
+              <span class="stat-label">DESIGNATION</span>
+              <span class="stat-value secondary" title="${artist.slug || artist.uuid}">${artist.slug || 'ACTIVE'}</span>
             </div>
           </footer>
         `;
@@ -749,8 +821,18 @@
 
       grid.appendChild(fragment);
       displayedCount += nextSlice.length;
+
       trigger.textContent = displayedCount >= filteredArtists.length ? '// END OF OPERATOR REGISTRY' : '// SCROLL FOR MORE OPERATORS...';
-      return true;
+    }
+
+    function setupInfiniteScroll() {
+      const observer = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          appendNextBatch();
+        }
+      }, { rootMargin: '250px' });
+
+      observer.observe(document.getElementById('scrollTrigger'));
     }
   </script>
 </body>

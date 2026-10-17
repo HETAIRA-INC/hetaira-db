@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="config.js"></script>
-  <script src="common.js"></script>
 
   <style>
     :root {
@@ -496,7 +495,10 @@
     .scanline-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(rgba(18, 10, 20, 0) 50%, rgba(0, 0, 0, 0.45) 50%);
+      background: linear-gradient(
+        rgba(18, 10, 20, 0) 50%, 
+        rgba(0, 0, 0, 0.45) 50%
+        );
       background-size: 100% 4px;
       opacity: 0.6;
       pointer-events: none;
@@ -800,177 +802,291 @@
   </div>
 
   <script>
-    const { esc } = H;
     const TAG_DESCRIPTIONS = {
       "hypnosis": "Neural entrainment patterns, trance states, suggestibility induction, and guided sensory immersion.",
       "erotic": "Sensual stimulations, intimate vocal delivery, elevated heart rates, and visceral narrative tension.",
       "whisper": "Close-proximity binaural ASMR acoustics engineered to stimulate sensitive auditory reflex nerves.",
       "femdom": "Dominant female voice guidance, psychological compliance triggers, surrender, and boundary conditioning.",
-      "mdom": "Commanding masculine narrative framing, disciplined guidance, deep resonance, and authoritative protocols.",
-      "praise": "Positive emotional reinforcement, validation, arousal intensification, and endorphin flooding.",
-      "chores": "Conditioned tasks and focus routines integrated with suggestive erotic audio cues.",
-      "binaural": "3D spatial positioning audio recorded to simulate real physical proximity and head-space presence.",
-      "relaxation": "Theta-wave frequency synchronization for complete physical decompression and nervous system calm.",
-      "mind control": "Surrender protocols, identity suspension, deep subconscious looping, and behavioral modifications.",
-      "roleplay": "Contextual thematic narratives, character immersion, and specialized conceptual fantasies.",
-      "fantasy": "Surreal scenario design, non-standard cybernetic or mythological encounters and settings.",
-      "dominant": "Clear directive dominance, commanding tones, and assertive pacing over subject actions.",
-      "submissive": "Gentle, compliant voice delivery focused on service, adoration, and passive reception."
+      "mdom": "Commanding masculine narrative framing, disciplined guidance, deep resonance, and authoritative protocols."
     };
 
-    let activeEntry = null;
+    let activeTag = "";
     let tagFiles = [];
     let displayedFiles = [];
 
     document.addEventListener('DOMContentLoaded', async () => {
-      const raw = (H.q('tag') || H.q('name')).trim();
+      // 1. Get query parameter '?tag=hypnosis'
+      const params = new URLSearchParams(window.location.search);
+      activeTag = (params.get('tag') || params.get('name') || '').trim();
 
-      if (!raw) {
-        showEmpty('NO TARGET TAG SPECIFIED', 'Please select a neural descriptor tag from the directory.');
+      if (!activeTag) {
+        document.querySelector('.container').innerHTML = `
+          <div class="empty-state">
+            <h2 style="color:var(--crimson-lust); font-family:var(--font-display); margin-bottom:1rem;">NO TARGET TAG SPECIFIED</h2>
+            <p>Please select a neural descriptor tag from the directory.</p>
+            <br>
+            <a href="tags.html" class="back-nav">← RETURN TO TAGS DIRECTORY</a>
+          </div>`;
         return;
       }
 
+      // Update basic DOM placeholders
+      document.getElementById('targetTagName').textContent = activeTag.toUpperCase();
+      document.title = `HETAIRA.EROS // #${activeTag.toUpperCase()}`;
+      
+      // Calculate Hex identifier
+      let hash = 0;
+      for (let i = 0; i < activeTag.length; i++) hash = (hash << 5) - hash + activeTag.charCodeAt(i);
+      const hexTag = Math.abs(hash).toString(16).padStart(6, '0').slice(0, 6).toUpperCase();
+      document.getElementById('tagHexIndicator').textContent = `// NEURAL_INDEX_RECORD [0x${hexTag}]`;
+
+      // Set Description
+      const desc = TAG_DESCRIPTIONS[activeTag.toLowerCase()] || 
+        `Classified psychoacoustic protocol containing audio triggers, dynamic pacing, and thematic elements tailored around "${activeTag.toLowerCase()}".`;
+      document.getElementById('targetTagDescription').textContent = desc;
+
       try {
-        const cat = await H.loadCatalog();
-        const slug = H.slugify(raw);
-        // a tag that was never added to tags.json can still exist on records
-        activeEntry = H.findTerm(cat, 'tags', raw) ||
-          (cat.items.flatMap(r => r._tagEntries).find(e => e.slug === slug)) || null;
+        // Load Database
+        const summaryUrl = window.resolveDbUrl ? window.resolveDbUrl(window.APP_CONFIG?.SUMMARY_JSON || 'summary-all.json') : 'summary-all.json';
+        const fallbackUrl = window.resolveDbUrl ? window.resolveDbUrl(window.APP_CONFIG?.FALLBACK_DATA_JSON || 'data.json') : 'data.json';
 
-        if (!activeEntry) {
-          showEmpty('TAG NOT FOUND', 'No archive record carries that descriptor tag.');
-          return;
-        }
+        let res = await fetch(summaryUrl, { cache: 'no-cache' });
+        if (!res.ok) res = await fetch(fallbackUrl, { cache: 'no-cache' });
+        if (!res.ok) throw new Error("Catalog fetch error");
 
-        const name = activeEntry.label;
-        document.getElementById('targetTagName').textContent = name.toUpperCase();
-        document.title = `HETAIRA.EROS // #${name.toUpperCase()}`;
+        const catalog = await res.json();
+        
+        // Filter catalog for files matching this tag
+        tagFiles = catalog.filter(item => {
+          if (item.status && item.status !== 'ACTIVE') return false;
+          if (!Array.isArray(item.tags)) return false;
+          return item.tags.some(t => String(t).trim().toLowerCase() === activeTag.toLowerCase());
+        });
 
-        let hash = 0;
-        for (let i = 0; i < activeEntry.slug.length; i++) hash = ((hash << 5) - hash + activeEntry.slug.charCodeAt(i)) | 0;
-        const hexTag = Math.abs(hash).toString(16).padStart(6, '0').slice(0, 6).toUpperCase();
-        document.getElementById('tagHexIndicator').textContent = `// NEURAL_INDEX_RECORD [0x${hexTag}]`;
-
-        document.getElementById('targetTagDescription').textContent = activeEntry.description ||
-          TAG_DESCRIPTIONS[name.toLowerCase()] ||
-          `Classified psychoacoustic protocol containing audio triggers, dynamic pacing, and thematic elements tailored around "${name.toLowerCase()}".`;
-
-        tagFiles = cat.items.filter(item => item._tagEntries.some(e => e.slug === activeEntry.slug));
         calculateTelemetryAndCorrelations(tagFiles);
 
-        document.getElementById('fileSearchInput').addEventListener('input', H.debounce(renderFilteredFiles, 180));
+        // Bind filter event listeners
+        document.getElementById('fileSearchInput').addEventListener('input', debounce(renderFilteredFiles, 180));
         document.getElementById('tierFilter').addEventListener('change', renderFilteredFiles);
+
         renderFilteredFiles();
       } catch (err) {
-        console.error('Tag load failure:', err);
-        // never echo the URL parameter back into HTML
-        document.getElementById('associatedFilesGrid').innerHTML =
-          `<div class="empty-state" style="color:var(--crimson-lust);">ERROR INTERFACING ARCHIVE: Unable to decrypt protocols for this tag.</div>`;
+        console.error("Tag load failure:", err);
+        document.getElementById('associatedFilesGrid').innerHTML = `
+          <div class="empty-state" style="color:var(--crimson-lust);">
+            ERROR INTERFACING ARCHIVE: Unable to decrypt protocols for tag "${activeTag}".
+          </div>`;
       }
     });
 
-    function showEmpty(title, text) {
-      document.querySelector('.container').innerHTML = `
-        <div class="empty-state">
-          <h2 style="color:var(--crimson-lust); font-family:var(--font-display); margin-bottom:1rem;">${esc(title)}</h2>
-          <p>${esc(text)}</p>
-          <br>
-          <a href="tags.html" class="back-nav">← RETURN TO TAGS DIRECTORY</a>
-        </div>`;
+    function debounce(fn, ms) {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), ms);
+      };
     }
 
-    function tally(files, pick) {
-      const m = new Map();
-      files.forEach(f => pick(f).forEach(e => {
-        const cur = m.get(e.key) || { ...e, n: 0 };
-        cur.n++; m.set(e.key, cur);
-      }));
-      return [...m.values()].sort((a, b) => b.n - a.n);
-    }
-
+    // Telemetry and Cross-Index calculation
     function calculateTelemetryAndCorrelations(files) {
       document.getElementById('statFiles').textContent = files.length;
 
-      // Artists (every credited artist, linked to the archive filtered by that artist)
-      const artists = tally(files, f => f._artists.map(a => ({ key: a.slug, label: a.name, href: `index.html?artist=${encodeURIComponent(a.slug)}` })));
-      document.getElementById('statArtists').textContent = artists.length;
-      document.getElementById('artistsCountMeta').textContent = `${artists.length} IDENTIFIED`;
-      document.getElementById('associatedArtistsContainer').innerHTML = artists.length
-        ? artists.map(a => `<a href="${esc(a.href)}" class="interlock-chip"><span>👤</span> ${esc(a.label)} <span class="chip-count">(${a.n})</span></a>`).join('')
-        : `<span style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem;">ANONYMOUS TRANSMISSIONS</span>`;
+      const artistMap = {};
+      const triggerMap = {};
+      const audienceMap = {};
+      let totalSeconds = 0;
 
-      // Co-occurring triggers
-      const trigs = tally(files, f => f._trigEntries.map(t => ({ key: t.slug, label: t.label })));
-      document.getElementById('triggersCountMeta').textContent = `${trigs.length} INTERLOCKED`;
-      document.getElementById('associatedTriggersContainer').innerHTML = trigs.length
-        ? trigs.map(t => `<a href="trigger.html?trigger=${encodeURIComponent(t.key)}" class="interlock-chip trigger-chip"><span>⚡</span> ${esc(t.label)} <span class="chip-count">(${t.n})</span></a>`).join('')
-        : `<span style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem;">NO TRIGGERS INDEXED</span>`;
+      files.forEach(f => {
+        // Artist tally
+        const artist = f.author || f.artist;
+        if (artist) {
+          artistMap[artist] = (artistMap[artist] || 0) + 1;
+        }
 
-      const auds = tally(files, f => [{ key: (f.audience || 'ANY').toUpperCase() }]);
-      document.getElementById('statAudience').textContent = auds.length ? auds[0].key : 'ANY';
-      // the catalog does not record file lengths
-      document.getElementById('statDuration').textContent = 'N/A';
+        // Audience tally
+        const aud = (f.audience || 'ANY').toUpperCase();
+        audienceMap[aud] = (audienceMap[aud] || 0) + 1;
+
+        // Triggers tally (look at triggers key, or extract other tags)
+        if (Array.isArray(f.triggers)) {
+          f.triggers.forEach(tr => {
+            const clean = String(tr).trim();
+            if (clean) triggerMap[clean] = (triggerMap[clean] || 0) + 1;
+          });
+        }
+
+        // Duration tally
+        const dur = f.duration || f.length || f.file_length;
+        if (typeof dur === 'number') {
+          totalSeconds += dur;
+        } else if (typeof dur === 'string' && dur.includes(':')) {
+          const parts = dur.split(':').map(Number);
+          if (parts.length === 2) totalSeconds += parts[0] * 60 + parts[1];
+          if (parts.length === 3) totalSeconds += parts[0] * 3600 + parts[1] * 60 + parts[2];
+        }
+      });
+
+      // Artists UI
+      const artistsList = Object.keys(artistMap).sort((a,b) => artistMap[b] - artistMap[a]);
+      document.getElementById('statArtists').textContent = artistsList.length;
+      document.getElementById('artistsCountMeta').textContent = `${artistsList.length} IDENTIFIED`;
+      const artistsContainer = document.getElementById('associatedArtistsContainer');
+      
+      if (artistsList.length) {
+        artistsContainer.innerHTML = artistsList.map(art => `
+          <a href="artists.html?artist=${encodeURIComponent(art)}" class="interlock-chip">
+            <span>👤</span> ${art} <span class="chip-count">(${artistMap[art]})</span>
+          </a>
+        `).join('');
+      } else {
+        artistsContainer.innerHTML = `<span style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem;">ANONYMOUS TRANSMISSIONS</span>`;
+      }
+
+      // Triggers UI
+      const triggersList = Object.keys(triggerMap).sort((a,b) => triggerMap[b] - triggerMap[a]);
+      document.getElementById('triggersCountMeta').textContent = `${triggersList.length} INTERLOCKED`;
+      const triggersContainer = document.getElementById('associatedTriggersContainer');
+
+      if (triggersList.length) {
+        triggersContainer.innerHTML = triggersList.map(tr => `
+          <a href="triggers.html?search=${encodeURIComponent(tr)}" class="interlock-chip trigger-chip">
+            <span>⚡</span> ${tr} <span class="chip-count">(${triggerMap[tr]})</span>
+          </a>
+        `).join('');
+      } else {
+        // Fallback common anchors if none explicitly flagged in file records
+        triggersContainer.innerHTML = `<span style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem;">NO LINKED TRIGGERS</span>`;
+      }
+
+      // Audience UI
+      const sortedAudience = Object.keys(audienceMap).sort((a, b) => audienceMap[b] - audienceMap[a]);
+      document.getElementById('statAudience').textContent = sortedAudience[0] || 'ANY';
+
+      // Duration UI
+      if (totalSeconds > 0) {
+        const hrs = Math.floor(totalSeconds / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        document.getElementById('statDuration').textContent = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+      } else {
+        document.getElementById('statDuration').textContent = 'VARIABLE';
+      }
     }
 
+    // Filter within this tag
     function renderFilteredFiles() {
       const query = document.getElementById('fileSearchInput').value.toLowerCase().trim();
       const tier = document.getElementById('tierFilter').value;
       const grid = document.getElementById('associatedFilesGrid');
 
-      displayedFiles = tagFiles.filter(item =>
-        (!query || item._q.includes(query)) &&
-        (tier === 'ALL' || (tier === 'FREE') === item._free));
+      displayedFiles = tagFiles.filter(item => {
+        const matchQuery = !query || 
+          (item.title && item.title.toLowerCase().includes(query)) ||
+          (item.author && item.author.toLowerCase().includes(query)) ||
+          (item.artist && item.artist.toLowerCase().includes(query));
+
+        const isFree = (item.tier || '').toUpperCase().includes('FREE');
+        const matchTier = tier === 'ALL' || (tier === 'FREE' && isFree) || (tier === 'PAID' && !isFree);
+
+        return matchQuery && matchTier;
+      });
 
       document.getElementById('matchedFilesMeta').textContent = `[MATCHING FILES: ${displayedFiles.length}]`;
 
       if (displayedFiles.length === 0) {
-        grid.innerHTML = `<div class="empty-state">// NO ASSOCIATED PROTOCOLS MATCH YOUR CURRENT CRITERIA.</div>`;
+        grid.innerHTML = `
+          <div class="empty-state">
+            // NO ASSOCIATED PROTOCOLS MATCH YOUR CURRENT CRITERIA.
+          </div>`;
         return;
       }
 
-      grid.innerHTML = displayedFiles.map(item => `
-          <a href="detail.html?id=${encodeURIComponent(item.uuid)}" class="cyber-card" aria-label="${esc(item.title)}">
+      const resolveFn = window.resolveAssetUrl || (url => url);
+      const FALLBACK_ART = resolveFn('covers/fallback_cover.png', 'cover');
+
+      grid.innerHTML = displayedFiles.map(item => {
+        const isFree = (item.tier || '').toUpperCase().includes('FREE');
+        const tags = Array.isArray(item.tags) ? item.tags.slice(0, 3) : [];
+        const rawCover = item.cover ? resolveFn(item.cover, 'cover') : '';
+        const initialSrc = rawCover || FALLBACK_ART;
+        const targetId = encodeURIComponent(item.uuid || item.id || '');
+        const durationStr = formatLength(item);
+        const dateStr = formatReleaseDate(item);
+
+        return `
+          <a href="detail.html?id=${targetId}" class="cyber-card" aria-label="${item.title}">
             <div class="card-cover-wrapper">
-              <img src="${esc(H.cover(item))}" alt="${esc(item.title || 'Cover')}" class="card-cover" loading="lazy">
+              <img src="${initialSrc}" 
+                   alt="${item.title || 'Cover'}" 
+                   class="card-cover" 
+                   loading="lazy" 
+                   onerror="this.onerror=null; this.src='${FALLBACK_ART}';">
               <div class="scanline-overlay"></div>
               <div class="floating-badges">
-                <span class="badge-tier ${item._free ? 'free' : ''}">${esc(item.tier || 'FREE')}</span>
+                <span class="badge-tier ${isFree ? 'free' : ''}">${item.tier || 'FREE'}</span>
                 <div class="audio-eq-bars">
-                  <span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span>
+                  <span class="eq-bar"></span>
+                  <span class="eq-bar"></span>
+                  <span class="eq-bar"></span>
+                  <span class="eq-bar"></span>
                 </div>
               </div>
             </div>
 
             <div class="card-body">
               <div class="card-meta">
-                <span class="card-id">${esc(item.id || 'EROS')}</span>
-                <span class="card-tag">${esc(item.tag || 'AUDIO')}</span>
+                <span class="card-id">${item.id || 'EROS'}</span>
+                <span class="card-tag">${item.tag || 'AUDIO'}</span>
               </div>
-              <h3 class="card-title">${esc(item.title || 'Untitled Protocol')}</h3>
-              <div class="card-credits">By <span>${esc(item.author || item._artistNames.join(' × '))}</span></div>
+              <h3 class="card-title">${item.title || 'Untitled Protocol'}</h3>
+              <div class="card-credits">By <span>${item.author || item.artist || 'Anonymous'}</span></div>
 
-              ${item.tags.length ? `
+              ${tags.length ? `
                 <div class="pills-container">
-                  ${item._tagEntries.slice(0, 3).map(t => `
-                    <span class="tag-pill ${t.slug === activeEntry.slug ? 'current-active' : ''}">#${esc(t.label)}</span>`).join('')}
+                  ${tags.map(t => `
+                    <span class="tag-pill ${t.toLowerCase() === activeTag.toLowerCase() ? 'current-active' : ''}">
+                      #${t}
+                    </span>`).join('')}
                 </div>` : ''}
             </div>
 
             <footer class="card-footer">
               <div class="footer-stat">
                 <span class="stat-label">AUDIENCE</span>
-                <span class="stat-value audience-val">${esc(item.audience || 'ANY')}</span>
+                <span class="stat-value audience-val">${item.audience || 'ANY'}</span>
               </div>
               <div class="footer-stat">
-                <span class="stat-label">VARIANT</span>
-                <span class="stat-value duration-val">${esc(item.variant || 'ORIGINAL')}</span>
+                <span class="stat-label">LENGTH</span>
+                <span class="stat-value duration-val">${durationStr}</span>
               </div>
               <div class="footer-stat">
                 <span class="stat-label">RELEASE</span>
-                <span class="stat-value">${esc(item.releaseDate || 'ARCHIVED')}</span>
+                <span class="stat-value">${dateStr}</span>
               </div>
             </footer>
-          </a>`).join('');
+          </a>
+        `;
+      }).join('');
+    }
+
+    function formatLength(item) {
+      const val = item.duration || item.length || item.file_length;
+      if (!val) return '--:--';
+      if (typeof val === 'number') {
+        const m = Math.floor(val / 60);
+        const s = Math.floor(val % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
+      }
+      return String(val);
+    }
+
+    function formatReleaseDate(item) {
+      const val = item.release_date || item.date || item.created_at;
+      if (!val) return 'ARCHIVED';
+      try {
+        const d = new Date(val);
+        if (!isNaN(d.getTime())) return d.toISOString().split('T')[0];
+      } catch (e) {}
+      return String(val);
     }
   </script>
 </body>

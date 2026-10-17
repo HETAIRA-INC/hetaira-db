@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>SAMARITAN // RESONANCE PLAYER</title>
-  <script src="config.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;700;900&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+  <script src="config.js"></script>
   
   <style>
     :root {
@@ -446,7 +446,7 @@
     </div>
   </div>
 
-  <audio id="audioSource" preload="metadata"></audio>
+  <audio id="audioSource" preload="metadata" crossorigin="anonymous"></audio>
 
   <script>
     // DOM References
@@ -488,16 +488,14 @@
     // DATA FETCHING & INITIALIZATION
     // ==========================================
     
-    // Check URL parameters
     const urlParams = new URLSearchParams(window.location.search);
-    const uuidParam = urlParams.get('uuid');
-    const artistParam = urlParams.get('artist');
+    const uuidParam = urlParams.get('uuid') || urlParams.get('id');
+    const artistParam = urlParams.get('artist') || urlParams.get('aid');
 
-    const UUID_RE = /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
-    if (!UUID_RE.test(uuidParam) || !UUID_RE.test(artistParam)) {
+    if (!uuidParam) {
       selectionModal.classList.add('open');
     } else {
-      initializePlayer(artistParam.toLowerCase(), uuidParam.toLowerCase());
+      initializePlayer(artistParam, uuidParam);
     }
 
     loadDataBtn.addEventListener('click', () => {
@@ -508,42 +506,106 @@
       }
     });
 
+    async function fetchRecord(artist, uuid) {
+      const resolveDb = window.resolveDbUrl || (url => url);
+      if (artist && uuid) {
+        try {
+          const res = await fetch(resolveDb(`${artist}/records/${uuid}.json`), { cache: 'no-cache' });
+          if (res.ok) return await res.json();
+        } catch (e) {}
+      }
+
+      const candidates = [
+        window.APP_CONFIG?.SUMMARY_JSON || 'summary-all.json',
+        window.APP_CONFIG?.FALLBACK_DATA_JSON || 'data.json'
+      ];
+
+      for (const endpoint of candidates) {
+        try {
+          const res = await fetch(resolveDb(endpoint), { cache: 'no-cache' });
+          if (res.ok) {
+            const list = await res.json();
+            const found = list.find(i => i.uuid === uuid || i.id === uuid);
+            if (found) return found;
+          }
+        } catch (e) {}
+      }
+      return null;
+    }
+
+  function resolveMediaUrl(base, artist, file) {
+      if (!file) return '';
+      if (file.startsWith('http://') || file.startsWith('https://') || file.startsWith('data:')) {
+        return file;
+      }
+      let clean = file.replace(/^\/+/, '');
+      if (artist && !clean.startsWith(artist + '/')) {
+        clean = `${artist}/${clean}`;
+      }
+      const baseUrl = (base || '').replace(/\/+$/, '');
+      if (artist && baseUrl.endsWith(artist) && clean.startsWith(artist + '/')) {
+        clean = clean.slice(artist.length + 1);
+      }
+      return baseUrl ? `${baseUrl}/${clean}` : clean;
+    }
+
+    
     async function initializePlayer(artist, uuid) {
       try {
-        // hetaira-data: <artist>/records/<uuid>.json   hetaira-c1: <artist>/vtt|audio/<uuid>.*
-        // vtt is plain text, so it uses the raw (non-LFS) base; audio uses the LFS base.
-        const vttUrl = resolveAssetUrl(`${artist}/vtt/${uuid}.vtt`, 'cover');
-        let audioUrl = resolveAssetUrl(`${artist}/audio/${uuid}.mp3`, 'audio');
+        const item = await fetchRecord(artist, uuid);
+        const resolvedArtist = item?.artistUuid || artist;
 
-        try {
-          const metaRes = await fetch(resolveDbUrl(`${artist}/records/${uuid}.json`));
-          if (!metaRes.ok) throw new Error(`HTTP ${metaRes.status}`);
-          const meta = await metaRes.json();
-          trackTitleDisp.textContent = meta.title || "SAMARITAN PROTOCOL";
-          if (meta.file) audioUrl = resolveAssetUrl(meta.file, 'audio'); // records may use wav/flac/... or a full URL
-        } catch (err) {
-          console.warn("Could not load record JSON. Using default title.", err);
-          trackTitleDisp.textContent = "SAMARITAN PROTOCOL";
-        }
+        trackTitleDisp.textContent =
+          item?.title || "VISUALIZER PROTOCOL";
 
-        // Fetch VTT file
-        const vttRes = await fetch(vttUrl);
-        if (vttRes.ok) {
-          const vttText = await vttRes.text();
-          transcript = parseVttToTimedWords(vttText);
-          transitionWord("STANDBY");
-        } else {
+        // Audio URL
+        const audioBase = window.APP_CONFIG?.AUDIO_BASE_URL;
+        const audioFile = item?.file || `${uuid}.mp3`;
+        const audioUrl = resolveMediaUrl(
+          audioBase,
+          resolvedArtist,
+          audioFile
+        );
+
+        // VTT URL: use the path provided by the JSON
+        const vttBase =
+          window.APP_CONFIG?.VTT_BASE_URL ||
+          window.APP_CONFIG?.COVER_BASE_URL;
+
+        const vttFile = item?.vtt;
+
+        if (!vttFile) {
+          transcript = [];
           transitionWord("VTT ERROR");
+        } else {
+          try {
+            const vttUrl = resolveMediaUrl(
+              vttBase,
+              resolvedArtist,
+              vttFile
+            );
+
+            const response = await fetch(vttUrl);
+
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}`);
+            }
+
+            const vttText = await response.text();
+            transcript = parseVttToTimedWords(vttText);
+
+            transitionWord(
+              transcript.length ? "STANDBY" : "NO CUES"
+            );
+          } catch (error) {
+            console.error("Error loading VTT:", error);
+            transcript = [];
+            transitionWord("VTT ERROR");
+          }
         }
 
-        // Load Audio (crossOrigin: createMediaElementSource mutes cross-origin media without it)
-        audio.crossOrigin = 'anonymous';
-        audio.onerror = () => transitionWord("AUDIO ERROR");
+        // Initialize audio regardless of VTT success
         audio.src = audioUrl;
-        audio.onloadedmetadata = () => {
-          totalTimeDisp.textContent = formatTime(audio.duration);
-          updateRemainingTime(0, audio.duration);
-        };
 
       } catch (error) {
         console.error("Error initializing player:", error);
@@ -551,8 +613,9 @@
       }
     }
 
+
     // ==========================================
-    // VTT PARSING ENGINE (Updated for Intra-word & Auto-distribute)
+    // VTT PARSING ENGINE
     // ==========================================
     
     function timeToSeconds(timeStr) {
@@ -610,7 +673,6 @@
             j++;
           }
 
-          // Sentence-by-sentence auto-distribution fallback
           if (cueWords.length > 1) {
             const allSameTime = cueWords.every(cw => cw.time === cueWords[0].time);
             if (allSameTime) {
@@ -633,16 +695,19 @@
 
     function setupAudioNodes() {
       if (audioCtx) return;
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      analyser = audioCtx.createAnalyser();
-      analyser.fftSize = 256;
-      analyser.smoothingTimeConstant = 0.88;
-      sourceNode = audioCtx.createMediaElementSource(audio);
-      sourceNode.connect(analyser);
-      analyser.connect(audioCtx.destination);
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.88;
+        sourceNode = audioCtx.createMediaElementSource(audio);
+        sourceNode.connect(analyser);
+        analyser.connect(audioCtx.destination);
+      } catch (e) {
+        console.warn("AudioContext setup failed:", e);
+      }
     }
 
-    // Hypnotic Ripple & Canvas Rendering
     let ripplePhase = 0;
     function drawHypnoticField() {
       requestAnimationFrame(drawHypnoticField);
@@ -703,11 +768,17 @@
     async function togglePlay() {
       if (!audio.src) return;
       setupAudioNodes();
-      if (audioCtx.state === 'suspended') await audioCtx.resume();
+      if (audioCtx && audioCtx.state === 'suspended') {
+        try { await audioCtx.resume(); } catch (e) {}
+      }
 
       if (audio.paused) {
-        audio.play();
-        playBtn.textContent = "❚❚ PAUSE";
+        try {
+          await audio.play();
+          playBtn.textContent = "❚❚ PAUSE";
+        } catch (e) {
+          console.warn("Audio play blocked or failed:", e);
+        }
       } else {
         audio.pause();
         playBtn.textContent = "▶ PLAY";
@@ -716,7 +787,17 @@
     
     playBtn.addEventListener('click', togglePlay);
 
-    // Audio Playback Sync
+    audio.addEventListener('loadedmetadata', () => {
+      totalTimeDisp.textContent = formatTime(audio.duration);
+      updateRemainingTime(0, audio.duration);
+    });
+
+    audio.addEventListener('error', () => {
+      console.warn("Audio failed to load:", audio.src);
+      playBtn.textContent = "FEED ERROR";
+      transitionWord("AUDIO ERROR");
+    });
+
     audio.addEventListener('timeupdate', () => {
       const cur = audio.currentTime;
       const total = audio.duration || 1;
@@ -745,7 +826,6 @@
       lastRenderedIndex = -1;
     });
 
-    // Formatting & Time Math
     function formatTime(secs) {
       if (isNaN(secs) || !isFinite(secs)) return "00:00.0";
       const m = Math.floor(secs / 60);
@@ -769,24 +849,21 @@
       lastRenderedIndex = -1;
     });
 
-    // Rewind / Fast Forward
     rwBtn.addEventListener('click', () => {
-      if(audio.duration) audio.currentTime = Math.max(0, audio.currentTime - 10);
+      if (audio.duration) audio.currentTime = Math.max(0, audio.currentTime - 10);
       lastRenderedIndex = -1;
     });
     
     ffBtn.addEventListener('click', () => {
-      if(audio.duration) audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+      if (audio.duration) audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
       lastRenderedIndex = -1;
     });
 
-    // Fullscreen Mode
     fsBtn.addEventListener('click', () => {
       if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
       else if (document.exitFullscreen) document.exitFullscreen();
     });
 
-    // Autohide Zen Mode
     function resetIdleTimer() {
       hudControls.classList.remove('autohide');
       hudHeader.classList.remove('autohide');
@@ -802,7 +879,6 @@
     }
     window.addEventListener('mousemove', resetIdleTimer);
     window.addEventListener('touchstart', resetIdleTimer);
-
   </script>
 </body>
 </html>

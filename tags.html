@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="config.js"></script>
-  <script src="common.js"></script>
 
   <style>
     :root {
@@ -22,9 +21,24 @@
       --blush-glow: #ff4d8d;
       --cyber-cyan: #00f0ff;
       --cyber-cyan-glow: rgba(0, 240, 255, 0.35);
+      --amber-trigger: #ffaa00;
+      --amber-glow: rgba(255, 170, 0, 0.35);
       --gold-tier: #fcee0a;
       --text-main: #f8fafc;
       --text-muted: #a38896;
+      --neon-violet: #bd00ff;
+      --neon-violet-glow: rgba(189, 0, 255, 0.4);
+      --dark-violet-surface: #14071c; /* Alternative darker card/container layer */
+      --toxic-lime: #00ff66;         /* Clean, electric futuristic green */
+      --acid-yellow-green: #a6ff00;  /* High-energy hazard accent */
+      --matrix-green-glow: rgba(0, 255, 102, 0.25);
+      --hazard-orange: #ff5500;      /* Warning badges, overclock states */
+      --amber-pulse: #ff8c00;
+      --hyper-blue: #1f51ff;         /* Strong contrast against pink & yellow */
+      --ice-mint: #50fbe7;           /* Softer, chilled alternative to cyber-cyan */
+      --glow-pink-shadow: 0 0 20px rgba(255, 0, 127, 0.45);
+      --glow-cyan-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
+      --grid-line: rgba(255, 0, 127, 0.08); /* For cyber background grid overlays */
       --font-display: 'Orbitron', monospace, sans-serif;
       --font-body: 'Rajdhani', sans-serif;
       --font-mono: 'Share Tech Mono', monospace;
@@ -146,9 +160,8 @@
     /* Page Header */
     .page-header {
       margin-bottom: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      border-left: 3px solid var(--neon-pink);
+      padding-left: 1rem;
     }
 
     .page-title {
@@ -158,10 +171,7 @@
       letter-spacing: 2px;
       color: #fff;
       text-transform: uppercase;
-      text-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
     }
 
     .page-title span {
@@ -172,8 +182,9 @@
     .page-subtitle {
       font-family: var(--font-mono);
       font-size: 0.85rem;
-      color: var(--text-muted);
+      color: var(--cyber-cyan);
       letter-spacing: 1px;
+      margin-top: 4px;
     }
 
     /* Futuristic Filter Panel */
@@ -198,7 +209,7 @@
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--neon-pink), var(--cyber-cyan), transparent);
+      background: linear-gradient(90deg, transparent, var(--neon-violet), var(--cyber-cyan), transparent);
     }
 
     .search-input-wrap {
@@ -461,8 +472,8 @@
 
   <div class="container">
     <header class="page-header">
-      <h1 class="page-title">NEURAL <span>// TAG INDEX</span></h1>
-      <p class="page-subtitle">EXPLORE THE ARCHIVE VIA SPECIALIZED PSYCHOACOUSTIC ATTRIBUTES AND THEMES</p>
+      <h1 class="page-title">NEURAL <span>// Tag  index</span></h1>
+      <p class="page-subtitle">// EXPLORE THE ARCHIVE VIA SPECIALIZED PSYCHOACOUSTIC ATTRIBUTES AND THEMES</p>
     </header>
 
     <!-- Filter & Sort Bar -->
@@ -487,67 +498,113 @@
   </div>
 
   <script>
-    const { esc } = H;
-    // Context dictionary for descriptions; dynamically falls back to an algorithmic description if not listed
-    const TAG_DESCRIPTIONS = {
-      "hypnosis": "Neural entrainment patterns, trance states, suggestibility induction, and guided sensory immersion.",
-      "erotic": "Sensual stimulations, intimate vocal delivery, elevated heart rates, and visceral narrative tension.",
-      "whisper": "Close-proximity binaural ASMR acoustics engineered to stimulate sensitive auditory reflex nerves.",
-      "femdom": "Dominant female voice guidance, psychological compliance triggers, surrender, and boundary conditioning.",
-      "mdom": "Commanding masculine narrative framing, disciplined guidance, deep resonance, and authoritative protocols.",
-      "praise": "Positive emotional reinforcement, validation, arousal intensification, and endorphin flooding.",
-      "chores": "Conditioned tasks and focus routines integrated with suggestive erotic audio cues.",
-      "binaural": "3D spatial positioning audio recorded to simulate real physical proximity and head-space presence.",
-      "relaxation": "Theta-wave frequency synchronization for complete physical decompression and nervous system calm.",
-      "mind control": "Surrender protocols, identity suspension, deep subconscious looping, and behavioral modifications.",
-      "roleplay": "Contextual thematic narratives, character immersion, and specialized conceptual fantasies.",
-      "fantasy": "Surreal scenario design, non-standard cybernetic or mythological encounters and settings.",
-      "dominant": "Clear directive dominance, commanding tones, and assertive pacing over subject actions.",
-      "submissive": "Gentle, compliant voice delivery focused on service, adoration, and passive reception."
-    };
-
-    let allTags = [];
+    let masterTags = [];
     let filteredTags = [];
     let displayedCount = 0;
     const PAGE_SIZE = 24; // Multiples of 4 to keep rows clean
-    let kick = () => {};
 
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        const cat = await H.loadCatalog();
-        // descriptions come from tags.json (editable in the admin); the built-in table is only a fallback
-        allTags = H.termCounts(cat, 'tags').map(t => ({
-          slug: t.slug,
-          name: t.label,
-          lowerName: t.label.toLowerCase(),
-          count: t.count,
-          description: t.description || TAG_DESCRIPTIONS[t.label.toLowerCase()] ||
-            `Specialized acoustic protocol focusing on ${t.label.toLowerCase()} thematic triggers, audio dynamics, and audio-sensory elements.`
-        }));
+        const tagsUrl = window.resolveDbUrl ? window.resolveDbUrl(window.APP_CONFIG?.TAGS_JSON || 'tags.json') : 'tags.json';
 
-        document.getElementById('searchInput').addEventListener('input', H.debounce(applyFilters, 180));
+        const res = await fetch(tagsUrl, { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+        const catalog = await res.json();
+        masterTags = parseTagsDataset(catalog);
+
+        document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 180));
         document.getElementById('sortSelect').addEventListener('change', applyFilters);
-        kick = H.infiniteScroll(document.getElementById('scrollTrigger'), appendNextBatch);
+
         applyFilters();
+        setupInfiniteScroll();
       } catch (err) {
         console.error('Failed to load tags:', err);
-        document.getElementById('tagsGrid').innerHTML = H.errorBox('CRITICAL NEURAL PARSER ERROR: Unable to index taxonomy tags.');
-        document.getElementById('scrollTrigger').textContent = '';
+        document.getElementById('tagsGrid').innerHTML = `
+          <div style="grid-column:1/-1; color:var(--crimson-lust); text-align:center; padding:3rem; font-family:var(--font-mono);">
+            CRITICAL NEURAL PARSER ERROR: Unable to index taxonomy tags.
+          </div>`;
       }
     });
+
+    // Parse records from  tags.json
+    function parseTagsDataset(records) {
+      if (!Array.isArray(records)) return [];
+      
+      return records
+        .map(item => {
+          const count = typeof item.recordCount === 'number' ? item.recordCount : 0;
+          return {
+            slug: item.slug || '',
+            name: item.label || '',
+            aliases: Array.isArray(item.aliases) ? item.aliases : [],
+            description: item.description || `Specialized vocal operator archived with ${count} erotic audio transmission${count !== 1 ? 's' : ''} in the Hetaira neural databank.`,
+            count: count
+          };
+        });
+    }
+
+    function debounce(fn, ms) {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), ms);
+      };
+    }
+
+    // Aggregates and counts tags across the dataset
+    function processTags(catalog) {
+      const counts = {};
+
+      catalog.forEach(item => {
+        if (item.status && item.status !== 'ACTIVE') return;
+
+        if (Array.isArray(item.tags)) {
+          item.tags.forEach(rawTag => {
+            const cleanTag = String(rawTag).trim();
+            if (cleanTag) {
+              const lower = cleanTag.toLowerCase();
+              counts[lower] = counts[lower] || { name: cleanTag, count: 0 };
+              counts[lower].count += 1;
+            }
+          });
+        }
+      });
+
+      masterTags = Object.keys(counts).map(key => {
+        const item = counts[key];
+        const desc = TAG_DESCRIPTIONS[key] || 
+          `Specialized acoustic protocol focusing on ${item.name.toLowerCase()} thematic triggers, audio dynamics, and audio-sensory elements.`;
+        return {
+          name: item.name,
+          lowerName: key,
+          count: item.count,
+          description: desc
+        };
+      });
+    }
 
     function applyFilters() {
       const query = document.getElementById('searchInput').value.toLowerCase().trim();
       const sort = document.getElementById('sortSelect').value;
 
-      filteredTags = allTags.filter(t => !query || t.lowerName.includes(query) || t.description.toLowerCase().includes(query));
-      H.sortBy(filteredTags, sort, t => t.name, t => t.count);
+      filteredTags = masterTags.filter(t => {
+        return !query || t.lowerName.includes(query) || t.description.toLowerCase().includes(query);
+      });
+
+      filteredTags.sort((a, b) => {
+        if (sort === 'COUNT_DESC') return b.count - a.count;
+        if (sort === 'COUNT_ASC') return a.count - b.count;
+        if (sort === 'NAME_ASC') return a.name.localeCompare(b.name);
+        if (sort === 'NAME_DESC') return b.name.localeCompare(a.name);
+        return 0;
+      });
 
       document.getElementById('resultsCount').textContent = `// MATCHED: ${filteredTags.length} TAGS`;
+      
       document.getElementById('tagsGrid').innerHTML = '';
       displayedCount = 0;
-      if (!appendNextBatch()) document.getElementById('scrollTrigger').textContent = '// NO MATCHING TAGS LOCATED';
-      kick();
+      appendNextBatch();
     }
 
     function appendNextBatch() {
@@ -556,7 +613,7 @@
 
       if (displayedCount >= filteredTags.length) {
         trigger.textContent = filteredTags.length > 0 ? '// END OF TAG ARCHIVE' : '// NO MATCHING TAGS LOCATED';
-        return false;
+        return;
       }
 
       const nextSlice = filteredTags.slice(displayedCount, displayedCount + PAGE_SIZE);
@@ -564,6 +621,9 @@
 
       nextSlice.forEach((tag, idx) => {
         const card = document.createElement('a');
+        // Sends query to index.html with the search populated
+        //card.href = `index.html?search=${encodeURIComponent(tag.name)}`;
+        // Inside tags.html appendNextBatch():
         card.href = `tag.html?tag=${encodeURIComponent(tag.slug)}`;
         card.className = 'tag-card';
         card.setAttribute('aria-label', `Tag: ${tag.name}, containing ${tag.count} files`);
@@ -576,9 +636,9 @@
               <span class="tag-badge-prefix">//0x${indexHex}</span>
               <span class="tag-count-badge">${tag.count} ${tag.count === 1 ? 'FILE' : 'FILES'}</span>
             </div>
-
-            <h2 class="tag-card-name">#${esc(tag.name)}</h2>
-            <p class="tag-card-desc">${esc(tag.description)}</p>
+            
+            <h2 class="tag-card-name">#${tag.name}</h2>
+            <p class="tag-card-desc">${tag.description}</p>
           </div>
 
           <div class="tag-card-footer">
@@ -586,13 +646,24 @@
             <span class="tag-index-meta">DATA.TAG</span>
           </div>
         `;
+
         fragment.appendChild(card);
       });
 
       grid.appendChild(fragment);
       displayedCount += nextSlice.length;
+
       trigger.textContent = displayedCount >= filteredTags.length ? '// END OF TAG ARCHIVE' : '// SCROLL FOR MORE TAGS...';
-      return true;
+    }
+
+    function setupInfiniteScroll() {
+      const observer = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          appendNextBatch();
+        }
+      }, { rootMargin: '200px' });
+
+      observer.observe(document.getElementById('scrollTrigger'));
     }
   </script>
 </body>
