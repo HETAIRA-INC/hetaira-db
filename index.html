@@ -770,7 +770,7 @@
                  alt="${esc(item.title || 'Cover')}" 
                  class="card-cover" 
                  loading="lazy" 
-                 onerror="this.onerror=null; this.src='${esc(item.fallbackArt)}';">
+                 onerror="if (!this.dataset.fallbackTried) { this.dataset.fallbackTried = '1'; this.src='${esc(item.artistUuid + '/covers/fallback_cover.png')}'; } else { this.onerror=null; this.src='${esc(H.FALLBACK_SVG)}'; }">
             <div class="scanline-overlay"></div>
             <div class="floating-badges">
               <span class="badge-tier ${esc(item.isFree ? 'free' : '')}">${esc(item.tier || 'FREE')}</span>

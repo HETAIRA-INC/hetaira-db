@@ -716,7 +716,7 @@
 
       // Safe URL resolution & robust fallback image chain
       const resolveFn = window.resolveAssetUrl || (url => url);
-      const FALLBACK_ART = resolveFn('covers/fallback_cover.png', 'cover');
+      const FALLBACK_ART = resolveFn(`${item.artistUuid}/`+'covers/fallback_cover.png', 'cover');
       const rawCover = (item.cover && String(item.cover).trim()) ? resolveFn(item.cover, 'cover') : null;
       const initialCover = rawCover || FALLBACK_ART;
       const audioFile = (item.file && String(item.file).trim()) ? resolveFn(item.file , 'audio') : '';
