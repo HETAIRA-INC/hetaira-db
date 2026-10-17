@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="config.js"></script>
+  <script src="common.js"></script>
 
   <style>
     :root {
@@ -631,174 +632,146 @@
     <!-- Filter Panel -->
     <div class="filter-bar">
       <div class="search-input-wrap">
-        <input type="text" id="searchInput" class="search-input" placeholder="SEARCH PROTOCOLS, AUTHORS, ARTISTS, TAGS..." autocomplete="off">
+        <input type="text" id="searchInput" class="search-input" placeholder="SEARCH PROTOCOLS, TAGS, CREATORS...">
       </div>
       <div class="filter-dropdowns">
-        <select id="audienceFilter" class="cyber-select" aria-label="Filter by Audience">
-          <option value="ALL">AUDIENCE: ALL</option>
-          <option value="F4M">F4M</option>
-          <option value="M4F">M4F</option>
-          <option value="F4F">F4F</option>
-          <option value="M4M">M4M</option>
-          <option value="ANY">ANY</option>
+        <select id="artistFilter" class="cyber-select" aria-label="Artist">
+          <option value="ALL">ARTIST: ALL</option>
         </select>
 
-        <select id="tierFilter" class="cyber-select" aria-label="Filter by Tier">
+        <select id="audienceFilter" class="cyber-select">
+          <option value="ALL">AUDIENCE: ALL</option>
+        </select>
+
+        <select id="tierFilter" class="cyber-select">
           <option value="ALL">TIER: ALL</option>
           <option value="FREE">FREE</option>
           <option value="PAID">PAID</option>
         </select>
       </div>
-      <div class="count-indicator" id="resultsCount">// LOADED: 0 PROTOCOLS</div>
+      <div class="count-indicator" id="resultsCount">// LOADED: 0 RECORDS</div>
     </div>
 
-    <!-- Main Grid -->
+    <div class="active-chips" id="activeChips"></div>
     <main class="cards-grid" id="cardsGrid"></main>
-    <div id="scrollTrigger">// INITIALIZING QUANTUM DATA FEED...</div>
+    <div id="scrollTrigger">// SCROLL FOR MORE PROTOCOLS...</div>
   </div>
 
   <script>
     console.log("👀 Curious, aren't we?\n🌀 Once you're hypnotized, there's no snapping back! 😵\n*SNAP*\n");
     console.log("If you want to help me improve this library you can go here: https://docs.google.com/spreadsheets/d/1Rjna5Z7m_To7CYBQjItCk1os1DwcupwoTOn9CGrB0u8/edit");
 
-    let masterList = [];
+    const { esc } = H;
+    const PAGE_SIZE = window.APP_CONFIG.PAGE_SIZE || 12;
+    let cat = null;
     let filteredList = [];
     let displayedCount = 0;
-    const PAGE_SIZE = window.APP_CONFIG?.PAGE_SIZE || 12;
+    let kick = () => {};
+    // filters that come from the URL (links from the Artists / Tags / Triggers pages)
+    const urlFilter = { tag: H.q('tag'), trigger: H.q('trigger') };
 
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        const summaryAllUrl = window.resolveDbUrl ? window.resolveDbUrl(window.APP_CONFIG?.SUMMARY_ALL_JSON || 'summary-all.json') : 'summary-all.json';
+        cat = await H.loadCatalog();
 
-        let res = await fetch(summaryAllUrl, { cache: 'no-cache' });
-        if (!res.ok) {throw new Error(`HTTP error! status: ${res.status}`);}
+        const artistSel = document.getElementById('artistFilter');
+        cat.artists.forEach(a => artistSel.add(new Option(a.name, a.slug)));
+        const audSel = document.getElementById('audienceFilter');
+        [...new Set(cat.items.map(i => (i.audience || '').toUpperCase()).filter(Boolean))].sort()
+          .forEach(a => audSel.add(new Option(a, a)));
 
-        masterList = await res.json();
-        
-        document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 200));
-        document.getElementById('audienceFilter').addEventListener('change', applyFilters);
-        document.getElementById('tierFilter').addEventListener('change', applyFilters);
+        // initial values from the URL (?q= or legacy ?search=, ?artist=, ?audience=, ?tier=)
+        document.getElementById('searchInput').value = H.q('q') || H.q('search');
+        const wantArtist = H.q('artist');
+        const hit = cat.artistBySlug.get(wantArtist) || cat.artistByUuid.get(wantArtist) || cat.artists.find(a => H.slugify(a.name) === H.slugify(wantArtist));
+        if (hit) artistSel.value = hit.slug;
+        if ([...audSel.options].some(o => o.value === H.q('audience').toUpperCase())) audSel.value = H.q('audience').toUpperCase();
+        if (['FREE', 'PAID'].includes(H.q('tier').toUpperCase())) document.getElementById('tierFilter').value = H.q('tier').toUpperCase();
 
+        document.getElementById('searchInput').addEventListener('input', H.debounce(applyFilters, 200));
+        ['artistFilter', 'audienceFilter', 'tierFilter'].forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
+
+        kick = H.infiniteScroll(document.getElementById('scrollTrigger'), appendNextBatch);
         applyFilters();
-        setupInfiniteScroll();
       } catch (err) {
         console.error('Failed to load catalog:', err);
-        document.getElementById('cardsGrid').innerHTML = `
-          <div style="grid-column:1/-1; color:var(--crimson-lust); text-align:center; padding:3rem; font-family:var(--font-mono);">
-            CRITICAL TELEMETRY READ ERROR: Unable to load records catalog.
-          </div>`;
+        document.getElementById('cardsGrid').innerHTML = H.errorBox('CRITICAL TELEMETRY READ ERROR: Unable to load records catalog.');
+        document.getElementById('scrollTrigger').textContent = '';
       }
     });
 
-    function debounce(fn, ms) {
-      let timeout;
-      return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => fn(...args), ms);
-      };
-    }
+    function renderChips() {
+          const box = document.getElementById('activeChips');
+          const chips = [];
+          for (const [kind, key, label] of [['tags', 'tag', '#'], ['triggers', 'trigger', '⚠ ']]) {
+            if (!urlFilter[key]) continue;
+            const e = H.findTerm(cat, kind, urlFilter[key]);
+            chips.push(`<span class="active-chip" data-key="${key}">${label}${esc(e ? e.label : urlFilter[key])} ✕</span>`);
+          }
+          box.innerHTML = chips.join('');
+          box.querySelectorAll('.active-chip').forEach(c => c.addEventListener('click', () => { urlFilter[c.dataset.key] = ''; applyFilters(); }));
+        }
+
 
     function applyFilters() {
-      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const words = document.getElementById('searchInput').value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+      const artist = document.getElementById('artistFilter').value;
       const audience = document.getElementById('audienceFilter').value;
       const tier = document.getElementById('tierFilter').value;
+      const tagE = urlFilter.tag && H.findTerm(cat, 'tags', urlFilter.tag);
+      const trgE = urlFilter.trigger && H.findTerm(cat, 'triggers', urlFilter.trigger);
 
-      filteredList = masterList.filter(item => {
-        if (item.status && item.status !== 'ACTIVE') return false;
+      filteredList = cat.items.filter(item =>
+        words.every(w => item._q.includes(w)) &&
+        (artist === 'ALL' || item._artists.some(a => a.slug === artist)) &&
+        (audience === 'ALL' || (item.audience || '').toUpperCase() === audience) &&
+        (tier === 'ALL' || (tier === 'FREE') === item._free) &&
+        (!urlFilter.tag || (tagE && item._tagEntries.includes(tagE))) &&
+        (!urlFilter.trigger || (trgE && item._trigEntries.includes(trgE)))
+      );
 
-        const tagsStr = Array.isArray(item.tags) ? item.tags.join(' ').toLowerCase() : '';
-        const matchSearch = !search || 
-          (item.title && item.title.toLowerCase().includes(search)) ||
-          (item.artist && item.artist.toLowerCase().includes(search)) ||
-          (item.author && item.author.toLowerCase().includes(search)) ||
-          (item.id && item.id.toLowerCase().includes(search)) ||
-          tagsStr.includes(search);
+      // keep the URL shareable
+      const p = new URLSearchParams();
+      const put = (k, v, off) => v && v !== off && p.set(k, v);
+      put('q', document.getElementById('searchInput').value.trim());
+      put('artist', artist, 'ALL'); put('audience', audience, 'ALL'); put('tier', tier, 'ALL');
+      put('tag', urlFilter.tag); put('trigger', urlFilter.trigger);
+      history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : ''));
 
-        const matchAudience = audience === 'ALL' || (item.audience && item.audience.toUpperCase() === audience);
-        const isFree = (item.tier || '').toUpperCase().includes('FREE');
-        const matchTier = tier === 'ALL' || (tier === 'FREE' && isFree) || (tier === 'PAID' && !isFree);
-
-        return matchSearch && matchAudience && matchTier;
-      });
-
+      renderChips();
       document.getElementById('resultsCount').textContent = `// MATCHED: ${filteredList.length} PROTOCOLS`;
-      
-      // Reset Grid
       document.getElementById('cardsGrid').innerHTML = '';
       displayedCount = 0;
-      appendNextBatch();
+      if (!appendNextBatch()) document.getElementById('scrollTrigger').textContent = '// NO MATCHING PROTOCOLS';
+      kick();
     }
 
-    // Helper: Format duration safely
-    function formatLength(item) {
-      const val = item.duration || item.length || item.file_length || item.runtime;
-      if (!val) return '--:--';
-      
-      if (typeof val === 'number') {
-        const m = Math.floor(val / 60);
-        const s = Math.floor(val % 60);
-        return `${m}:${s < 10 ? '0' : ''}${s}`;
-      }
-      return String(val);
-    }
-
-    // Helper: Format release date safely
-    function formatReleaseDate(item) {
-      const val = item.release_date || item.date || item.created_at || item.published;
-      if (!val) return 'ARCHIVED';
-      
-      try {
-        const d = new Date(val);
-        if (!isNaN(d.getTime())) {
-          return d.toISOString().split('T')[0];
-        }
-      } catch (e) {}
-      return String(val);
-    }
-
+    /** Renders one batch; returns true if anything was added. */
     function appendNextBatch() {
       const grid = document.getElementById('cardsGrid');
       const trigger = document.getElementById('scrollTrigger');
-
       if (displayedCount >= filteredList.length) {
-        trigger.textContent = filteredList.length > 0 ? '// END OF ARCHIVE RECORDS' : '// NO MATCHING PROTOCOLS FOUND';
-        return;
+        trigger.textContent = filteredList.length > 0 ? '// END OF ARCHIVE RECORDS' : '// NO MATCHING PROTOCOLS';
+        return false;
       }
 
       const nextSlice = filteredList.slice(displayedCount, displayedCount + PAGE_SIZE);
       const fragment = document.createDocumentFragment();
-      const resolveFn = window.resolveAssetUrl || (url => url);
 
       nextSlice.forEach(item => {
-        const artistId = item.artistUuid || item.artistId || '';
-        const fallbackArt = resolveFn(`${artistId}/covers/fallback_cover.png`, 'cover');
-
-        const isFree = (item.tier || '').toUpperCase().includes('FREE');
-        const tags = Array.isArray(item.tags) ? item.tags.slice(0, 3) : [];
-        const rawCover = item.cover ? resolveFn(`${artistId}/`+item.cover, 'cover') : '';
-        const initialSrc = rawCover || fallbackArt;
-        const targetId = encodeURIComponent(item.uuid || item.id || '');
-        const durationStr = formatLength(item);
-        const dateStr = formatReleaseDate(item);
-
-        // Entire Card is an Anchor Element
-        const card = document.createElement('a');
-        card.href = `detail.html?aid=${artistId}&id=${targetId}`;
+        const tags = item.tags.slice(0, 3);
+        const card = document.createElement('article');
         card.className = 'cyber-card';
-        card.setAttribute('aria-label', `Open ${item.title || 'audio'} details`);
-
         card.innerHTML = `
           <div class="card-cover-wrapper">
-            <img src="${initialSrc}" 
-                 alt="${item.title || 'Cover'}" 
+            <img src="${esc(H.cover(item))}" 
+                 alt="${esc(item.title || 'Cover')}" 
                  class="card-cover" 
                  loading="lazy" 
-                 onerror="this.onerror=null; this.src='${fallbackArt}';">
-            
+                 onerror="this.onerror=null; this.src='${esc(item.fallbackArt)}';">
             <div class="scanline-overlay"></div>
-
             <div class="floating-badges">
-              <span class="badge-tier ${isFree ? 'free' : ''}">${item.tier || 'FREE'}</span>
+              <span class="badge-tier ${esc(item.isFree ? 'free' : '')}">${esc(item.tier || 'FREE')}</span>
               
               <div class="audio-eq-bars" title="Audio Protocol Loaded">
                 <span class="eq-bar"></span>
@@ -811,51 +784,41 @@
 
           <div class="card-body">
             <div class="card-meta">
-              <span class="card-id">${item.id || 'EROS'}</span>
-              <span class="card-tag">${item.tag || 'AUDIO'}</span>
+              <span class="card-id">${esc(item.id || 'EROS')}</span>
+              <span class="card-tag">${esc(item.tag || 'AUDIO')}</span>
             </div>
             
-            <h2 class="card-title">${item.title || 'Untitled Protocol'}</h2>
-            <div class="card-credits">By <span>${item.author || item.artist || 'Anonymous'}</span></div>
+            <h2 class="card-title">${esc(item.title || 'Untitled')}</h2>
+            <div class="card-credits">By <span>${esc(item.author || item._artistNames.join(' × '))}</span></div>
 
             ${tags.length ? `
               <div class="pills-container">
-                ${tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}
+                ${tags.map(t => `<span class="tag-pill">${esc(t)}</span>`).join('')}
               </div>` : ''}
           </div>
 
           <footer class="card-footer">
             <div class="footer-stat">
               <span class="stat-label">AUDIENCE</span>
-              <span class="stat-value audience-val">${item.audience || 'ANY'}</span>
+              <span class="stat-value audience-val">${esc(item.audience || 'ANY')}</span>
             </div>
             <div class="footer-stat">
               <span class="stat-label">LENGTH</span>
-              <span class="stat-value duration-val">${durationStr}</span>
+              <span class="stat-value duration-val">${esc(item.durationStr)}</span>
             </div>
             <div class="footer-stat">
               <span class="stat-label">RELEASE</span>
-              <span class="stat-value date-val">${dateStr}</span>
+              <span class="stat-value date-val">${esc(item.dateStr)}</span>
             </div>
           </footer>
         `;
         fragment.appendChild(card);
       });
 
-      grid.appendChild(fragment);
+       grid.appendChild(fragment);
       displayedCount += nextSlice.length;
-
       trigger.textContent = displayedCount >= filteredList.length ? '// END OF ARCHIVE RECORDS' : '// SCROLL FOR MORE PROTOCOLS...';
-    }
-
-    function setupInfiniteScroll() {
-      const observer = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) {
-          appendNextBatch();
-        }
-      }, { rootMargin: '250px' });
-
-      observer.observe(document.getElementById('scrollTrigger'));
+      return true;
     }
   </script>
 </body>
