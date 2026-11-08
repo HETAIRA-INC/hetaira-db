@@ -1,0 +1,35 @@
+{
+  "uuid": "11784b0a-1779-4fb1-8f3e-488ea05ebb74",
+  "status": "MAINTENANCE",
+  "id": "EHMI-GN-0107",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "AUDIO UNAVAILABLE"
+  ],
+  "title": "The Wicked Goddess Stage Show",
+  "description": "",
+  "triggers": [],
+  "tier": "PAID LEVEL 3",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "releaseDate": "2026-10-03",
+  "tone": [],
+  "cover": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/covers/11784b0a-1779-4fb1-8f3e-488ea05ebb74.png",
+  "file": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/audio/11784b0a-1779-4fb1-8f3e-488ea05ebb74.mp3",
+  "url": "https://goddessnichole.com/the-wicked-goddess-stage-show/",
+  "changelog": [
+    {
+      "date": "2026-10-03 04:45:07",
+      "variant": "ORIGINAL",
+      "note": "Protocol created"
+    }
+  ],
+  "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
+  "collaborators": [],
+  "artistUuids": [
+    "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
+  ],
+  "hash": ""
+}

@@ -1,0 +1,35 @@
+{
+  "uuid": "bd951a38-8b48-4808-acba-b8960ef476c1",
+  "status": "ACTIVE",
+  "id": "EHMI-GN-172",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "AUDIO AVAILABLE"
+  ],
+  "title": "PUMPCHELLA: Beach Games",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "collaborators": [],
+  "releaseDate": "2026-10-03",
+  "tone": [],
+  "cover": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/covers/bd951a38-8b48-4808-acba-b8960ef476c1.png",
+  "file": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/audio/bd951a38-8b48-4808-acba-b8960ef476c1.mp3",
+  "hash": "bdc3ff244f4bd94dc02dcd4150f30292770bf10427df874802c45ed3cb3f1918",
+  "url": "https://goddessnichole.com/pumpchella-beach-games/",
+  "changelog": [
+    {
+      "date": "2026-10-03 21:56:20",
+      "variant": "ORIGINAL",
+      "note": "Protocol created"
+    }
+  ],
+  "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
+  "artistUuids": [
+    "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
+  ]
+}

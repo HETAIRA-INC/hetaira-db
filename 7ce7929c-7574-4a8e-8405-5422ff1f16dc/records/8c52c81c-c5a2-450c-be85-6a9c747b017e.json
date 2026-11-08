@@ -1,0 +1,35 @@
+{
+  "uuid": "8c52c81c-c5a2-450c-be85-6a9c747b017e",
+  "status": "ACTIVE",
+  "id": "EHMI-GN-139",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "AUDIO AVAILABLE"
+  ],
+  "title": "Fog Season",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "collaborators": [],
+  "releaseDate": "2026-10-03",
+  "tone": [],
+  "cover": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/covers/8c52c81c-c5a2-450c-be85-6a9c747b017e.png",
+  "file": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/audio/8c52c81c-c5a2-450c-be85-6a9c747b017e.mp3",
+  "hash": "e19e4f3a7746ef9c9c0cca8554780e120858b72bd042c1ddc37eb7afeeb57e51",
+  "url": "https://goddessnichole.com/fog-season/",
+  "changelog": [
+    {
+      "date": "2026-10-03 20:47:26",
+      "variant": "ORIGINAL",
+      "note": "Protocol created"
+    }
+  ],
+  "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
+  "artistUuids": [
+    "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
+  ]
+}

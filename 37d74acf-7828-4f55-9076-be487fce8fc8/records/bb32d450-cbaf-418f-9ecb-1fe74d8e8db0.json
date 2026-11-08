@@ -1,0 +1,48 @@
+{
+  "uuid": "bb32d450-cbaf-418f-9ecb-1fe74d8e8db0",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0251",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "BRAINWASH",
+    "CALIAWARE",
+    "DOWNLOAD",
+    "F4A"
+  ],
+  "title": "CaliaWare Version 4.0",
+  "description": "Let me hack your mind in this immersive experience. If you’re new to CaliaWare, this is a program for PC that takes over your computer with my image and voice. It gives the appearance of a virus, but don’t worry, it’s totally safe to run!\n\nYou will need to install EdgewarePlusPlus to run this CaliaWare pack.\n\nTo stop the program, press the ‘e’ key!\n\nHope you enjoy the experience!\n\nWARNING: This file acts like a virus, but it is safe. However, it can cause performance issues on older PCs. You should also avoid the setting to fill your hard drive, as it can cause PC crashes. Your wallpaper will be changed, no other permanent changes are made.\n\nPrevious versions of CaliaWare are no longer available.",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4A",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "releaseDate": "2026-03-10",
+  "tone": [],
+  "cover": "37d74acf-7828-4f55-9076-be487fce8fc8/cover/bb32d450-cbaf-418f-9ecb-1fe74d8e8db0.png",
+  "file": "",
+  "hash": "",
+  "url": "https://mistresscalia.com/caliaware-version-4/",
+  "changelog": [
+    {
+      "date": "2026-11-04 02:49:28",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/caliaware-version-4/"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:01:31",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "collaborators": [],
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}

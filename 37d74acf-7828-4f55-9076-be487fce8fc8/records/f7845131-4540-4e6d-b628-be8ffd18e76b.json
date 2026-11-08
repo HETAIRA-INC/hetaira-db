@@ -1,0 +1,59 @@
+{
+  "uuid": "f7845131-4540-4e6d-b628-be8ffd18e76b",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0377",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "CALIACORP",
+    "CHOOSE YOUR OWN ADVENTURE",
+    "CORRUPTION",
+    "DURATION: &LT;10",
+    "F4A",
+    "MEDICAL KINK",
+    "MIND CONTROL",
+    "ORGASM DENIAL",
+    "SCIENCE FICTION",
+    "TEASING"
+  ],
+  "title": "Choose Your Own Adventure: Outbreak",
+  "description": "Choose your own adventure starts here! You’re in the CaliaCorp lab, a test subject for an experimental drug designed to increase confidence, but there’s been a complication. Other subjects have been exhibiting… strange behaviour.\n\nWe think we know why, and what you can do to do save yourself. But you’ll have to pay close attention, and from here on out, make the right decisions to save yourself from becoming a mindless, horny zombie for the rest of your life.\n\nCast your vote for part two now!\n\nVoting in this poll requires JavaScript.\n\nArt by Rielilu.",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4A",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "releaseDate": "2026-10-19",
+  "tone": [],
+  "cover": "https://mistresscalia.com/wp-content/uploads/2026/10/CYOA1.jpg",
+  "file": "https://mistresscalia.com/wp-content/uploads/2026/10/CYOA-Part-1_mixdown.mp3",
+  "hash": "",
+  "url": "https://mistresscalia.com/choose-your-own-adventure-outbreak/",
+  "changelog": [
+    {
+      "date": "2026-11-04 02:49:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/choose-your-own-adventure-outbreak/"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:36",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:56",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "collaborators": [],
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}

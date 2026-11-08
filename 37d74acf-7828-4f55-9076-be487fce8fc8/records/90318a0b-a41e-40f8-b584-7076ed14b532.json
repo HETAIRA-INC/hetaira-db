@@ -1,0 +1,55 @@
+{
+  "uuid": "90318a0b-a41e-40f8-b584-7076ed14b532",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0273",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "BOSS",
+    "BRAINWASH",
+    "CALIACORP",
+    "DEEP TRANCE",
+    "DURATION: 20-30",
+    "F4A",
+    "FEMDOM",
+    "GASLIGHTING",
+    "INDUCTION: ELMAN",
+    "TRIGGER: DROP",
+    "WORKPLACE"
+  ],
+  "title": "CaliaCorp: The Acquisition",
+  "description": "In the first of CaliaCorp 2's six files, you find yourself as the company owner meeting with Calia to discuss a buyout, but as you listen to her offer, can you resist falling under her spell, or will you become another mindless drone in her corporate empire?\n\nUses a variation of the Elman Induction - this will deliver a deep, and affecting trance, so don't listen while driving or operating heavy machinery.\n\nArt by Rielilu.",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4A",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "releaseDate": "2024-07-05",
+  "tone": [],
+  "cover": "https://mistresscalia.com/wp-content/uploads/2026/03/acquisition.jpg",
+  "file": "https://mistresscalia.com/audioprotectsample/2760/caliacorp-the-acquisition.mp3",
+  "hash": "",
+  "url": "https://mistresscalia.com/caliacorp-the-acquisition/",
+  "changelog": [
+    {
+      "date": "2026-11-04 02:49:28",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/caliacorp-the-acquisition/"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:32",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "collaborators": [],
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}

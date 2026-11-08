@@ -1,0 +1,40 @@
+{
+  "uuid": "2363f71a-e95f-482d-9b84-6dc39931ad7a",
+  "status": "ACTIVE",
+  "id": "EHMI-GN-154",
+  "variant": "EXTENDED",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "AUDIO AVAILABLE"
+  ],
+  "title": "NicholeZen: Daily Yoga & Stretch (EXTENDED)",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "collaborators": [],
+  "releaseDate": "2026-10-03",
+  "tone": [],
+  "cover": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/covers/2363f71a-e95f-482d-9b84-6dc39931ad7a.png",
+  "file": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/audio/2363f71a-e95f-482d-9b84-6dc39931ad7a.mp3",
+  "hash": "4f206d1566ef4eea84da2d962480798eee3c22faf12932f677e7cf0946e87abc",
+  "url": "https://goddessnichole.com/nicholezen-daily-yoga-stretch/",
+  "changelog": [
+    {
+      "date": "2026-10-03 21:19:23",
+      "variant": "ORIGINAL",
+      "note": "Protocol created"
+    },
+    {
+      "date": "2026-10-03 21:22:17",
+      "variant": "EXTENDED",
+      "note": "Forked variant from ORIGINAL"
+    }
+  ],
+  "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
+  "artistUuids": [
+    "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
+  ]
+}

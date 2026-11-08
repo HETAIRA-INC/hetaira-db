@@ -1,0 +1,35 @@
+{
+  "uuid": "92f5cbc9-c83e-46af-ae97-7e1bae1cf112",
+  "status": "ACTIVE",
+  "id": "EHMI-GN-152",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "AUDIO AVAILABLE"
+  ],
+  "title": "Blind Date",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "collaborators": [],
+  "releaseDate": "2026-10-03",
+  "tone": [],
+  "cover": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/covers/92f5cbc9-c83e-46af-ae97-7e1bae1cf112.png",
+  "file": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/audio/92f5cbc9-c83e-46af-ae97-7e1bae1cf112.mp3",
+  "hash": "136016c75ba63f49fc1cb46fd670d59268089a1066d60511527e05b19683c349",
+  "url": "https://goddessnichole.com/blind-date/",
+  "changelog": [
+    {
+      "date": "2026-10-03 21:16:48",
+      "variant": "ORIGINAL",
+      "note": "Protocol created"
+    }
+  ],
+  "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
+  "artistUuids": [
+    "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
+  ]
+}

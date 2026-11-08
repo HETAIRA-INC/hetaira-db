@@ -1,0 +1,48 @@
+{
+  "uuid": "43bcf3ec-ae1d-4588-800e-7a0c8eaeb00e",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0371",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [],
+  "title": "Wordomme – Daily Word Puzzle",
+  "description": "Can you guess the kinky word of the day? You have six guesses to figure out a five letter word. If you guess a letter right, it turns green. Got one right but in the wrong spot, it turns yellow. If it’s not there at all, it’ll turn grey. If you’ve played wordle, you know the drill!\n\nGet it right, and your prize is a file suggestion to listen to today! Get it wrong and you can come back tomorrow for a brand new word to find.\n\nThanks to Grim for making this, and Yall for integrating it into the site!",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "releaseDate": "2026-09-11",
+  "tone": [],
+  "cover": "https://mistresscalia.com/wp-content/uploads/2026/09/wordomme.jpg",
+  "file": "https://mistresscalia.com/audioprotectsample/5021/the-caliaverse-gacha-game.mp3",
+  "hash": "",
+  "url": "https://mistresscalia.com/wordomme-daily-word-puzzle/",
+  "changelog": [
+    {
+      "date": "2026-11-04 02:49:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/wordomme-daily-word-puzzle/"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:36",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:56",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "collaborators": [],
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "uuid": "2c51ac40-f3e2-49bc-b669-cd2e2b853e90",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0199",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "album": "The Dronification Program",
+  "albumTrack": 2,
+  "tags": [
+    "CONDITIONING",
+    "DEHUMANISATION",
+    "DRONE",
+    "DURATION: 10-20",
+    "F4A",
+    "INDUCTION: NOTHING",
+    "PHYSICAL INTERACTION",
+    "POST-HYPNOTIC SUGGESTION",
+    "PROGRAMMING",
+    "ROBOT",
+    "SHAREABLE TRIGGERS",
+    "SUBLIMINALS",
+    "THE DRONIFICATION PROGRAM",
+    "TRIGGER INSTALL",
+    "TRIGGER: CLICK AND DELETE",
+    "TRIGGER: DRONE MODE END",
+    "TRIGGER: DRONE MODE NOW"
+  ],
+  "title": "Drone Mode Part 2: Drone Receiver",
+  "description": "In part one you received your initial programming. Part two will expand your hardware with a receiver designed to amplify your drone programming, response to drone triggers, and gives you the ability to enter a drone state on command.\n\nThis file will boost the effects of the first, and make you a more compliant, efficient drone. You will soon become the perfect drone for your operator. Start your programming now.\n\nListen to the full series now.",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4A",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "collaborators": [],
+  "releaseDate": "2025-04-23",
+  "tone": [],
+  "cover": "37d74acf-7828-4f55-9076-be487fce8fc8/cover/2c51ac40-f3e2-49bc-b669-cd2e2b853e90.jpg",
+  "file": "37d74acf-7828-4f55-9076-be487fce8fc8/audio/2c51ac40-f3e2-49bc-b669-cd2e2b853e90.mp3",
+  "hash": "39a5263f33278ac3eeadac6e7d3a6a994bc1c421605f92b8a79388ea09cce50e",
+  "url": "https://mistresscalia.com/drone-mode-part-2-drone-receiver/",
+  "changelog": [
+    {
+      "date": "2026-11-03 09:18:51",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/drone-mode-part-2-drone-receiver/"
+    },
+    {
+      "date": "2026-11-03 09:19:15",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-03 09:31:44",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 02:49:29",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:03:31",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:35",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}

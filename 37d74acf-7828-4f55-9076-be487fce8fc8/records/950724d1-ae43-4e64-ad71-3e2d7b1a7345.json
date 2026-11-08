@@ -1,0 +1,56 @@
+{
+  "uuid": "950724d1-ae43-4e64-ad71-3e2d7b1a7345",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0321",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "BRAINWASH",
+    "CALIACORP",
+    "F4A",
+    "MUSIC",
+    "RESISTANCE PLAY",
+    "SUBLIMINALS",
+    "VIDEO GAME"
+  ],
+  "title": "HYPNOHERO – Hypnosis Rhythm Game",
+  "description": "Can you keep the beat with my voice in your ears? You have to stay focused to win, but if you focus too deeply, you’ll be hypnotized into delicious failure for me.\n\nPLAY HYPNOHERO NOW!\n\nSee if you can complete the challenge and get your head in the game, or will you just lose your mind to me! This hypnosis rhythm game will test your reflexes, concentration and your resistance.\n\nOh and you may enjoy playing even more after you listen to this file!\n\nAudio: Mistress Calia Game Development: Yall Track Charting: Diss3cted",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4A",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "releaseDate": "2026-02-09",
+  "tone": [],
+  "cover": "https://mistresscalia.com/wp-content/uploads/2026/02/hypnohero.jpg",
+  "file": "https://mistresscalia.com/audioprotectsample/1664/rogue-ai-hypnosis-challenge.mp3",
+  "hash": "",
+  "url": "https://mistresscalia.com/hypnohero-hypnosis-rhythm-game/",
+  "changelog": [
+    {
+      "date": "2026-11-04 02:49:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/hypnohero-hypnosis-rhythm-game/"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:34",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:54",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "collaborators": [],
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}

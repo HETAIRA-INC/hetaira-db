@@ -1,0 +1,58 @@
+{
+  "uuid": "4bc745a1-2a52-43ce-92d1-207f94df4a0a",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0315",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "DURATION: 10-20",
+    "F4A",
+    "FOCUS AID",
+    "INDUCTION: BRAINWASH",
+    "LOOP",
+    "NON-DOMINANT",
+    "NON-SEXUAL",
+    "SELF-IMPROVEMENT",
+    "WHOLESOME"
+  ],
+  "title": "Your Passion, Your Focus Loop",
+  "description": "This was the reward for donors to Hypnotic Holidays 2025. A massive thank you to all who donated, shared and supported the cause.\n\nIn this file, I simply remind you how important it is to make time for you. To find those moments to follow your passion, and pursue your dreams. It’s far too easy in life to let these things slip away, and I don’t want that to happen to you. I want you to find that time for you to purse what fills your soul.\n\nThis can be looped while you do that, or just enjoyed in the background of daily life as a regular reminder of how important it is to chase your dreams, and make time for yourself.",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4A",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "releaseDate": "2026-02-17",
+  "tone": [],
+  "cover": "https://mistresscalia.com/wp-content/uploads/2026/02/passionloop.jpg",
+  "file": "https://mistresscalia.com/wp-content/uploads/2026/02/Charity-Focus-Passion_mixdown.mp3",
+  "hash": "",
+  "url": "https://mistresscalia.com/your-passion-your-focus-loop/",
+  "changelog": [
+    {
+      "date": "2026-11-04 02:49:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/your-passion-your-focus-loop/"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:34",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:54",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "collaborators": [],
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}

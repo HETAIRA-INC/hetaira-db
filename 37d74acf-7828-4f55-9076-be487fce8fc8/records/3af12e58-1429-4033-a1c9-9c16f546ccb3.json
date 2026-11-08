@@ -1,0 +1,60 @@
+{
+  "uuid": "3af12e58-1429-4033-a1c9-9c16f546ccb3",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0308",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "AFFIRMATIONS",
+    "BEGINNER",
+    "DURATION: 10-20",
+    "F4A",
+    "INDUCTION: CONVERSATIONAL",
+    "MANTRAS",
+    "NON-DOMINANT",
+    "NON-SEXUAL",
+    "POST-HYPNOTIC SUGGESTION",
+    "RELAXATION",
+    "SELF-IMPROVEMENT"
+  ],
+  "title": "Grounding Relaxation Hypnosis",
+  "description": "This hypnosis file is designed for those who find themselves overwhelmed sometimes, who can panic and lose sight of their calm and their centre. Simply, I want this file to give you a simple way to relax and find peace when things become too much.\n\nUsing simple grounding techniques and positive affirmations, this file will help you to calm down when you most need help. When you panic, when you stress, when you can’t figure out how to pull out of a spiral.",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4A",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "releaseDate": "2026-01-27",
+  "tone": [],
+  "cover": "https://mistresscalia.com/wp-content/uploads/2026/01/panichelper.jpg",
+  "file": "https://mistresscalia.com/wp-content/uploads/2026/01/Panic-Custom_mixdown.mp3",
+  "hash": "",
+  "url": "https://mistresscalia.com/grounding-relaxation-hypnosis/",
+  "changelog": [
+    {
+      "date": "2026-11-04 02:49:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/grounding-relaxation-hypnosis/"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:34",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:53",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "collaborators": [],
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}

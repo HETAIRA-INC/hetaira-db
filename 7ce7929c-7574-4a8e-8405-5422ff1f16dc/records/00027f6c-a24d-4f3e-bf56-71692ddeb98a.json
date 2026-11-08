@@ -1,0 +1,35 @@
+{
+  "uuid": "00027f6c-a24d-4f3e-bf56-71692ddeb98a",
+  "status": "ACTIVE",
+  "id": "EHMI-GN-151",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "AUDIO AVAILABLE"
+  ],
+  "title": "Echelon Extractives",
+  "description": "",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4M",
+  "author": "Goddess Nichole",
+  "artist": "Goddess Nichole",
+  "collaborators": [],
+  "releaseDate": "2026-10-03",
+  "tone": [],
+  "cover": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/covers/00027f6c-a24d-4f3e-bf56-71692ddeb98a.png",
+  "file": "7ce7929c-7574-4a8e-8405-5422ff1f16dc/audio/00027f6c-a24d-4f3e-bf56-71692ddeb98a.mp3",
+  "hash": "f9994527525027aad3216eb2575a1079680a5c6890fd99bc9227b43e4c2c208d",
+  "url": "https://goddessnichole.com/echelon-extractions/",
+  "changelog": [
+    {
+      "date": "2026-10-03 21:16:16",
+      "variant": "ORIGINAL",
+      "note": "Protocol created"
+    }
+  ],
+  "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
+  "artistUuids": [
+    "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
+  ]
+}

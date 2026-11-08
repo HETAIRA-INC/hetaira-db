@@ -1,0 +1,57 @@
+{
+  "uuid": "6e05a0de-e5df-4027-97c6-5470cdd8feb0",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0349",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "CURSE",
+    "DURATION: &LT;10",
+    "F4A",
+    "FINGER SNAPS",
+    "POST-HYPNOTIC SUGGESTION",
+    "PUNISHMENT",
+    "TASK",
+    "TRIGGER: DROP"
+  ],
+  "title": "The Rhyming Curse Hypnosis",
+  "description": "In this file of hypnotic silliness, I’ll have you rhyming after it. Just listen for the shortest time, and once you’re done you’ll speak in rhyme. A temporary curse, you’ll see, it might be stupid but it’s free. Enjoy the words I speak in verse, imagine I could make it worse. Curse your mind with awful things, not this gentle little fling.\n\nSo listen now, and listen good. There is a little likelihood. That into trance you’ll drop quite fast, and normal speech is in the past. For one hour you’re hypnotized, to speak in verse in words and typed. I know you’ll hate it, but I bet, you won’t be able to resist.\n\nCW: You’ll speak and type in rhyme for one hour after listening.",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4A",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "releaseDate": "2026-06-25",
+  "tone": [],
+  "cover": "https://mistresscalia.com/wp-content/uploads/2026/06/rhyme.jpg",
+  "file": "https://mistresscalia.com/wp-content/uploads/2026/06/Rhyming-Curse_mixdown.mp3",
+  "hash": "",
+  "url": "https://mistresscalia.com/the-rhyming-curse-hypnosis/",
+  "changelog": [
+    {
+      "date": "2026-11-04 02:49:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/the-rhyming-curse-hypnosis/"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:35",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:55",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "collaborators": [],
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "uuid": "edf0bad2-fb1d-4930-b3ff-e5e7b21fceb2",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0327",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "APHANTASIA-FRIENDLY",
+    "DEEPENER",
+    "DURATION: 30-40",
+    "F4A",
+    "INDUCTION: FIXATION",
+    "NON-DOMINANT",
+    "NON-SEXUAL",
+    "POST-HYPNOTIC SUGGESTION",
+    "PRAISE",
+    "RELAXATION",
+    "SELF-IMPROVEMENT",
+    "TASK",
+    "WHOLESOME"
+  ],
+  "title": "Praised into Trance Hypnosis",
+  "description": "Sometimes you just need to be reminded how wonderful you are. How sweet, and good, and kind. How you’re a perfect listener, and take in my words so well.\n\nAnd in this sweet, gentle hypnosis experience, I’ll remind you how important it is to take time for yourself, to relax, and how great you are for making that choice. In fact, I’ll praise you so deeply, so completely, that it’ll send you into a trance, just from hearing those kind words.\n\nTo finish, I’ll leave you with a small task that will help you remember why praise is just so very important.\n\nArt by Celyn.",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4A",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "releaseDate": "2026-03-06",
+  "tone": [],
+  "cover": "https://mistresscalia.com/wp-content/uploads/2026/03/praisewide.jpg",
+  "file": "https://mistresscalia.com/wp-content/uploads/2026/03/Praise-Trance_mixdown.mp3",
+  "hash": "",
+  "url": "https://mistresscalia.com/praised-into-trance-hypnosis/",
+  "changelog": [
+    {
+      "date": "2026-11-04 02:49:29",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/praised-into-trance-hypnosis/"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:34",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:54",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "collaborators": [],
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}

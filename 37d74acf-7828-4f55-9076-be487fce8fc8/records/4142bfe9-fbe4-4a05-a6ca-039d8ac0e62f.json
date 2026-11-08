@@ -1,0 +1,54 @@
+{
+  "uuid": "4142bfe9-fbe4-4a05-a6ca-039d8ac0e62f",
+  "status": "ACTIVE",
+  "id": "EHMI-MC-0269",
+  "variant": "ORIGINAL",
+  "tag": "HYPNOSIS & AUDIO",
+  "tags": [
+    "ASMR",
+    "BINAURAL",
+    "DURATION: 20-30",
+    "F4A",
+    "INDUCTION: PROGRESSIVE MUSCLE RELAXATION",
+    "MASSAGE",
+    "NON-DOMINANT",
+    "NON-SEXUAL",
+    "PHANTOM TOUCH",
+    "RELAXATION"
+  ],
+  "title": "Hypnotic Massage ASMR",
+  "description": "A calm, soothing binaural hypnotic ASMR massage experience.\n\nA calm, soothing binaural hypnotic ASMR massage experience.\n\nLay back, relax and enjoy this completely relaxing and gentle massage. Feel my voice whisper in your ears and your tension melt away at my touch. Not quite erotic hypnosis, but definitely pleasurable, and extremely calming. This is best enjoyed laying down with headphones. You’ll love the feelings all over your body as I massage each muscle in turn.\n\nArt by Rielilu.",
+  "triggers": [],
+  "tier": "FREE",
+  "audience": "F4A",
+  "author": "Mistress Calia",
+  "artist": "Mistress Calia",
+  "releaseDate": "2024-06-14",
+  "tone": [],
+  "cover": "https://mistresscalia.com/wp-content/uploads/2025/02/massage.jpg",
+  "file": "https://mistresscalia.com/wp-content/uploads/2024/06/ASMR-Massage.mp3",
+  "hash": "",
+  "url": "https://mistresscalia.com/hypnotic-massage-asmr/",
+  "changelog": [
+    {
+      "date": "2026-11-04 02:49:28",
+      "variant": "ORIGINAL",
+      "note": "Imported from https://mistresscalia.com/hypnotic-massage-asmr/"
+    },
+    {
+      "date": "2026-11-04 02:49:45",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    },
+    {
+      "date": "2026-11-04 18:04:32",
+      "variant": "ORIGINAL",
+      "note": "Re-synchronized via batch importer"
+    }
+  ],
+  "artistUuid": "37d74acf-7828-4f55-9076-be487fce8fc8",
+  "collaborators": [],
+  "artistUuids": [
+    "37d74acf-7828-4f55-9076-be487fce8fc8"
+  ]
+}
