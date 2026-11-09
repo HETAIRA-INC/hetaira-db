@@ -1,7 +1,7 @@
 {
   "uuid": "049b7c37-b1d1-4a38-b81b-efc9e8d6e30e",
   "status": "ACTIVE",
-  "id": "EHMI-GN-047",
+  "id": "EHMI-GN-0047",
   "variant": "NAKED",
   "tag": "LOOP",
   "tags": [
@@ -52,5 +52,9 @@
   "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
-  ]
+  ],
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }

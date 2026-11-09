@@ -1,7 +1,7 @@
 {
   "uuid": "4885db2c-80db-4a2f-983a-712eb291ca92",
   "status": "ACTIVE",
-  "id": "EHMI-GN-138",
+  "id": "EHMI-GN-0138",
   "variant": "F4M",
   "tag": "HYPNOSIS & AUDIO",
   "tags": [
@@ -39,5 +39,9 @@
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
   ],
-  "hash": ""
+  "hash": "",
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }

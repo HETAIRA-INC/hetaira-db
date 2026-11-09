@@ -1,7 +1,7 @@
 {
   "uuid": "525f9e2c-9cb4-4fe2-a795-19423b0c1c78",
   "status": "ACTIVE",
-  "id": "EHMI-GN-121",
+  "id": "EHMI-GN-0121",
   "variant": "ORIGINAL",
   "tag": "HYPNOSIS & AUDIO",
   "tags": [
@@ -37,5 +37,9 @@
   "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
-  ]
+  ],
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }

@@ -1,7 +1,7 @@
 {
   "uuid": "25cafa0a-90b6-4de6-9ce3-69cc8e08ac20",
   "status": "MAINTENANCE",
-  "id": "EHMI-GN-021",
+  "id": "EHMI-GN-0021",
   "variant": "NA",
   "tag": "EROTIC HYPNOSIS",
   "tags": [
@@ -31,5 +31,9 @@
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
   ],
-  "hash": ""
+  "hash": "",
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }

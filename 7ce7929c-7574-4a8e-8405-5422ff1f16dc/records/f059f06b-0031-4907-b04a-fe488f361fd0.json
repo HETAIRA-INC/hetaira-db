@@ -1,7 +1,7 @@
 {
   "uuid": "f059f06b-0031-4907-b04a-fe488f361fd0",
   "status": "ACTIVE",
-  "id": "EHMI-GN-041",
+  "id": "EHMI-GN-0041",
   "variant": "ORIGINAL",
   "tag": "ROLEPLAY",
   "tags": [
@@ -47,5 +47,9 @@
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
   ],
-  "hash": ""
+  "hash": "",
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }

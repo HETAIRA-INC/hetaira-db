@@ -1,7 +1,7 @@
 {
   "uuid": "4a121396-8d69-4bad-bc65-09d9af0828ac",
   "status": "ACTIVE",
-  "id": "EHMI-GN-081",
+  "id": "EHMI-GN-0081",
   "variant": "F4F - NO MUSIC",
   "tag": "HYPNOSIS & AUDIO",
   "tags": [
@@ -57,5 +57,9 @@
   "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
-  ]
+  ],
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }

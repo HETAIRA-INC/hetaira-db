@@ -1,7 +1,7 @@
 {
   "uuid": "5b9c99b0-2fb5-456f-88f3-58e1290f9d6c",
   "status": "ACTIVE",
-  "id": "EHMI-GN-181",
+  "id": "EHMI-GN-0181",
   "variant": "ORIGINAL",
   "tag": "HFO",
   "tags": [
@@ -40,5 +40,9 @@
   "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
-  ]
+  ],
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }

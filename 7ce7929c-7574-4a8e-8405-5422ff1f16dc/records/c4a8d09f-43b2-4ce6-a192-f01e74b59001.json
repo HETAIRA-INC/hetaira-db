@@ -1,7 +1,7 @@
 {
   "uuid": "c4a8d09f-43b2-4ce6-a192-f01e74b59001",
   "status": "ACTIVE",
-  "id": "EHMI-GN-047",
+  "id": "EHMI-GN-0047",
   "variant": "ORIGINAL",
   "tag": "LOOP",
   "tags": [
@@ -47,5 +47,9 @@
   "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
-  ]
+  ],
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }

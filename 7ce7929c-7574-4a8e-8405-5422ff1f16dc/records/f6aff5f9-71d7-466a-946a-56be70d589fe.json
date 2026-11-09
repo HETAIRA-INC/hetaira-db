@@ -1,7 +1,7 @@
 {
   "uuid": "f6aff5f9-71d7-466a-946a-56be70d589fe",
   "status": "ACTIVE",
-  "id": "EHMI-GN-069",
+  "id": "EHMI-GN-0069",
   "variant": "NAKED",
   "tag": "HYPNOSIS & AUDIO",
   "tags": [
@@ -52,5 +52,9 @@
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
   ],
-  "hash": ""
+  "hash": "",
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }

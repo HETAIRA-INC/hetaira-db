@@ -1,7 +1,7 @@
 {
   "uuid": "02141a90-6bc0-42d2-8927-1cd763473d90",
   "status": "MAINTENANCE",
-  "id": "EHMI-GN-08",
+  "id": "EHMI-GN-0008",
   "variant": "NA",
   "tag": "ROLEPLAY",
   "tags": [
@@ -36,5 +36,9 @@
   "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
-  ]
+  ],
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }

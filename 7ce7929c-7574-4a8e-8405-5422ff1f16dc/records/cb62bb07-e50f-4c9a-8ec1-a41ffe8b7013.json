@@ -1,7 +1,7 @@
 {
   "uuid": "cb62bb07-e50f-4c9a-8ec1-a41ffe8b7013",
   "status": "ACTIVE",
-  "id": "EHMI-GN-122",
+  "id": "EHMI-GN-0122",
   "variant": "F4M",
   "tag": "LOOP",
   "tags": [
@@ -51,5 +51,9 @@
   "artistUuid": "7ce7929c-7574-4a8e-8405-5422ff1f16dc",
   "artistUuids": [
     "7ce7929c-7574-4a8e-8405-5422ff1f16dc"
-  ]
+  ],
+  "album": "",
+  "albumTrack": null,
+  "duration": null,
+  "vtt": ""
 }
