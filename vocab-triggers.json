@@ -112,6 +112,12 @@
     "count": 1
   },
   {
+    "slug": "silly",
+    "label": "SILLY",
+    "aliases": [],
+    "count": 1
+  },
+  {
     "slug": "sleep",
     "label": "SLEEP",
     "count": 2
